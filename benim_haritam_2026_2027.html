@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kişisel Astroloji Haritası 2026–2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --card-bg: #161b22;
+  --card-border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --accent: #c9a84c;
+  --accent2: #e85d04;
+  --teal: #0d9488;
+  --green: #238636;
+  --red: #da3633;
+  --orange: #d05e17;
+  --yellow: #b08800;
+  --purple: #8957e5;
+  --pink: #db61a2;
+  --blue: #1f6feb;
+  --gold: #c9a84c;
+  --tab-kar: #0d9488;
+  --tab-yat: #c9a84c;
+  --tab-ask: #db61a2;
+  --tab-gen: #8957e5;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
+
+/* ── HEADER ── */
+.site-header {
+  background: linear-gradient(135deg, #0a0f1a 0%, #0d1a2e 40%, #1a0d2e 100%);
+  padding: 48px 24px 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #30363d;
+}
+.header-stars { position:absolute; inset:0; pointer-events:none; }
+.site-header h1 {
+  font-family:'Cinzel',serif; font-size:clamp(1.4rem,3vw,2.2rem);
+  color: var(--accent); letter-spacing:.08em; position:relative; z-index:1;
+}
+.subtitle { color:var(--muted); font-size:.95rem; margin-top:8px; position:relative; z-index:1; }
+.header-badges { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px; position:relative; z-index:1; }
+.header-badge {
+  background: rgba(201,168,76,.15); border:1px solid rgba(201,168,76,.4);
+  color:var(--accent); padding:4px 12px; border-radius:20px; font-size:.78rem;
+}
+
+/* ── NATAL BOX ── */
+.natal-hero {
+  background: linear-gradient(135deg, #0d1a2e 0%, #1a0d2e 60%, #0d2e1a 100%);
+  border: 1px solid #30363d; border-radius:16px; margin:24px auto; max-width:1100px;
+  padding:28px 32px; display:grid; grid-template-columns:1fr 1fr; gap:32px;
+}
+@media(max-width:700px){ .natal-hero { grid-template-columns:1fr; margin:12px; } }
+.hero-title { font-family:'Cinzel',serif; font-size:1.4rem; color:var(--accent); margin-bottom:6px; }
+.hero-meta { color:var(--muted); font-size:.88rem; line-height:1.8; }
+.natal-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.natal-item {
+  display:flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,.04); border:1px solid #30363d;
+  border-radius:8px; padding:6px 10px; font-size:.82rem;
+}
+.planet-sym { font-size:1.1rem; color:var(--accent); flex-shrink:0; }
+
+/* ── MAIN TABS ── */
+.main-tabs-wrap { background:#161b22; border-bottom:1px solid #30363d; position:sticky; top:0; z-index:100; }
+.main-tabs { display:flex; max-width:1100px; margin:0 auto; }
+.main-tab {
+  flex:1; padding:14px 8px; background:none; border:none; color:var(--muted);
+  font-size:.88rem; font-weight:500; cursor:pointer; border-bottom:3px solid transparent;
+  transition:all .2s; font-family:'Inter',sans-serif;
+}
+.main-tab:hover { color:var(--text); background:rgba(255,255,255,.05); }
+.main-tab.active-kar { color:var(--tab-kar); border-bottom-color:var(--tab-kar); background:rgba(13,148,136,.08); }
+.main-tab.active-yat { color:var(--tab-yat); border-bottom-color:var(--tab-yat); background:rgba(201,168,76,.08); }
+.main-tab.active-ask { color:var(--tab-ask); border-bottom-color:var(--tab-ask); background:rgba(219,97,162,.08); }
+.main-tab.active-gen { color:var(--tab-gen); border-bottom-color:var(--tab-gen); background:rgba(137,87,229,.08); }
+
+/* ── PANELS ── */
+.panel { display:none; }
+.panel.active { display:block; }
+.panel-inner { max-width:1100px; margin:0 auto; padding:28px 20px; }
+
+/* ── YEAR TABS ── */
+.year-tabs { display:flex; gap:8px; margin:24px 0 16px; }
+.year-tab {
+  padding:8px 24px; border-radius:8px; border:1px solid #30363d;
+  background:rgba(255,255,255,.04); color:var(--muted); cursor:pointer;
+  font-weight:500; font-size:.9rem; transition:all .2s;
+}
+.year-panel { display:none; }
+.year-panel.active { display:block; }
+.active-kar { background:var(--tab-kar); border-color:var(--tab-kar); color:#fff; }
+.active-yat { background:var(--tab-yat); border-color:var(--tab-yat); color:#0d0d00; }
+.active-ask { background:var(--tab-ask); border-color:var(--tab-ask); color:#fff; }
+.active-gen { background:var(--tab-gen); border-color:var(--tab-gen); color:#fff; }
+
+/* ── SUMMARY ROW ── */
+.summary-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:20px 0; }
+.summary-card {
+  background:var(--card-bg); border:1px solid #30363d; border-radius:12px; padding:16px;
+}
+.sc-label { font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.sc-value { font-size:1.1rem; font-weight:600; color:var(--text); margin:4px 0; }
+.sc-sub { font-size:.78rem; color:var(--muted); }
+.sc-kar { border-left:3px solid var(--tab-kar); }
+.sc-yat { border-left:3px solid var(--tab-yat); }
+.sc-ask { border-left:3px solid var(--tab-ask); }
+.sc-gen { border-left:3px solid var(--tab-gen); }
+
+/* ── HIGHLIGHTS ── */
+.highlights-section { margin:24px 0; }
+.highlights-title { font-family:'Cinzel',serif; color:var(--accent); font-size:1rem; margin-bottom:12px; }
+.highlight-boxes { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+.highlight-box {
+  border-radius:12px; padding:16px; border:1px solid;
+}
+.hb-period { font-size:.75rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px; }
+.hb-title { font-weight:600; font-size:.9rem; margin-bottom:6px; }
+.hb-text { font-size:.82rem; color:var(--muted); line-height:1.5; }
+.box-gold  { background:rgba(201,168,76,.1); border-color:rgba(201,168,76,.4); }
+.box-gold .hb-period { color:var(--gold); }
+.box-teal  { background:rgba(13,148,136,.1); border-color:rgba(13,148,136,.4); }
+.box-teal .hb-period { color:var(--teal); }
+.box-pink  { background:rgba(219,97,162,.1); border-color:rgba(219,97,162,.4); }
+.box-pink .hb-period { color:var(--pink); }
+.box-red   { background:rgba(218,54,51,.1); border-color:rgba(218,54,51,.4); }
+.box-red .hb-period { color:var(--red); }
+.box-purple{ background:rgba(137,87,229,.1); border-color:rgba(137,87,229,.4); }
+.box-purple .hb-period { color:var(--purple); }
+.box-blue  { background:rgba(31,111,235,.1); border-color:rgba(31,111,235,.4); }
+.box-blue .hb-period { color:var(--blue); }
+
+/* ── TIMELINE ── */
+.timeline-wrap { margin-bottom:24px; }
+.timeline-label { font-size:.75rem; color:var(--muted); margin-bottom:8px; }
+.timeline-bar { display:flex; gap:4px; flex-wrap:wrap; }
+.tm {
+  flex:1; min-width:56px; padding:8px 4px; border-radius:8px;
+  text-align:center; font-size:.72rem; font-weight:600; cursor:default;
+  border:1px solid transparent; transition:transform .15s;
+}
+.tm:hover { transform:translateY(-2px); }
+.tm span { display:block; color:rgba(255,255,255,.5); font-size:.65rem; margin-top:2px; }
+.tm-gold   { background:rgba(201,168,76,.25); border-color:rgba(201,168,76,.5); color:var(--gold); }
+.tm-green  { background:rgba(35,134,54,.25); border-color:rgba(35,134,54,.5); color:#3fb950; }
+.tm-teal   { background:rgba(13,148,136,.25); border-color:rgba(13,148,136,.5); color:#2dd4bf; }
+.tm-blue   { background:rgba(31,111,235,.25); border-color:rgba(31,111,235,.5); color:#79c0ff; }
+.tm-yellow { background:rgba(176,136,0,.25); border-color:rgba(176,136,0,.5); color:#e3b341; }
+.tm-orange { background:rgba(208,94,23,.25); border-color:rgba(208,94,23,.5); color:#ffa657; }
+.tm-red    { background:rgba(218,54,51,.25); border-color:rgba(218,54,51,.5); color:#ff7b72; }
+.tm-gray   { background:rgba(139,148,158,.15); border-color:rgba(139,148,158,.3); color:var(--muted); }
+.tm-purple { background:rgba(137,87,229,.25); border-color:rgba(137,87,229,.5); color:#d2a8ff; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family:'Cinzel',serif; font-size:1rem; color:var(--accent);
+  margin:24px 0 12px; padding-bottom:8px; border-bottom:1px solid #30363d;
+}
+
+/* ── MONTHS GRID ── */
+.months-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+
+/* ── MONTH CARD ── */
+.month-card {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:12px; overflow:hidden; transition:transform .2s, border-color .2s;
+}
+.month-card:hover { transform:translateY(-2px); border-color:#484f58; }
+.card-header {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  padding:12px 16px; gap:8px;
+}
+.month-name { font-family:'Cinzel',serif; font-size:.95rem; font-weight:600; color:var(--text); }
+.month-tag  { font-size:.7rem; color:rgba(255,255,255,.4); margin-top:2px; }
+.card-body  { padding:12px 16px; display:flex; flex-direction:column; gap:10px; }
+
+/* card header colors */
+.hdr-kar  { background:linear-gradient(135deg,#0a1f1e,#0d3430); }
+.hdr-yat  { background:linear-gradient(135deg,#1f1a0a,#342a0d); }
+.hdr-ask  { background:linear-gradient(135deg,#1f0a18,#340d1f); }
+.hdr-gen  { background:linear-gradient(135deg,#130a1f,#1f0d34); }
+
+/* ── VERDICT BADGE ── */
+.vbadge {
+  padding:3px 10px; border-radius:20px; font-size:.72rem; font-weight:600;
+  white-space:nowrap; flex-shrink:0;
+}
+.vb-gold   { background:rgba(201,168,76,.2); color:var(--gold); border:1px solid rgba(201,168,76,.4); }
+.vb-green  { background:rgba(35,134,54,.2); color:#3fb950; border:1px solid rgba(35,134,54,.4); }
+.vb-teal   { background:rgba(13,148,136,.2); color:#2dd4bf; border:1px solid rgba(13,148,136,.4); }
+.vb-blue   { background:rgba(31,111,235,.2); color:#79c0ff; border:1px solid rgba(31,111,235,.4); }
+.vb-yellow { background:rgba(176,136,0,.2); color:#e3b341; border:1px solid rgba(176,136,0,.4); }
+.vb-orange { background:rgba(208,94,23,.2); color:#ffa657; border:1px solid rgba(208,94,23,.4); }
+.vb-red    { background:rgba(218,54,51,.2); color:#ff7b72; border:1px solid rgba(218,54,51,.4); }
+.vb-purple { background:rgba(137,87,229,.2); color:#d2a8ff; border:1px solid rgba(137,87,229,.4); }
+
+/* ── SCORE BAR ── */
+.score-wrap { display:flex; align-items:center; gap:8px; }
+.score-label { font-size:.72rem; color:var(--muted); flex-shrink:0; width:34px; }
+.score-bar-bg { flex:1; height:6px; background:rgba(255,255,255,.08); border-radius:3px; overflow:hidden; }
+.score-bar-fill { height:100%; border-radius:3px; transition:width .3s; }
+.score-num { font-size:.85rem; font-weight:700; flex-shrink:0; width:30px; text-align:right; }
+
+/* ── TRANSIT PILLS ── */
+.transits-wrap { }
+.transits-label { font-size:.7rem; color:var(--muted); margin-bottom:4px; text-transform:uppercase; letter-spacing:.04em; }
+.transit-pills  { display:flex; flex-wrap:wrap; gap:4px; }
+.tp {
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  color:var(--text); padding:2px 8px; border-radius:12px; font-size:.72rem;
+}
+.tp.exact { background:rgba(201,168,76,.15); border-color:rgba(201,168,76,.4); color:var(--gold); }
+.tp.pink-tp { background:rgba(219,97,162,.15); border-color:rgba(219,97,162,.4); color:var(--pink); }
+.tp.teal-tp { background:rgba(13,148,136,.15); border-color:rgba(13,148,136,.4); color:#2dd4bf; }
+.tp.purple-tp { background:rgba(137,87,229,.15); border-color:rgba(137,87,229,.4); color:#d2a8ff; }
+
+/* ── INTERP ── */
+.interp-text { font-size:.83rem; color:rgba(230,237,243,.8); line-height:1.6; }
+.theme-icons { display:flex; flex-wrap:wrap; gap:6px; }
+.theme-icon {
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+  color:var(--muted); padding:2px 8px; border-radius:8px; font-size:.72rem;
+}
+
+/* ── SPECIAL CARD ── */
+.card-special { border-color:var(--gold); box-shadow:0 0 16px rgba(201,168,76,.15); }
+.card-pink     { border-color:var(--pink); box-shadow:0 0 16px rgba(219,97,162,.15); }
+.card-red      { border-color:var(--red); box-shadow:0 0 16px rgba(218,54,51,.15); }
+
+/* ── LOVE INDICATORS ── */
+.love-meter {
+  display:flex; gap:4px; align-items:center;
+}
+.love-dot {
+  width:10px; height:10px; border-radius:50%;
+}
+.love-label { font-size:.72rem; color:var(--muted); margin-left:4px; }
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  background:rgba(139,148,158,.1); border:1px solid rgba(139,148,158,.3);
+  border-radius:8px; padding:12px 16px; margin-top:32px; font-size:.78rem;
+  color:var(--muted);
+}
+
+/* ── TOPIC PILLS on cards ── */
+.topic-row { display:flex; gap:6px; flex-wrap:wrap; }
+.topic-pill {
+  padding:2px 8px; border-radius:12px; font-size:.72rem; font-weight:500;
+}
+.tp-kar { background:rgba(13,148,136,.2); color:#2dd4bf; border:1px solid rgba(13,148,136,.3); }
+.tp-yat { background:rgba(201,168,76,.2); color:var(--gold); border:1px solid rgba(201,168,76,.3); }
+.tp-ask { background:rgba(219,97,162,.2); color:var(--pink); border:1px solid rgba(219,97,162,.3); }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-stars" id="starfield"></div>
+  <h1>✦ Kişisel Natal & Transit Analizi 2026–2027 ✦</h1>
+  <p class="subtitle">21 Şubat 1999 · Ankara Altındağ · 14:30 · Makine Mühendisi · Bekar</p>
+  <div class="header-badges">
+    <span class="header-badge">♋ Yengeç Yükselen</span>
+    <span class="header-badge">♈ Koç MC</span>
+    <span class="header-badge">♄ Satürn Dönüşü 2027</span>
+    <span class="header-badge">♆ Neptün ☌ Venüs 2026</span>
+    <span class="header-badge">💍 Evlilik İşaretleri</span>
+  </div>
+</header>
+
+<!-- NATAL BOX -->
+<div class="natal-hero" style="margin:24px auto;max-width:1100px;margin-left:auto;margin-right:auto;">
+  <div>
+    <div class="hero-title">Natal Harita</div>
+    <div class="hero-meta">
+      🗓 21 Şubat 1999 · 14:30 Yerel · Ankara Altındağ<br>
+      ♋ Yengeç Yükselen (ASC 27.80°)<br>
+      ♈ Koç MC (12.54°) · Kariyer: Öncü & Lider<br>
+      ☉ Balık H8 · ☽ Boğa H10 · ♂ Akrep H4<br>
+      ♃ Koç H9 · ♄ Koç H10 · Meslek: Mühendis
+    </div>
+    <div style="margin-top:16px;padding:12px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.3);border-radius:8px;">
+      <div style="font-size:.78rem;color:var(--gold);font-weight:600;margin-bottom:6px;">🔑 Haritanın Temel Temaları</div>
+      <div style="font-size:.8rem;color:var(--muted);line-height:1.7;">
+        ▸ <strong style="color:var(--text)">Kariyer (H10):</strong> Ay + Satürn 10. evde → Kariyer en büyük yaşam misyonu<br>
+        ▸ <strong style="color:var(--text)">Finans (H8):</strong> Güneş 8. evde → Yatırım ve derin finansal dönüşüm<br>
+        ▸ <strong style="color:var(--text)">Sevgi (H7):</strong> Uranüs + Neptün 7. evde → Özgün, derin, ideal aşk arayışı<br>
+        ▸ <strong style="color:var(--text)">Kuzey Düğüm (H2):</strong> Leo → Mali bağımsızlık hayatın kaderi<br>
+        ▸ <strong style="color:var(--text)">Koç MC + Koç Satürn:</strong> 2027'de Satürn dönüşü = 29 yıllık kariyer döngüsü tamamlanıyor
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="natal-grid">
+      <div class="natal-item"><span class="planet-sym">⬆</span><div><strong>ASC</strong> ♋ Yengeç 27.80°</div></div>
+      <div class="natal-item"><span class="planet-sym">↑</span><div><strong>MC</strong> ♈ Koç 12.54°</div></div>
+      <div class="natal-item"><span class="planet-sym">☉</span><div><strong>Güneş</strong> ♓ Balık 2.43° H8</div></div>
+      <div class="natal-item"><span class="planet-sym">☽</span><div><strong>Ay</strong> ♉ Boğa 11.35° H10 ★</div></div>
+      <div class="natal-item"><span class="planet-sym">☿</span><div><strong>Merkür</strong> ♓ Balık 16.11° H9</div></div>
+      <div class="natal-item"><span class="planet-sym">♀</span><div><strong>Venüs</strong> ♓ Balık 29.57° H9</div></div>
+      <div class="natal-item"><span class="planet-sym">♂</span><div><strong>Mars</strong> ♏ Akrep 8.79° H4 ★</div></div>
+      <div class="natal-item"><span class="planet-sym">♃</span><div><strong>Jüpiter</strong> ♈ Koç 1.89° H9</div></div>
+      <div class="natal-item"><span class="planet-sym">♄</span><div><strong>Satürn</strong> ♈ Koç 29.30° H10 ★</div></div>
+      <div class="natal-item"><span class="planet-sym">⛢</span><div><strong>Uranüs</strong> ♒ Kova 13.88° H7</div></div>
+      <div class="natal-item"><span class="planet-sym">♆</span><div><strong>Neptün</strong> ♒ Kova 2.96° H7</div></div>
+      <div class="natal-item"><span class="planet-sym">♇</span><div><strong>Plüton</strong> ♐ Yay 10.38° H5</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN TABS -->
+<div class="main-tabs-wrap">
+  <div class="main-tabs">
+    <button class="main-tab active-kar" onclick="switchTab('kar',this)">💼 Kariyer & İş</button>
+    <button class="main-tab" onclick="switchTab('yat',this)">💰 Yatırım & Finans</button>
+    <button class="main-tab" onclick="switchTab('ask',this)">💍 Evlilik & Aşk</button>
+    <button class="main-tab" onclick="switchTab('gen',this)">🔮 Genel Görünüm</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     KARİYER & İŞ PANEL
+══════════════════════════════════════════════════════ -->
+<div class="panel active" id="panel-kar">
+<div class="panel-inner">
+
+  <div class="summary-row">
+    <div class="summary-card sc-kar">
+      <div class="sc-label">🌟 En Güçlü Kariyer Ayı</div>
+      <div class="sc-value">Haziran 2026</div>
+      <div class="sc-sub">♄ ☌ MC + ♃ ☌ ASC aynı ay</div>
+    </div>
+    <div class="summary-card sc-kar">
+      <div class="sc-label">♄ Satürn Dönüşü</div>
+      <div class="sc-value">Ağustos 2027</div>
+      <div class="sc-sub">29 yıllık kariyer döngüsü tamamlanıyor</div>
+    </div>
+    <div class="summary-card sc-kar">
+      <div class="sc-label">📈 Kariyer Zirve Dönemi</div>
+      <div class="sc-value">Oca–Mar 2026</div>
+      <div class="sc-sub">Skor: +28/+30 · Neptün & Uranüs desteği</div>
+    </div>
+    <div class="summary-card sc-kar">
+      <div class="sc-label">🏗️ Yeniden Yapılanma</div>
+      <div class="sc-value">Tem–Ağu 2027</div>
+      <div class="sc-sub">♄ □ ASC · Kariyer sınavı · Büyüme</div>
+    </div>
+  </div>
+
+  <div class="highlights-section">
+    <div class="highlights-title">✦ Kariyer Öne Çıkan Dönemler</div>
+    <div class="highlight-boxes">
+      <div class="highlight-box box-teal">
+        <div class="hb-period">Ocak–Mart 2026</div>
+        <div class="hb-title">🚀 Neptün + Uranüs: Kariyer Vizyonu Açılıyor</div>
+        <div class="hb-text">Neptün natal Venüs'e (H9), ardından Jüpiter'e kavuşuyor. Mühendislik kariyerinde yeni bir vizyon, farklı sektör keşifleri, uluslararası bağlantılar. Hayallerinizi somutlaştırmak için en güçlü dönem.</div>
+      </div>
+      <div class="highlight-box box-gold">
+        <div class="hb-period">Haziran 2026</div>
+        <div class="hb-title">🏆 Satürn ☌ MC + Jüpiter ☌ ASC: Çift Kariyer Zirvesi</div>
+        <div class="hb-text">Yılın en önemli kariyer ayı. Satürn MC'ye kavuşarak kariyer başarısını netleştiriyor; Jüpiter ASC'ye kavuşarak kişisel görünürlüğü artırıyor. Terfi, büyük proje teslimi veya yeni iş fırsatı bu ay gerçekleşebilir.</div>
+      </div>
+      <div class="highlight-box box-blue">
+        <div class="hb-period">Ocak 2027</div>
+        <div class="hb-title">⚡ Uranüs ⚹ Jüpiter TAM: Ani Büyük Fırsat</div>
+        <div class="hb-text">0.04° orb ile tam açı — yılın en keskin transit'i. Beklenmedik bir fırsat kapısı açılıyor. Yeni teknoloji, startup, yenilikçi proje veya kariyer sıçraması. Bu tür açılar 10-15 yılda bir gelir.</div>
+      </div>
+      <div class="highlight-box box-purple">
+        <div class="hb-period">Ağustos 2027</div>
+        <div class="hb-title">♄ Satürn Dönüşü: 29 Yıllık Döngü Kapanışı</div>
+        <div class="hb-text">Satürn natal Satürn'e (Koç H10) 1.45° orb ile kavuşuyor. Bu kariyer kimliğinin yeniden tanımlandığı dev bir dönem. Mühendislik kariyerinde liderliğe geçiş, usta konumuna yükselme veya tamamen yeni bir kariyer yolu kararı.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="year-tabs" id="kar-year-tabs">
+    <button class="year-tab active-kar" onclick="switchYear('kar','2026',this)">2026</button>
+    <button class="year-tab" onclick="switchYear('kar','2027',this)">2027</button>
+  </div>
+
+  <!-- KARİYER 2026 -->
+  <div class="year-panel active" id="kar-2026">
+    <div class="timeline-wrap">
+      <div class="timeline-label">2026 Kariyer Skor Akışı →</div>
+      <div class="timeline-bar">
+        <div class="tm tm-gold" title="+28">Oca<span>+28</span></div>
+        <div class="tm tm-gold" title="+26">Şub<span>+26</span></div>
+        <div class="tm tm-gold" title="+30">Mar<span>+30</span></div>
+        <div class="tm tm-green" title="+25">Nis<span>+25</span></div>
+        <div class="tm tm-green" title="+20">May<span>+20</span></div>
+        <div class="tm tm-green" title="+20">Haz<span>+20</span></div>
+        <div class="tm tm-teal" title="+18">Tem<span>+18</span></div>
+        <div class="tm tm-blue" title="+9">Ağu<span>+9</span></div>
+        <div class="tm tm-teal" title="+14">Eyl<span>+14</span></div>
+        <div class="tm tm-teal" title="+14">Eki<span>+14</span></div>
+        <div class="tm tm-green" title="+22">Kas<span>+22</span></div>
+        <div class="tm tm-green" title="+23">Ara<span>+23</span></div>
+      </div>
+    </div>
+    <div class="section-title">💼 2026 Aylık Kariyer Analizi</div>
+    <div class="months-grid">
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Ocak 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-gold">🌟 Muhteşem</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:93%;background:var(--gold);"></div></div>
+            <span class="score-num" style="color:var(--gold)">+28</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♀ TAM (0.17°) ★</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (0.18°) ★</span>
+              <span class="tp">♄ △ ASC (0.63°)</span>
+            </div>
+          </div>
+          <div class="interp-text">2026'nın en güçlü açılışı! Neptün natal Venüs'e tam kavuşum (0.17°) — kariyer ve aşk dahil hayatın tüm alanlarında sihirli bir enerji. Mühendislik alanında ilham verici projeler, yenilikçi çözümler ve beklenmedik bağlantılar. Uranüs ASC sektil ile ani ve olumlu gelişmeler kapıda. Yılbaşını kariyer hedeflerinizi netleştirerek geçirin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🚀 Kariyer İvmesi</span>
+            <span class="theme-icon">💡 İlham</span>
+            <span class="theme-icon">🌟 Yeni Kapılar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Şubat 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-gold">🌟 Muhteşem</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:87%;background:var(--gold);"></div></div>
+            <span class="score-num" style="color:var(--gold)">+26</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp teal-tp">♅ ⚹ ASC (0.28°) ★</span>
+              <span class="tp exact">♄ ☌ ♀ (0.59°) ★</span>
+              <span class="tp">♆ ☌ ♀ (1.01°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn natal Venüs'e (Balık H9) kavuşuyor — kariyer taahhütleri, ciddileşen iş sözleşmeleri ve uzun vadeli bağlılıklar için mükemmel. Bir iş teklifini kabul etmek, sözleşme imzalamak veya önemli bir kariyer kararını netleştirmek için çok güçlü. Doğum günü ayınız aynı zamanda — yeni kariyer yılınızın başlangıcı.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">📝 Sözleşme/Taahhüt</span>
+            <span class="theme-icon">🎂 Doğum Günü Enerjisi</span>
+            <span class="theme-icon">♄ Ciddi Adımlar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Mart 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-gold">🌟 En Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:var(--gold);"></div></div>
+            <span class="score-num" style="color:var(--gold)">+30</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ TAM (0.31°) ★</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (0.33°) ★</span>
+              <span class="tp teal-tp">♂ ⚹ ☽ Ay H10 (1.19°)</span>
+            </div>
+          </div>
+          <div class="interp-text">2026'nın KARİYER ZİRVESİ! Neptün natal Jüpiter'e (Koç H9) tam kavuşum — büyük hayallerin gerçekleştiği, vizyonun gücünün doruğa çıktığı gün. Mühendislik alanında devrimsel bir fikir, proje liderliği veya uluslararası bir fırsat kapısı açılabilir. Mars'ın natal Ay-H10 sektili ile kariyer aksiyonu ve görünürlük de destekleniyor. Bu ay yazdıklarınızı, başvurduklarınızı ve ağ kurduklarınızı not alın.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🏆 2026 Zirve</span>
+            <span class="theme-icon">🌍 Uluslararası Fırsat</span>
+            <span class="theme-icon">💡 Devrimsel Fikir</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Nisan 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:83%;background:#238636;"></div></div>
+            <span class="score-num" style="color:#3fb950">+25</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♅ ⚹ ♀ TAM (0.13°) ★</span>
+              <span class="tp">♆ ☌ ♃ (0.85°)</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (1.64°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs natal Venüs'e tam sektil — ani, beklenmedik ama olumlu kariyer gelişmeleri. Mart'ta açılan kapılardan somut sonuçlar bu ay gelmeye başlıyor. Teknoloji, inovasyon veya bağımsız projelere yönelik adımlar için uygun. Kariyer hedeflerinizi somutlaştırmak için iyi bir dönem.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">⚡ Ani Gelişme</span>
+            <span class="theme-icon">🔧 Mühendislik Projesi</span>
+            <span class="theme-icon">📈 Somutlaşma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Mayıs 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:67%;background:#238636;"></div></div>
+            <span class="score-num" style="color:#3fb950">+20</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♅ ⚹ ♃ TAM (0.78°) ★</span>
+              <span class="tp">♅ □ ☉ H8 (1.32°)</span>
+              <span class="tp">♂ □ ASC (0.39°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs natal Jüpiter'e (Koç H9) sektil — inovasyonla büyüme, yeni teknoloji öğrenme ve beklenmedik kariyer genişlemesi. Mars ASC karesi biraz gerginlik yaratabilir ama bu enerjiyi proaktif kariyer adımlarına yönlendirin. Yeni bir sertifika veya teknik beceri edinmek için güçlü dönem.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🔬 Teknik Gelişim</span>
+            <span class="theme-icon">📚 Sertifika/Eğitim</span>
+            <span class="theme-icon">⚡ İnovasyon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Haziran 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-gold">🌟 Muhteşem</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:67%;background:var(--gold);"></div></div>
+            <span class="score-num" style="color:var(--gold)">+20</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♄ ☌ MC TAM (0.8°) ★</span>
+              <span class="tp exact">♃ ☌ ASC (0.88°) ★</span>
+              <span class="tp">♄ ⚹ ⛢ (0.54°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Çift büyük transit aynı ay! Satürn MC'ye kavuşuyor (kariyer zirvesi) ve Jüpiter ASC'ye kavuşuyor (kişisel genişleme). Bu kombinasyon 30 yılda bir olur. Terfi, önemli bir proje yönetimi sorumluluğu, kendi işini kurmaya karar verme veya kariyer yönü değiştirme için mükemmel ay. Koç MC enerjisiyle öne çıkın — liderlik sergilemekten çekinmeyin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">👑 Terfi/Liderlik</span>
+            <span class="theme-icon">🚀 Kariyer Dönüşümü</span>
+            <span class="theme-icon">♃ 30 Yılda Bir Açı</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Temmuz 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:var(--teal);"></div></div>
+            <span class="score-num" style="color:#2dd4bf">+18</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp">♄ ⚹ ⛢ H7 (0.76°)</span>
+              <span class="tp teal-tp">♂ ⚹ MC (0.78°)</span>
+              <span class="tp">♃ △ ♃ H9 (1.43°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Haziran'daki büyük kariyer hamlelerinin ardından momentum sürdürülüyor. Mars natal MC'ye sektil yaparak kariyer aksiyonu ve pratik adımlar destekliyor. Jüpiter-Jüpiter üçgeni vizyon ve fırsatları genişletmeye devam ediyor. Haziran'da alınan kararları hayata geçirme ve detayları netleştirme ayı.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">⚙️ Uygulama</span>
+            <span class="theme-icon">📊 Detaylar</span>
+            <span class="theme-icon">💪 Momentum</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Ağustos 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-blue">📊 İyi</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:var(--blue);"></div></div>
+            <span class="score-num" style="color:#79c0ff">+9</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♂ △ ☉ H8 (0.31°) ★</span>
+              <span class="tp">♄ ⚹ ⛢ ℞ (0.54°)</span>
+              <span class="tp">♃ □ ☽ H10 (1.2°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Mars natal Güneş'e (Balık H8) üçgen yapıyor — mali yatırımlar ve kariyer enerjisi destekli. Jüpiter Ay karesini oluşturmasına rağmen aşırılıktan kaçınmak yeterli. Güçlü dönemin ardından biraz yavaşlama normal; bu ayı yaptıklarınızı pekiştirmek ve yeni fırsatları değerlendirmek için kullanın.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">💼 Pekiştirme</span>
+            <span class="theme-icon">💰 Mali Fırsatlar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Eylül 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:47%;background:var(--teal);"></div></div>
+            <span class="score-num" style="color:#2dd4bf">+14</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♄ ☌ MC ℞ (0.21°) ★</span>
+              <span class="tp">♆ ☌ ♃ ℞ (1.4°)</span>
+              <span class="tp purple-tp">♇ ⚹ ♃ (1.39°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn retrograde ile MC'ye ikinci kavuşum — Haziran'da alınan kariyer kararlarını gözden geçirme ve pekiştirme zamanı. Bazen retrograde dönemlerde eski fırsatlar yeniden kapı çalar. Plüton-Jüpiter sektili kariyer dönüşümüne derin bir güç katıyor. Stratejik bir geri adım atarak büyük resmi görme fırsatı.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🔄 Gözden Geçir</span>
+            <span class="theme-icon">♄ ℞ Yeniden Değerlendir</span>
+            <span class="theme-icon">🎯 Strateji</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Ekim 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:47%;background:var(--teal);"></div></div>
+            <span class="score-num" style="color:#2dd4bf">+14</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ ℞ (0.59°) ★</span>
+              <span class="tp purple-tp">♇ ⚹ ♃ (1.18°) ★</span>
+              <span class="tp">♂ □ ♂ (1.12°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Neptün Jüpiter retrograde kavuşumu — vizyon ve sezgi güçlü. Uzun vadeli kariyer kararları için içgüdülerinize güvenin. Plüton-Jüpiter sektili büyük dönüşümlere zemin hazırlıyor. Mars karesine dikkat — rakipler veya iş arkadaşlarıyla çatışmalardan kaçının, enerjinizi yapıcı kanalize edin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🔮 Vizyon</span>
+            <span class="theme-icon">🤝 Diplomatik Ol</span>
+            <span class="theme-icon">🎯 Uzun Vadeli Plan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Kasım 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:73%;background:#238636;"></div></div>
+            <span class="score-num" style="color:#3fb950">+22</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ TAM (0.06°) ★★</span>
+              <span class="tp purple-tp">♇ ⚹ ♃ (1.4°)</span>
+              <span class="tp">♅ □ ☉ H8 ℞ (1.69°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Neptün natal Jüpiter'e EN TAM kavuşum (0.06°)! Bu yılın en derin vizyon açılımı. Kariyer vizyonunuz en berrak ve ilhamlı noktasında. Bu ayda aklınıza gelen fikirler, yazdığınız planlar, oluşturduğunuz projeler önemli. Makine mühendisliğinin geleceğine (otomasyon, AI, yeşil enerji) dair büyük düşünceler olabilir. Bu ilhama güvenin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">✨ İlham Doruğu</span>
+            <span class="theme-icon">📝 Fikirleri Yaz</span>
+            <span class="theme-icon">🌊 Vizyon Genişliyor</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Aralık 2026</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:77%;background:#238636;"></div></div>
+            <span class="score-num" style="color:#3fb950">+23</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ (0.27°) ★</span>
+              <span class="tp exact">♅ □ ☉ ℞ (0.45°) ★</span>
+              <span class="tp purple-tp">♅ ⚹ ♃ ℞ (0.99°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Yılı güçlü kapatıyorsunuz. Uranüs H8'deki Güneş'e kare — beklenmedik finansal veya kariyer dönüşümleri. Kasım'daki vizyonu hayata geçirme adımları. Neptün-Jüpiter hâlâ aktif; 2027 hedeflerinizi bugün çizerseniz çok güçlü bir temel atarsınız. İş dünyasındaki bağlantılarınızı yılsonu toplantılarında güçlendirin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🎯 2027 Planı</span>
+            <span class="theme-icon">🤝 Bağlantılar</span>
+            <span class="theme-icon">🔄 Dönüşüm Sinyali</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /kar-2026 -->
+
+  <!-- KARİYER 2027 -->
+  <div class="year-panel" id="kar-2027">
+    <div class="timeline-wrap">
+      <div class="timeline-label">2027 Kariyer Skor Akışı →</div>
+      <div class="timeline-bar">
+        <div class="tm tm-gold" title="+27">Oca<span>+27</span></div>
+        <div class="tm tm-green" title="+19">Şub<span>+19</span></div>
+        <div class="tm tm-green" title="+19">Mar<span>+19</span></div>
+        <div class="tm tm-teal" title="+12">Nis<span>+12</span></div>
+        <div class="tm tm-red" title="-1">May<span>−1</span></div>
+        <div class="tm tm-blue" title="+6">Haz<span>+6</span></div>
+        <div class="tm tm-blue" title="+9">Tem<span>+9</span></div>
+        <div class="tm tm-blue" title="+10">Ağu<span>+10</span></div>
+        <div class="tm tm-teal" title="+13">Eyl<span>+13</span></div>
+        <div class="tm tm-teal" title="+17">Eki<span>+17</span></div>
+        <div class="tm tm-blue" title="+10">Kas<span>+10</span></div>
+        <div class="tm tm-blue" title="+8">Ara<span>+8</span></div>
+      </div>
+    </div>
+    <div class="section-title">💼 2027 Aylık Kariyer Analizi</div>
+    <div class="months-grid">
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Ocak 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-gold">🌟 Muhteşem</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--gold);"></div></div>
+            <span class="score-num" style="color:var(--gold)">+27</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♅ ⚹ ♃ TAM (0.04°) ★★★</span>
+              <span class="tp exact">♆ ☌ ♃ TAM (0.05°) ★★★</span>
+              <span class="tp">♅ □ ☉ H8 ℞ (0.49°)</span>
+            </div>
+          </div>
+          <div class="interp-text">2027'nin ve belki de 2-yıllık dönemin en nadir açısı! Uranüs-Jüpiter (0.04°) VE Neptün-Jüpiter (0.05°) aynı anda tam kavuşum — bu tür çakışmalar onlarca yılda bir gelir. Kariyer ve fizikte devrimsel bir fırsat kapısı. Beklenmedik ve muhteşem bir iş teklifi, proje veya ortaklık bu ay gelebilir. Koç enerjisiyle cesurca "evet" deyin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🌟 Onlarca Yılda Bir</span>
+            <span class="theme-icon">⚡ Ani Büyük Fırsat</span>
+            <span class="theme-icon">🚀 Tarihi Ay</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Şubat 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:63%;background:#238636;"></div></div>
+            <span class="score-num" style="color:#3fb950">+19</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♂ ☍ ☉ H8 TAM (0.01°) ★</span>
+              <span class="tp">♅ ⚹ ♃ (0.18°)</span>
+              <span class="tp">♅ □ ☉ (0.72°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Doğum günü haftası + Mars karşıtlık tam açı — bu güçlü bir güneş dönüşü! Enerji yüksek ve kariyer alanında aksiyon gündemde. Uranüs-Jüpiter sektili hâlâ aktif, ocakta gelen fırsatları somutlaştırma zamanı. Doğum günü dileklerinizi kariyer hedefleriyle ilişkilendirin, güçlü bir niyet enerjisi var.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🎂 Doğum Günü Gücü</span>
+            <span class="theme-icon">⚡ Yüksek Enerji</span>
+            <span class="theme-icon">🎯 Aksiyon Zamanı</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Mart 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:63%;background:#238636;"></div></div>
+            <span class="score-num" style="color:#3fb950">+19</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♅ □ ☉ TAM (0.21°) ★</span>
+              <span class="tp teal-tp">♅ ⚹ ♃ (0.33°)</span>
+              <span class="tp">♄ ⚹ ⛢ H7 (0.9°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs natal Güneş'e (Balık H8) kare — finansal dönüşüm ve kariyer kimliğinde ani değişimler. Bu genellikle "eski kariyer kalıplarından kurtulma" enerjisi getirir. Mühendislik alanında alışılmışın dışında bir rol, startup girişimi veya teknik girişimcilik için sinyaller. Rahatsız edici ama büyütücü bir dönem.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🔄 Kalıpları Kır</span>
+            <span class="theme-icon">🏗️ Yeni Kariyer Kimliği</span>
+            <span class="theme-icon">💡 Girişimcilik</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Nisan 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:var(--teal);"></div></div>
+            <span class="score-num" style="color:#2dd4bf">+12</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp">♅ □ ☉ (1.03°)</span>
+              <span class="tp">♅ ⚹ ♃ (1.57°)</span>
+              <span class="tp purple-tp">♇ □ ♂ H4 (1.74°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Dönüşüm süreçleri devam ediyor. Plüton natal Mars'a (Akrep H4) kare başlıyor — köklü yapısal değişimlerin farkındalığı. Bu kariyer derinlemesini getirir. H4 Mars güçlü bir iç çekirdeği temsil eder; Plüton bu çekirdeği güçlendirecek. Kariyer değişimlerinde hızlı karar almak yerine dikkatli süreç izleyin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🌊 Derin Dönüşüm</span>
+            <span class="theme-icon">🎯 Stratejik Sabır</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Mayıs 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-orange">⚠️ Dikkat</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:var(--orange);"></div></div>
+            <span class="score-num" style="color:#ffa657">−1</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp">♂ △ ♄ H10 (1.03°)</span>
+              <span class="tp">♇ □ ♂ H4 ℞ (1.63°)</span>
+              <span class="tp">♂ ☍ ☉ (2.1°)</span>
+            </div>
+          </div>
+          <div class="interp-text">2027'nin tek negatif ayı. Plüton retrograde Mars karesi derinlemesini sürdürüyor; iç çatışmalar ve kariyer kararlarında belirsizlik. Mars üçgeni Satürn'ü aktive ederek disiplin ve enerji gerektiriyor. Bu ay büyük kararlar almak yerine geri adım atın, rakipleri veya iş anlaşmazlıklarını dikkatli yönetin.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">⚠️ Temkinli Ol</span>
+            <span class="theme-icon">🧘 İç Çatışma</span>
+            <span class="theme-icon">🛡️ Savunmacı Mod</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Haziran 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-blue">📊 İyi</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:20%;background:var(--blue);"></div></div>
+            <span class="score-num" style="color:#79c0ff">+6</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp">♇ □ ♂ H4 ℞ (1.93°)</span>
+              <span class="tp">♄ □ ASC (2.41°)</span>
+              <span class="tp teal-tp">♂ △ ☽ Ay H10 (2.69°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn ASC karesine yaklaşmaya başlıyor — kişisel sınırlar ve sorumluluklarla yüzleşme. Mars Ay üçgeni kariyer duygularınızı dengeliyor. Bu ay kariyer ortaklarınızla, yöneticilerinizle veya müşterilerle ilişkileri güçlendirmeye odaklanın. Satürn baskısı gelişimsel; sizi daha güçlü bir pozisyona hazırlıyor.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🤝 İlişkileri Güçlendir</span>
+            <span class="theme-icon">♄ Hazırlık</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Temmuz 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-blue">📊 İyi</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:var(--blue);"></div></div>
+            <span class="score-num" style="color:#79c0ff">+9</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♄ □ ASC TAM (0.47°) ★</span>
+              <span class="tp">♃ △ ♄ H10 (1.44°)</span>
+              <span class="tp">♂ ☍ ♀ (0.58°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn tam ASC karesi — kariyer kimliğinin en büyük sınavı. Bu genellikle önemli bir kariyer değişimi, rol geçişi veya kimlik yeniden tanımlaması anlamına gelir. Jüpiter natal Satürn H10'a üçgen yaparak bu zorluğa büyüme fırsatı katıyor. Satürn sınavını geçenler kariyer merdivende önemli bir basamak atlıyor.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">♄ Kariyer Sınavı</span>
+            <span class="theme-icon">🏆 Büyüme Fırsatı</span>
+            <span class="theme-icon">🪞 Kimlik Sınavı</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Ağustos 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-purple">♄ Satürn Dönüşü</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:33%;background:var(--purple);"></div></div>
+            <span class="score-num" style="color:#d2a8ff">+10</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♄ □ ASC TAM (0.05°) ★★</span>
+              <span class="tp purple-tp">♄ ☌ ♄ H10 (1.45°) ★</span>
+              <span class="tp">♃ ☍ ☉ H8 (1.85°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn dönüşü yaklaşıyor (natal Satürn Koç H10, 29.30°) ve Satürn tam ASC karesinde! Bu 29 yıllık kariyer döngüsünün kapanışı. Makine mühendisi olarak kariyer kimliğiniz köklü bir yeniden değerlendirmeden geçiyor. Kim olmak istediğiniz, hangi pozisyonda olmak istediğiniz, lider mi uzman mı olmak istediğiniz netleşiyor. Tarihi bir ay.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">♄ 29 Yıllık Döngü</span>
+            <span class="theme-icon">👑 Kim Olmak İstersin?</span>
+            <span class="theme-icon">🌅 Yeni Kariyer Kimliği</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Eylül 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:43%;background:var(--teal);"></div></div>
+            <span class="score-num" style="color:#2dd4bf">+13</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♂ ☌ ♂ H4 TAM (0.1°) ★</span>
+              <span class="tp exact">♃ △ ☽ Ay H10 TAM (0.37°) ★</span>
+              <span class="tp">♄ □ ASC ℞ (1.04°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Mars natal Mars'a tam kavuşum (0.1°) — güç ve enerji yenileniyor. Jüpiter Ay-H10'a üçgen (0.37° tam) — kariyer büyümesinde duygusal tatmin ve tanınırlık. Satürn dönüşünün ardından ilk yeşiller görünüyor. Yenilenen enerjiyle kariyer alanında proaktif adımlar atabilirsiniz.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">💪 Enerji Yenileniyor</span>
+            <span class="theme-icon">🏆 Tanınırlık</span>
+            <span class="theme-icon">🌱 Yeni Başlangıç</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Ekim 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:57%;background:var(--teal);"></div></div>
+            <span class="score-num" style="color:#2dd4bf">+17</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp exact">♂ △ ♀ H9 TAM (0.09°) ★</span>
+              <span class="tp">♂ △ ASC (1.87°)</span>
+              <span class="tp">♂ △ ♃ H9 (2.22°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Mars natal Venüs, ASC ve Jüpiter'e üçgen dizisi — kariyer enerjisi, kişisel cazibe ve genişleme bir arada. Satürn dönüşünün ardından bu ay kariyer alanında ciddi bir ivme geri dönüyor. Proje teklifleri, iş görüşmeleri ve kariyer geçişleri için çok iyi bir pencere. Bu enerjiyi iş ortaklıkları kurmak için kullanın.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🚀 Kariyer İvmesi Döndü</span>
+            <span class="theme-icon">🤝 Ortaklık</span>
+            <span class="theme-icon">💼 İş Görüşmeleri</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Kasım 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-blue">📊 İyi</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:33%;background:var(--blue);"></div></div>
+            <span class="score-num" style="color:#79c0ff">+10</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp">♆ ☌ ♃ ℞ (2.21°)</span>
+              <span class="tp purple-tp">♇ ⚹ ♃ (3.05°)</span>
+              <span class="tp">♅ ⚹ MC (3.99° ℞)</span>
+            </div>
+          </div>
+          <div class="interp-text">Neptün ve Plüton Jüpiter'e yakın — derin vizyon ve dönüşümcü kariyer enerjisi. Uranüs retrograde MC sektili kariyer yönünüzü yeniden değerlendiriyor. 2027'yi kariyer açısından değerlendirin: ne öğrendiniz, ne değişti, 2028'e nasıl gireceksiniz? Bu ay olgunlaşma ve entegrasyon zamanı.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🔮 Derin Vizyon</span>
+            <span class="theme-icon">📊 Yıl Değerlendirme</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-kar">
+          <div><div class="month-name">Aralık 2027</div><div class="month-tag">Kariyer & İş</div></div>
+          <span class="vbadge vb-blue">📊 İyi</span>
+        </div>
+        <div class="card-body">
+          <div class="score-wrap">
+            <span class="score-label">Skor</span>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:27%;background:var(--blue);"></div></div>
+            <span class="score-num" style="color:#79c0ff">+8</span>
+          </div>
+          <div class="transits-wrap"><div class="transits-label">Aktif Geçişler</div>
+            <div class="transit-pills">
+              <span class="tp teal-tp">♃ ⚹ ASC (1.5°)</span>
+              <span class="tp">♆ ☌ ♃ (1.97°)</span>
+              <span class="tp">♂ □ MC (2.54°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Jüpiter ASC sektiliyle yıl kapanıyor — 2028'e güçlü bir geçiş. Satürn dönüşünü atlatmış, kariyer kimliği yeniden inşa edilmiş biri olarak yeni yıla giriyorsunuz. Mars MC karesi kariyer alanında son ivme. 2027'nin kapanış ayında 2028 kariyerinizi net hedeflerle planlayın.</div>
+          <div class="theme-icons">
+            <span class="theme-icon">🌅 2028'e Hazır</span>
+            <span class="theme-icon">♃ Güçlü Kapanış</span>
+            <span class="theme-icon">🎯 2028 Hedefleri</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /kar-2027 -->
+
+  <div class="disclaimer"><strong>⚠️ Uyarı:</strong> Bu yorum yalnızca eğlence/kişisel keşif amaçlıdır. Kariyer kararları için profesyonel danışmanlık alın.</div>
+</div>
+</div><!-- /panel-kar -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     YATIRIM & FİNANS PANEL
+══════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-yat">
+<div class="panel-inner">
+
+  <div class="summary-row">
+    <div class="summary-card sc-yat">
+      <div class="sc-label">💰 En Güçlü Yatırım Ayı</div>
+      <div class="sc-value">Ocak 2027</div>
+      <div class="sc-sub">Uranüs + Neptün ☌ Jüpiter TAM</div>
+    </div>
+    <div class="summary-card sc-yat">
+      <div class="sc-label">📈 Yatırım Zirve Dönemi</div>
+      <div class="sc-value">Oca–Mar 2026</div>
+      <div class="sc-sub">Neptün ☌ Venüs/Jüpiter · Fırsatlar açık</div>
+    </div>
+    <div class="summary-card sc-yat">
+      <div class="sc-label">⚠️ Dikkat Gerektiren Ay</div>
+      <div class="sc-value">Mayıs 2027</div>
+      <div class="sc-sub">Plüton ℞ · Ani volatilite riski</div>
+    </div>
+    <div class="summary-card sc-yat">
+      <div class="sc-label">☊ Kuzey Düğüm Teması</div>
+      <div class="sc-value">Mali Bağımsızlık</div>
+      <div class="sc-sub">Leo H2 · Kader: Kendi servetini yarat</div>
+    </div>
+  </div>
+
+  <div class="highlights-section">
+    <div class="highlights-title">✦ Yatırım Öne Çıkan Dönemler</div>
+    <div class="highlight-boxes">
+      <div class="highlight-box box-gold">
+        <div class="hb-period">Ocak–Şubat 2026</div>
+        <div class="hb-title">💎 Neptün ☌ Venüs: Değer Hissi Açılıyor</div>
+        <div class="hb-text">Neptün natal Venüs'e kavuşumu yatırım sezgisini güçlendirir. Ancak dikkat: Neptün aynı zamanda yanılsama yaratır. İlhamı takip edin ama büyük kararları Satürn desteğiyle alın. Uzun vadeli, değer odaklı yatırımlar tercih edin.</div>
+      </div>
+      <div class="highlight-box box-teal">
+        <div class="hb-period">Haziran 2026</div>
+        <div class="hb-title">🏦 Satürn ☌ MC: Kariyer Geliri Artıyor</div>
+        <div class="hb-text">Kariyer zirvesinin mali yansıması. Terfi veya proje başarısı artan gelir anlamına geliyor. Bu geliri akıllıca yatırmak için hazırlık yapın. H8 Güneşi yatırımlar için güçlü bir niyet yaratıyor.</div>
+      </div>
+      <div class="highlight-box box-purple">
+        <div class="hb-period">Kasım 2026</div>
+        <div class="hb-title">✨ Neptün ☌ Jüpiter TAM: Yatırım Vizyonu</div>
+        <div class="hb-text">0.06° tam açı. Büyük mali kararlar için uzun vadeli vizyon en net bu ayda. Hisse, emeklilik fonu veya gayrimenkul planlamasını bu ayda yapın. İçgüdüleriniz güçlü — yazılı plan oluşturun.</div>
+      </div>
+      <div class="highlight-box box-blue">
+        <div class="hb-period">Ocak 2027</div>
+        <div class="hb-title">⚡ Uranüs + Neptün ☌ Jüpiter: Finansal Devrim</div>
+        <div class="hb-text">İki planet aynı anda Jüpiter'e tam kavuşum. Yenilikçi yatırım araçları (teknoloji hisseleri, kripto, yeşil enerji) için beklenmedik fırsatlar. Risk yönetimini ihmal etmeyin ama büyük fırsatı kaçırmayın.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="year-tabs" id="yat-year-tabs">
+    <button class="year-tab active-yat" onclick="switchYear('yat','2026',this)">2026</button>
+    <button class="year-tab" onclick="switchYear('yat','2027',this)">2027</button>
+  </div>
+
+  <!-- YATIRIM 2026 -->
+  <div class="year-panel active" id="yat-2026">
+    <div class="section-title">💰 2026 Aylık Yatırım & Finans Analizi</div>
+    <div class="months-grid">
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Ocak 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-gold">💎 Mükemmel</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap"><div class="transits-label">Yatırım Transit</div>
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♀ H9 TAM (0.17°) ★</span>
+              <span class="tp teal-tp">♄ △ ASC (0.63°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Neptün Venüs'e (H9 — yabancı ülkeler, uzun vadeli vizyon) tam kavuşum. Uluslararası piyasalar, teknoloji veya uzun vadeli büyüme hisselerine ilgi artabilir. Sezgisel bir cazibeyi hissedeceksiniz; ancak Satürn desteğiyle hareket etmek (düzenli, disiplinli yatırım) daha sağlam. Yatırım için araştırma ve planlama yapın.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">💰 Yatırım Araştır</span>
+            <span class="topic-pill tp-yat">🌍 Uluslararası</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Şubat 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-gold">💎 Mükemmel</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap"><div class="transits-label">Yatırım Transit</div>
+            <div class="transit-pills">
+              <span class="tp exact">♄ ☌ ♀ H9 (0.59°) ★</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (0.28°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn natal Venüs'e kavuşum — uzun vadeli mali taahhütler için en güçlü ay. Emeklilik planı, gayrimenkul araştırması veya uzun vadeli hisse yatırımı başlatmak için ideal. Bu transit ciddiyet ve disiplin getirir; aceleci değil, sağlam adımlar atın. Bankacılık/sigorta işlemlerinizi bu ay tamamlayın.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🏠 Gayrimenkul Araştır</span>
+            <span class="topic-pill tp-yat">📋 Uzun Vadeli Plan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Mart 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-gold">💎 En Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap"><div class="transits-label">Yatırım Transit</div>
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ H9 TAM (0.31°) ★</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (0.33°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Neptün natal Jüpiter'e (Koç H9) kavuşum — yatırım konularında devrimsel bir vizyon ve sezgi. Yenilikçi sektörlere (AI, mühendislik teknolojileri, yeşil enerji) ilgi güçlenebilir. Bu ay yatırım araştırmalarınız daha ilhamlı ve isabetli olacak. Ancak büyük miktarlı kararlar için yeterli due diligence yapın.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🔬 Teknoloji Sektörü</span>
+            <span class="topic-pill tp-yat">🌱 Yeşil Enerji</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Nisan 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♅ ⚹ ♀ TAM (0.13°) ★</span>
+              <span class="tp">♆ ☌ ♃ (0.85°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs natal Venüs'e ani sektil — beklenmedik bir mali fırsat veya yatırım fikri gündeme gelebilir. Teknoloji veya inovatif şirket hisseleri için güçlü sezgi. Ocak-Mart'ta araştırdığınız yatırımları hayata geçirmeye başlayabilirsiniz. Küçük ve orta ölçekli adımlar için uygun.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">⚡ Fırsat Penceresi</span>
+            <span class="topic-pill tp-yat">📊 Yatırım Başlat</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Mayıs 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♅ ⚹ ♃ (0.78°)</span>
+              <span class="tp">♅ □ ☉ H8 (1.32°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs natal Jüpiter sektili büyüme fırsatlarını işaret ediyor. Uranüs-Güneş (H8) karesi ani finansal değişimler getirebilir; yatırım portföyünüzü gözden geçirin. H8 Güneş karesi zaman zaman başkalarının parasıyla (kredi, miras, ortaklık) ilgili ani gelişmeler de getirebilir.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🔍 Portföy Gözden Geçir</span>
+            <span class="topic-pill tp-yat">🤝 Ortaklık?</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Haziran 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-gold">💎 Mükemmel</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♄ ☌ MC (0.8°) ★</span>
+              <span class="tp exact">♃ ☌ ASC (0.88°) ★</span>
+            </div>
+          </div>
+          <div class="interp-text">Kariyer zirvesiyle gelen gelir artışı. Terfi veya büyük proje başarısı, finansal pozisyonu güçlendiriyor. Bu artan geliri sistemli olarak yatırıma yönlendirmek için plan yapın. Satürn-MC kararlı bir kariyer başarısını garantilerken Jüpiter-ASC genişlemeyi hızlandırıyor.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">💼 Gelir Artışı</span>
+            <span class="topic-pill tp-yat">📈 Yatırıma Yönlendir</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Temmuz–Eylül 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♄ ⚹ ⛢ H7</span>
+              <span class="tp exact">♄ ☌ MC ℞ Eylül (0.21°) ★</span>
+              <span class="tp">♆ ☌ ♃ ℞</span>
+            </div>
+          </div>
+          <div class="interp-text">Yaz dönemi istikrarlı bir seyir izliyor. Satürn retrograde MC'ye ikinci kavuşum eylülde — Haziran'da alınan finansal kararları gözden geçirme fırsatı. Yatırım portföyünüzü izleyin, gereksiz risklerden kaçının. Bu 3 ay için "koru ve büyüt" stratejisi uygun.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🛡️ Koru & Büyüt</span>
+            <span class="topic-pill tp-yat">📊 İzle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Ekim 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ ℞ (0.59°) ★</span>
+              <span class="tp purple-tp">♇ ⚹ ♃ (1.18°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Plüton-Jüpiter sektili derin finansal dönüşüm enerjisi. Büyük ve kalıcı mali değişiklikler için tohumlar atılıyor. Uzun vadeli yatırım kararlarında güçlü sezgi ve içgüdü. Gayrimenkul, emeklilik fonu veya hisse portföyünde büyük pozisyon için araştırmayı tamamlayın.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🏠 Büyük Karar Yakın</span>
+            <span class="topic-pill tp-yat">🔮 Araştırmayı Bitir</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Kasım 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-gold">💎 Vizyon Zirvesi</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ TAM (0.06°) ★★</span>
+              <span class="tp purple-tp">♇ ⚹ ♃ (1.4°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Yılın en güçlü yatırım vizyon ayı. Neptün-Jüpiter 0.06° tam kavuşum. Uzun vadeli mali planınızı bu ay oluşturun — beyin fırtınası yapın, danışmanlarla görüşün, 5-10 yıllık finansal hedeflerinizi yazın. Bu açı altında oluşturulan planlar güçlü bir sezgi ve öngörüyle destekleniyor.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">📝 5 Yıllık Plan Yaz</span>
+            <span class="topic-pill tp-yat">🔮 Danışman Gör</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Aralık 2026</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♅ □ ☉ H8 ℞ (0.45°) ★</span>
+              <span class="tp">♆ ☌ ♃ (0.27°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs H8-Güneş karesi ani finansal değişimler sinyali. Yılsonu portföy düzenlemesi ve yeniden dengeleme için iyi. Kasım'daki vizyonla oluşturulan planları hayata geçirmeye başlayın. 2027 için finansal hedeflerinizi netleştirin ve pratik adımlar belirleyin.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">📊 Portföy Dengele</span>
+            <span class="topic-pill tp-yat">🎯 2027 Hedefleri</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /yat-2026 -->
+
+  <!-- YATIRIM 2027 -->
+  <div class="year-panel" id="yat-2027">
+    <div class="section-title">💰 2027 Aylık Yatırım & Finans Analizi</div>
+    <div class="months-grid">
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Ocak 2027</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-gold">💎 Tarihi Ay</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♅ ⚹ ♃ H9 TAM (0.04°) ★★★</span>
+              <span class="tp exact">♆ ☌ ♃ H9 TAM (0.05°) ★★★</span>
+            </div>
+          </div>
+          <div class="interp-text">İki büyük gezegenin Jüpiter'e eş zamanlı tam açısı — finansal hayatınızda tarihi bir fırsat kapısı. Teknoloji, inovasyon veya vizyon gerektiren yatırım alanlarında beklenmedik büyük kazanç fırsatı. Kasım 2026'daki planı hayata geçirme zamanı. Risk yönetimini ihmal etmeyin; ancak bu tür fırsatlar nadir gelir.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">⚡ Tarihi Fırsat</span>
+            <span class="topic-pill tp-yat">🚀 Büyük Pozisyon Aç</span>
+            <span class="topic-pill tp-yat">⚠️ Risk Yönet</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Şubat–Nisan 2027</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-green">✅ Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♅ ⚹ ♃ devam</span>
+              <span class="tp">♅ □ ☉ H8</span>
+              <span class="tp purple-tp">♇ □ ♂ H4 başlıyor</span>
+            </div>
+          </div>
+          <div class="interp-text">Ocak fırsatlarının devamı. Uranüs-Jüpiter sektili Nisan'a kadar aktif. Uranüs-Güneş (H8) karesi ani dönüşümleri sürdürüyor; portföyünüzü aktif yönetin. Plüton-Mars başlayan karesi köklü yapısal değişimler getirebilir — büyük risk almadan önce dikkatli değerlendirin.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">📊 Aktif Portföy Yönetimi</span>
+            <span class="topic-pill tp-yat">⚠️ Büyük Risk Alma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Mayıs 2027</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-orange">⚠️ Dikkat</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♇ □ ♂ H4 ℞ (1.63°)</span>
+              <span class="tp">♂ ☍ ☉ H8 (2.1°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Plüton Mars retrograde karesi — köklü finansal zorlanmalar veya ani kayıplar riski. Spekülatif yatırımlardan uzak durun, mevcut pozisyonları koruyun. Aceleyle alınan mali kararlar pişmanlık yaratabilir. Bu ayı araştırma ve gözlem modunda geçirin.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🛡️ Defansif Mod</span>
+            <span class="topic-pill tp-yat">🚫 Spekülatif Kaçın</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Haziran–Ağustos 2027</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-teal">📈 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♄ □ ASC TAM Ağu (0.05°) ★</span>
+              <span class="tp">♃ ☍ ☉ H8 (1.85°)</span>
+              <span class="tp">♃ △ ♄ H10</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn dönüşü döneminde finansal kimlik yeniden şekilleniyor. Jüpiter H8-Güneş karşıtlığı yatırımları genişletme isteği; ancak ölçülü olun. Bu dönem "büyük kazanç" değil "sağlam temel" inşası zamanı. Satürn dönüşü sonrası mali tablo netleşecek.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🏗️ Sağlam Temel</span>
+            <span class="topic-pill tp-yat">⚖️ Ölçülü Büyüme</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-special">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Eylül–Ekim 2027</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-gold">💎 İvme Döndü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♃ △ ☽ H10 TAM Eyl (0.37°) ★</span>
+              <span class="tp exact">♂ △ ♀ H9 TAM Eki (0.09°) ★</span>
+              <span class="tp">♂ △ ♃ H9</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn dönüşünün ardından finansal iyileşme ve büyüme geri dönüyor. Jüpiter H10-Ay üçgeni gelir artışı ve iş tatmini. Mars natal Venüs ve Jüpiter üçgenleri yatırımlar için hareket ve büyüme. Bu 2 ay 2027'nin en güçlü yatırım aksiyonu için uygun pencere.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">🚀 Yatırım Aksiyonu</span>
+            <span class="topic-pill tp-yat">📈 Büyüme Döndü</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-yat">
+          <div><div class="month-name">Kasım–Aralık 2027</div><div class="month-tag">Yatırım & Finans</div></div>
+          <span class="vbadge vb-blue">📊 Toparlanma</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♆ ☌ ♃ ℞</span>
+              <span class="tp">♃ ⚹ ASC Ara</span>
+              <span class="tp purple-tp">♇ ⚹ ♃</span>
+            </div>
+          </div>
+          <div class="interp-text">2027 kapanışı: finansal olarak Ocak fırsatlarını değerlendirdiniz mi, Satürn dönüşünü sağlam atlattınız mı diye değerlendirin. Neptün-Jüpiter sektili mali sezgiyi destekliyor. 2028 için finansal hedeflerinizi Aralık'ta netleştirin. Jüpiter ASC sektiliyle yılı büyüme potansiyeliyle kapatıyorsunuz.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-yat">📊 Yıl Değerlendirme</span>
+            <span class="topic-pill tp-yat">🎯 2028 Hedef</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /yat-2027 -->
+
+  <div class="disclaimer"><strong>⚠️ Uyarı:</strong> Astroloji yatırım tavsiyesi değildir. Tüm yatırım kararları için lisanslı mali danışman görüşü alın.</div>
+</div>
+</div><!-- /panel-yat -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     EVLİLİK & AŞK PANEL
+══════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-ask">
+<div class="panel-inner">
+
+  <div style="background:rgba(219,97,162,.08);border:1px solid rgba(219,97,162,.3);border-radius:12px;padding:16px;margin-bottom:20px;">
+    <div style="font-size:.78rem;color:var(--pink);font-weight:600;margin-bottom:6px;">💍 Natal Evlilik & Aşk Temaları</div>
+    <div style="font-size:.82rem;color:var(--muted);line-height:1.8;">
+      ▸ <strong style="color:var(--text)">7. Ev Yöneticisi ♑ Oğlak → Satürn:</strong> Ciddi, sorumlu, olgun eş profili. Evlilik kalıcılık ve taahhüt üzerine kurulu.<br>
+      ▸ <strong style="color:var(--text)">♅ + ♆ 7. Ev'de:</strong> Özgün, entelektüel, ruhsal boyutu olan bir partnerlik. Sıradışı tanışma yolları.<br>
+      ▸ <strong style="color:var(--text)">♀ Venüs ♓ Balık H9:</strong> İdeal, romantik, fedakâr aşk anlayışı. Yabancı veya uzak kökenli partner olasılığı.<br>
+      ▸ <strong style="color:var(--text)">☽ Ay ♉ H10:</strong> Duygusal güvence kariyer başarısıyla bağlantılı — kariyer yerleşince ilişki de oturur.<br>
+      ▸ <strong style="color:var(--text)">Evlilik Zamanlaması:</strong> Şubat 2026 (♄ ☌ ♀) ve Temmuz–Ağustos 2027 (♄ □ 7.Ev) güçlü dönemler
+    </div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card sc-ask">
+      <div class="sc-label">💍 En Güçlü Evlilik Sinyali</div>
+      <div class="sc-value">Şubat 2026</div>
+      <div class="sc-sub">♄ ☌ ♀ · Ciddi bağlılık zamanı</div>
+    </div>
+    <div class="summary-card sc-ask">
+      <div class="sc-label">❤️ Romantizm Zirvesi</div>
+      <div class="sc-value">Ocak 2026</div>
+      <div class="sc-sub">♆ ☌ ♀ TAM · Sihirli aşk enerjisi</div>
+    </div>
+    <div class="summary-card sc-ask">
+      <div class="sc-label">⚡ İlişki Sınavı</div>
+      <div class="sc-value">Tem–Ağu 2027</div>
+      <div class="sc-sub">♄ □ 7.Ev · Bağlılık ya da ayrılık</div>
+    </div>
+    <div class="summary-card sc-ask">
+      <div class="sc-label">🌹 Tanışma Penceresi</div>
+      <div class="sc-value">Mart–Haziran 2026</div>
+      <div class="sc-sub">♅ ⚹ ASC + ♃ ☌ ASC · Yeni başlangıçlar</div>
+    </div>
+  </div>
+
+  <div class="highlights-section">
+    <div class="highlights-title">✦ Evlilik & Aşk Öne Çıkan Dönemler</div>
+    <div class="highlight-boxes">
+      <div class="highlight-box box-pink">
+        <div class="hb-period">Ocak–Şubat 2026</div>
+        <div class="hb-title">💘 Neptün + Satürn ☌ Venüs: İdeal Aşk Gerçekleşiyor</div>
+        <div class="hb-text">Ocak'ta Neptün (rüya, romantizm) Venüs'e tam kavuşum. Şubat'ta Satürn (ciddiyet, taahhüt) de Venüs'e katılıyor. İdeal aşkın hem romantik hem de somut, gerçekçi boyutuna girildiği nadir dönem. Mevcut ilişki varsa evlilik konuşması açılabilir; yalnızsa çok güçlü bir tanışma dönemdir.</div>
+      </div>
+      <div class="highlight-box box-teal">
+        <div class="hb-period">Haziran 2026</div>
+        <div class="hb-title">✨ Jüpiter ☌ ASC: Kişisel Cazibe Zirvesi</div>
+        <div class="hb-text">Jüpiter ASC'ye kavuştuğunda kişisel cazibeniz, enerjiniz ve olumlu etkiniz en yüksek noktada. Çevrenize ışık saçıyorsunuz. Yeni tanışmalar ve ilişkilerin derinleşmesi için mükemmel. Bu dönemde kendinize yatırım yapın (sağlık, görünüm, iletişim).</div>
+      </div>
+      <div class="highlight-box box-gold">
+        <div class="hb-period">Kasım 2026–Ocak 2027</div>
+        <div class="hb-title">🌌 Neptün + Uranüs ☌ Jüpiter: Kader Karşılaşması?</div>
+        <div class="hb-text">Ruhsal bağlantı ve kader temalı tanışmalar için güçlü dönem. 7. Ev Kova burcu Uranüs ile bağlantılı; beklenmedik ve özgün tanışmalar bu dönemde gerçekleşebilir. Aşkta devrimsel bir enerji var.</div>
+      </div>
+      <div class="highlight-box box-purple">
+        <div class="hb-period">Temmuz–Ağustos 2027</div>
+        <div class="hb-title">♄ Satürn □ 7. Ev: Bağlılık Sınavı</div>
+        <div class="hb-text">Satürn 7. eve (Oğlak/Yengeç DSC) tam kare. Bu ilişkileri resmileştirme (nişan, evlilik) veya sorgulama dönemidir. 2026'dan gelen biriyle resmi adım için güçlü; ya da gereksiz ilişkileri bırakma zamanı. Satürn yapıyı test eder; sağlam olanı güçlendirir.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="year-tabs" id="ask-year-tabs">
+    <button class="year-tab active-ask" onclick="switchYear('ask','2026',this)">2026</button>
+    <button class="year-tab" onclick="switchYear('ask','2027',this)">2027</button>
+  </div>
+
+  <!-- AŞK 2026 -->
+  <div class="year-panel active" id="ask-2026">
+    <div class="section-title">💍 2026 Aylık Aşk & Evlilik Analizi</div>
+    <div class="months-grid">
+
+      <div class="month-card card-pink">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Ocak 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-purple">💘 Sihirli</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap"><div class="transits-label">Aşk Transitleri</div>
+            <div class="transit-pills">
+              <span class="tp exact pink-tp">♆ ☌ ♀ TAM (0.17°) ★★</span>
+              <span class="tp teal-tp">♄ △ ASC (0.63°)</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (0.18°)</span>
+            </div>
+          </div>
+          <div class="interp-text">2026'nın romantizm zirvesi! Neptün natal Venüs'e (Balık H9) tam kavuşum — rüya gibi bir aşk enerjisi, derin duygular, sınırların eridiği anlar. Eğer birileriyle tanışırsanız bu dönemde aşık olmak son derece olası. Mevcut ilişkideyseniz derinleşme ve ruhsal bağlanma. Uranüs ASC sektili beklenmedik tanışma yerlerini işaret ediyor. Bu ayda sosyal çevrenizi genişletin.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">💘 Romantizm Zirvesi</span>
+            <span class="topic-pill tp-ask">🌊 Derin Duygu</span>
+            <span class="topic-pill tp-ask">⚡ Beklenmedik Tanışma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-pink">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Şubat 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-purple">💍 Taahhüt</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap"><div class="transits-label">Aşk Transitleri</div>
+            <div class="transit-pills">
+              <span class="tp exact pink-tp">♄ ☌ ♀ (0.59°) ★★</span>
+              <span class="tp exact">♆ ☌ ♀ (1.01°) ★</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (0.28°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn natal Venüs'e kavuşum — romantizmin ardından ciddiyet ve taahhüt geliyor. Eğer Ocak'ta tanıştığınız biri varsa bu ay ilişkiyi ciddiye alma, "nereye gidiyoruz" konuşması yapma zamanı. Satürn-Venüs kombinasyonu uzun vadeli, kalıcı aşk ilişkilerini mühürler. Doğum günü ayınız olan bu ay ilişki statünüz netleşebilir.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">💍 Ciddileşme Zamanı</span>
+            <span class="topic-pill tp-ask">🎂 Doğum Günü Şansı</span>
+            <span class="topic-pill tp-ask">♄ Kalıcı Bağ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Mart 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-pink">🌹 Güçlü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♆ ☌ ♃ H9 TAM (0.31°) ★</span>
+              <span class="tp teal-tp">♅ ⚹ ASC (0.33°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Neptün natal Jüpiter'e (Koç H9) kavuşum — aşkta genişleme ve anlayış. H9 yabancı ülkeler ve uzak mesafe teması; yabancı kökenli veya farklı kültürden biriyle tanışma olasılığı artıyor. İlişkide ortak vizyon, felsefe ve geleceğe dair konuşmalar bu ay güçlenebilir.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🌍 Farklı Kültür</span>
+            <span class="topic-pill tp-ask">🔮 Ortak Vizyon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Nisan 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-teal">💫 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♅ ⚹ ♀ TAM (0.13°) ★</span>
+              <span class="tp">♅ ⚹ ASC (1.64°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs natal Venüs'e ani sektil — beklenmedik ve heyecan verici aşk gelişmeleri. Olağandışı bir yerde, olağandışı bir şekilde ilginç biriyle karşılaşabilirsiniz. 7. Evinizde Uranüs varken partner profiliniz de alışılmışın dışında. Özgürlüklere saygı duyan, kendine ait yaşamı olan biriyle çekim güçlü.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">⚡ Ani Çekim</span>
+            <span class="topic-pill tp-ask">🎲 Sürpriz Tanışma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Mayıs 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-teal">💫 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♅ ⚹ ♃ H9 (0.78°)</span>
+              <span class="tp">♂ □ ASC (0.39°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Mars ASC karesi heyecanı ve enerjiyi artırıyor; ancak kendinizi yanlış biriyle ilişkiye girerken yakalayabilirsiniz. Çekim güçlü ama seçici olun. Uranüs-Jüpiter H9'da yabancı veya entelektüel kökenli çekimler güçlü. İlişkide iletişim ve tutku bir arada.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🔥 Tutku</span>
+            <span class="topic-pill tp-ask">⚠️ Seçici Ol</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-pink">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Haziran 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-pink">🌹 En Çekici Ay</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact pink-tp">♃ ☌ ASC TAM (0.88°) ★★</span>
+              <span class="tp teal-tp">♄ ☌ MC (0.8°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Jüpiter ASC'ye tam kavuşum — kişisel cazibeniz, ışıltınız ve olumlu aura en yüksek noktada. Başkalarına kendinizi ifade ediş şekliniz güçlü; insanlar size çekilecek. Aşk ve sosyal yaşam için yılın en parlak ayı. Kariyer başarısıyla gelen özgüven de ilişkilere pozitif yansıyor. Bu ay sosyal etkinliklere aktif katılın.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">✨ Kişisel Cazibe Zirvesi</span>
+            <span class="topic-pill tp-ask">🎉 Sosyal Olun</span>
+            <span class="topic-pill tp-ask">💘 En Çekici Dönem</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Temmuz–Eylül 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-teal">💫 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♄ ☌ MC ℞ Eyl</span>
+              <span class="tp">♆ ☌ ♃ ℞</span>
+              <span class="tp teal-tp">♃ △ ♃ H9</span>
+            </div>
+          </div>
+          <div class="interp-text">Haziran enerjisi sürüyor ama yavaşlıyor. Jüpiter-Jüpiter üçgeni ortak geleceğe yönelik konuşmalar ve planlar için destekleyici. Eğer yeni biriyle tanıştıysanız bu dönemde ilişkiyi derinleştirmek için güzel bir zemin. Genel olarak aşk hayatı aktif ve olumlu seyrediyor.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">💬 Derinleştir</span>
+            <span class="topic-pill tp-ask">🌱 Büyüyen Bağ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-pink">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Kasım–Aralık 2026</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-purple">🌌 Kader</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact pink-tp">♆ ☌ ♃ TAM (0.06°) Kas ★★</span>
+              <span class="tp teal-tp">♅ ⚹ ♃ H9 Ara</span>
+            </div>
+          </div>
+          <div class="interp-text">Kasım'daki Neptün-Jüpiter tam kavuşumu aşk hayatında ruhsal derinlik ve anlam arayışını en üst noktaya taşıyor. "Bu mu?" sorusuna en net cevabı bu dönemde alabilirsiniz. Aralık'ta Uranüs katılıyor — beklenmedik, kader gibi hissettiren karşılaşmalar. 2026 kapanışı ve 2027 başlangıcı güçlü bir aşk döngüsünü işaret ediyor.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🌌 Ruhsal Bağlantı</span>
+            <span class="topic-pill tp-ask">💫 "Bu mu?" Sorusu</span>
+            <span class="topic-pill tp-ask">🎲 Kader Karşılaşması</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /ask-2026 -->
+
+  <!-- AŞK 2027 -->
+  <div class="year-panel" id="ask-2027">
+    <div class="section-title">💍 2027 Aylık Aşk & Evlilik Analizi</div>
+    <div class="months-grid">
+
+      <div class="month-card card-pink">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Ocak 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-purple">⚡ Devrimsel</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♅ ⚹ ♃ TAM (0.04°) ★★</span>
+              <span class="tp exact pink-tp">♆ ☌ ♃ TAM (0.05°) ★★</span>
+            </div>
+          </div>
+          <div class="interp-text">2027'nin en güçlü aşk açıları! İki gezegenin Jüpiter'e tam kavuşumu. 7. Eviniz Uranüs (Kova) bağlantılı — bu tür dönemler beklenmedik, özgün ve kader gibi hissettiren tanışmalar getirir. Kasım-Aralık'tan gelen enerji burada zirveye çıkıyor. Yeni bir yıl, yeni bir aşk döngüsü için güçlü başlangıç.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">⚡ Devrimsel Aşk</span>
+            <span class="topic-pill tp-ask">🌌 Kader Karşılaşması</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Şubat 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-teal">💫 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♂ ☍ ☉ H8 TAM (0.01°) ★</span>
+              <span class="tp">♅ ⚹ ♃ (0.18°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Doğum günü ayı ve Mars karşıtlık tam açı — güçlü cinsel/çekimsel enerji. H8 Güneş karşıtlık tutku ve dönüşüm. İlişkide yoğunlaşma, bağın derinleşmesi ve fiziksel çekimin güçlenmesi bekleniyor. Yeni tanışmalar için de güçlü çekim enerjisi aktif.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🔥 Yoğun Çekim</span>
+            <span class="topic-pill tp-ask">🎂 Doğum Günü Enerjisi</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Mart–Mayıs 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-teal">💫 Olumlu/Dikkat</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♅ □ ☉ H8</span>
+              <span class="tp purple-tp">♇ □ ♂ H4 ℞</span>
+              <span class="tp">♄ □ ASC yaklaşıyor</span>
+            </div>
+          </div>
+          <div class="interp-text">Uranüs-Güneş karesi ani ilişki değişimleri getirebilir. Plüton retrograde Mars karesi ilişkide güç dinamikleri ve köklü sorgulamalar. Bu dönem genellikle "bu ilişkiye devam mı, bırak mı?" kararının yaklaştığı zamandır. Kendi ihtiyaçlarınıza dürüst olun; zorlamak yerine akışa bırakın.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🪞 Kendine Dürüst Ol</span>
+            <span class="topic-pill tp-ask">⚠️ Güç Dinamikleri</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-pink">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Temmuz 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-purple">♄ Bağlılık Sınavı</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♄ □ ASC TAM (0.47°) ★★</span>
+              <span class="tp exact">♄ □ DSC TAM (0.47°) ★★</span>
+              <span class="tp">♃ △ ♄ H10 (1.44°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn 7. eve (DSC — ortaklık evi) tam kare — evlilik ve ciddi ilişkiler için kritik karar noktası. Eğer 2026'dan gelen birileriyle güçlü bir ilişki varsa bu ay evlilik kararı alınabilir. Eğer ilişki sağlıklı değilse Satürn onu tasfiye ediyor. Bu ay ne istediğinizi net bilmek şart.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">💍 Evlilik Kararı?</span>
+            <span class="topic-pill tp-ask">♄ Net Ol</span>
+            <span class="topic-pill tp-ask">⚖️ Kalır mı Gider mi?</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card card-pink">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Ağustos 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-purple">♄ Satürn Dönüşü</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♄ □ ASC/DSC (0.05°) ★★★</span>
+              <span class="tp purple-tp">♄ ☌ ♄ H10 yaklaşıyor</span>
+              <span class="tp">♃ ☍ ☉ H8 (1.85°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Satürn dönüşü + ASC/DSC karesi aynı anda — ilişki ve kimlik hayatında tarihi bir karar noktası. Bu ay kim olmak istediğiniz ve kimle yaşamak istediğiniz netleşiyor. Satürn sağlam ilişkileri güçlendiriyor, sağlıklı olmayanları tasfiye ediyor. Jüpiter karşıtlık ise genişleme ve büyüme isteği getirir. 29 yaş civarında evlilik ciddi bir seçenektir.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">♄ Kim Olmak İstersin?</span>
+            <span class="topic-pill tp-ask">💍 Tarihi Karar Noktası</span>
+            <span class="topic-pill tp-ask">🌅 Yeni Kimlik</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Eylül 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-teal">💫 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact">♃ △ ☽ H10 TAM (0.37°) ★</span>
+              <span class="tp">♂ ☌ ♂ H4 TAM</span>
+            </div>
+          </div>
+          <div class="interp-text">Jüpiter Ay-H10'a üçgen — duygusal tatmin, sevgi ve kariyer güvencesinin bir arada hissedildiği ay. Satürn dönüşünün ardından bir toparlanma ve ödüllendirme dönemi. Ağustos'ta alınan kararlar hayata geçmeye başlıyor. Mars enerjisi yenileniyor — yeni bir aşk başlangıcı için de güçlü enerji var.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🌸 Duygusal Tatmin</span>
+            <span class="topic-pill tp-ask">🏠 Ev & Aşk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Ekim 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-pink">🌹 Romantik</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp exact pink-tp">♂ △ ♀ H9 TAM (0.09°) ★</span>
+              <span class="tp teal-tp">♂ △ ASC (1.87°)</span>
+            </div>
+          </div>
+          <div class="interp-text">Mars natal Venüs'e (Balık H9) tam üçgen — romantik tutku ve çekim güçlü. Kişisel cazibeniz ve güveniniz yüksek. Yeni bir ilişki başlatmak veya mevcut ilişkide romantizmi yeniden ateşlemek için güzel bir ay. Eylül-Ekim birlikte aşk hayatında 2027'nin en romantik 2 ayını oluşturuyor.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🔥 Tutku Geri Döndü</span>
+            <span class="topic-pill tp-ask">💃 Romantizm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="card-header hdr-ask">
+          <div><div class="month-name">Kasım–Aralık 2027</div><div class="month-tag">Evlilik & Aşk</div></div>
+          <span class="vbadge vb-teal">💫 Olumlu</span>
+        </div>
+        <div class="card-body">
+          <div class="transits-wrap">
+            <div class="transit-pills">
+              <span class="tp">♆ ☌ ♃ ℞</span>
+              <span class="tp teal-tp">♃ ⚹ ASC Ara</span>
+            </div>
+          </div>
+          <div class="interp-text">Yılı ilişkiler açısından olumlu bir havayla kapatıyorsunuz. Neptün-Jüpiter sektili aşkta anlam ve ruhsallık arayışını destekliyor. Jüpiter ASC sektiliyle 2028'e güçlü kişisel enerjiyle gireceksiniz. 2026-2027 aşk yolculuğunun bir sonraki evresine, 2028'e, daha net bir kimlikle hazır olacaksınız.</div>
+          <div class="topic-row">
+            <span class="topic-pill tp-ask">🌅 2028'e Hazır</span>
+            <span class="topic-pill tp-ask">💫 Anlam Arayışı</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /ask-2027 -->
+
+  <div class="disclaimer"><strong>⚠️ Uyarı:</strong> Astroloji tahmin değil olasılık haritasıdır. İlişki kararları kişisel değerlerinize ve özgür iradenize bağlıdır.</div>
+</div>
+</div><!-- /panel-ask -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     GENEL GÖRÜNÜM PANEL
+══════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-gen">
+<div class="panel-inner">
+
+  <div class="highlights-section">
+    <div class="highlights-title">✦ 2026–2027 Genel Büyük Tablo</div>
+    <div class="highlight-boxes">
+      <div class="highlight-box box-gold">
+        <div class="hb-period">Ocak–Mart 2026</div>
+        <div class="hb-title">🌟 Üçlü Neptün Vizyonu + Aşk Açılımı</div>
+        <div class="hb-text">♆ ☌ ♀, ♄ ☌ ♀, ♆ ☌ ♃ arka arkaya geliyor. Hem kariyer vizyonu hem de aşk hayatında çığır açan bir dönem. Yılın en yüksek enerjili 3 ayı. Bu dönemi en iyi şekilde değerlendirin.</div>
+      </div>
+      <div class="highlight-box box-teal">
+        <div class="hb-period">Haziran 2026</div>
+        <div class="hb-title">🏆 ♄ ☌ MC + ♃ ☌ ASC: 30 Yılda Bir</div>
+        <div class="hb-text">Kariyer ve kişisel büyüme aynı anda zirveye çıkıyor. Terfi, yeni iş, yeni ilişki başlangıcı, kişisel cazibenin doruk noktası. Hayatınızda büyük olasılıkla unutamayacağınız bir ay.</div>
+      </div>
+      <div class="highlight-box box-purple">
+        <div class="hb-period">Kasım 2026 – Ocak 2027</div>
+        <div class="hb-title">🌌 ♆ + ♅ ☌ ♃: Nadir Çakışma</div>
+        <div class="hb-text">Hem kariyer hem aşk hem finans için devrimsel bir dönem. Onlarca yılda bir gelen bu transit kombinasyonu hayatınızın seyredeceği yönü belirliyor. Ne istediğinizi bilin; evren destekliyor.</div>
+      </div>
+      <div class="highlight-box box-pink">
+        <div class="hb-period">Temmuz–Ağustos 2027</div>
+        <div class="hb-title">♄ Satürn Dönüşü + İlişki Kararı</div>
+        <div class="hb-text">29 yıllık kariyer döngüsü + ilişki kimliği aynı anda test ediliyor. Kim olmak istiyorsunuz ve kim ile? Bu soruların cevabı 2027 yaz döneminde netleşiyor. Ağır ama dönüştürücü bir dönem.</div>
+      </div>
+      <div class="highlight-box box-blue">
+        <div class="hb-period">Eylül–Ekim 2027</div>
+        <div class="hb-title">🚀 ♃ △ ☽ + ♂ △ ♀: Ödül Dönemi</div>
+        <div class="hb-text">Satürn dönüşünün ardından ilk ödüller geliyor. Kariyer büyümesi, romantizm ve mali fırsatlar bir arada. Zor dönemleri geçenlerin ödülü bu 2 ayda görünüyor.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">📅 2026–2027 Ay Ay Özet</div>
+  <div style="display:grid;gap:8px;">
+
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-radius:8px;">
+      <span style="font-weight:600;color:var(--gold)">Ocak 2026</span>
+      <span class="vbadge vb-gold">🌟 Muhteşem</span>
+      <span style="font-size:.82rem;color:var(--muted)">♆ ☌ ♀ TAM — Romantizm + Kariyer Vizyonu açılıyor. Yeni insanlarla tanışın.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:8px;">
+      <span style="font-weight:600;color:var(--gold)">Şubat 2026</span>
+      <span class="vbadge vb-gold">💍 Taahhüt</span>
+      <span style="font-size:.82rem;color:var(--muted)">♄ ☌ ♀ — Ciddi adımlar. Doğum günü + aşk ciddileşiyor + kariyer taahhüdü.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-radius:8px;">
+      <span style="font-weight:600;color:var(--gold)">Mart 2026</span>
+      <span class="vbadge vb-gold">🚀 Zirve</span>
+      <span style="font-size:.82rem;color:var(--muted)">♆ ☌ ♃ TAM — Yılın en yüksek skor (+30). Kariyer + aşk + finans üçlemesi.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(35,134,54,.1);border:1px solid rgba(35,134,54,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#3fb950">Nisan 2026</span>
+      <span class="vbadge vb-green">✅ Güçlü</span>
+      <span style="font-size:.82rem;color:var(--muted)">♅ ⚹ ♀ TAM — Ani güzel sürprizler. Kariyer ve aşkta beklenmedik gelişmeler.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(35,134,54,.1);border:1px solid rgba(35,134,54,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#3fb950">Mayıs 2026</span>
+      <span class="vbadge vb-green">✅ Güçlü</span>
+      <span style="font-size:.82rem;color:var(--muted)">♅ ⚹ ♃ — İnovasyon fırsatları. Teknoloji alanında büyük fikir. Aşkta seçici olun.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-radius:8px;">
+      <span style="font-weight:600;color:var(--gold)">Haziran 2026</span>
+      <span class="vbadge vb-gold">🏆 Çift Zirve</span>
+      <span style="font-size:.82rem;color:var(--muted)">♄ ☌ MC + ♃ ☌ ASC — Kariyer + kişisel cazibe en yüksek. Tanınırlık artıyor.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#2dd4bf">Temmuz 2026</span>
+      <span class="vbadge vb-teal">📈 Olumlu</span>
+      <span style="font-size:.82rem;color:var(--muted)">♄ ⚹ ⛢, ♂ ⚹ MC — Momentum sürüyor. Haziran'ı hayata geçirin.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(31,111,235,.1);border:1px solid rgba(31,111,235,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#79c0ff">Ağustos 2026</span>
+      <span class="vbadge vb-blue">📊 İyi</span>
+      <span style="font-size:.82rem;color:var(--muted)">♂ △ ☉ H8 — Mali yatırım fırsatları. Kariyer pekişiyor.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#2dd4bf">Eylül 2026</span>
+      <span class="vbadge vb-teal">📈 Olumlu</span>
+      <span style="font-size:.82rem;color:var(--muted)">♄ ☌ MC ℞ — Kariyer gözden geçirme. Stratejik yeniden değerlendirme.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#2dd4bf">Ekim 2026</span>
+      <span class="vbadge vb-teal">📈 Olumlu</span>
+      <span style="font-size:.82rem;color:var(--muted)">♆ ☌ ♃ ℞, ♇ ⚹ ♃ — Yatırım vizyon güçlü. Uzun vadeli planlar için ideal.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(35,134,54,.1);border:1px solid rgba(35,134,54,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#3fb950">Kasım 2026</span>
+      <span class="vbadge vb-green">✨ Vizyon Zirvesi</span>
+      <span style="font-size:.82rem;color:var(--muted)">♆ ☌ ♃ TAM 0.06° — Kariyer + aşk + finans için en güçlü vizyon ayı. Planlarını yaz!</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(35,134,54,.1);border:1px solid rgba(35,134,54,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#3fb950">Aralık 2026</span>
+      <span class="vbadge vb-green">✅ Güçlü</span>
+      <span style="font-size:.82rem;color:var(--muted)">♅ □ ☉ H8 — Ani dönüşümler. 2027 planlarını netleştir. Kader tanışmaları.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-radius:8px;">
+      <span style="font-weight:600;color:var(--gold)">Ocak 2027</span>
+      <span class="vbadge vb-gold">⚡ Tarihi</span>
+      <span style="font-size:.82rem;color:var(--muted)">♅+♆ ☌ ♃ TAM aynı anda — Kariyer + aşk + finans için onlarca yılda bir fırsat.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(35,134,54,.1);border:1px solid rgba(35,134,54,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#3fb950">Şubat 2027</span>
+      <span class="vbadge vb-green">✅ Güçlü</span>
+      <span style="font-size:.82rem;color:var(--muted)">♂ ☍ ☉ TAM — Doğum günü + yüksek kariyer enerjisi. Ocak fırsatlarını somutlaştır.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(35,134,54,.1);border:1px solid rgba(35,134,54,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#3fb950">Mart 2027</span>
+      <span class="vbadge vb-green">✅ Güçlü</span>
+      <span style="font-size:.82rem;color:var(--muted)">♅ □ ☉ TAM — Eski kariyer kalıplarını kır. Girişimcilik fikirleri güçleniyor.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#2dd4bf">Nisan 2027</span>
+      <span class="vbadge vb-teal">📈 Olumlu</span>
+      <span style="font-size:.82rem;color:var(--muted)">♇ □ ♂ başlıyor — Derin dönüşüm süreci. Kariyer kararlarında dikkat.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(208,94,23,.1);border:1px solid rgba(208,94,23,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#ffa657">Mayıs 2027</span>
+      <span class="vbadge vb-orange">⚠️ Dikkat</span>
+      <span style="font-size:.82rem;color:var(--muted)">♇ □ ♂ ℞ — Tek negatif ay. Büyük kariyer/finans/aşk kararları ertelensin.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(31,111,235,.1);border:1px solid rgba(31,111,235,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#79c0ff">Haziran 2027</span>
+      <span class="vbadge vb-blue">📊 İyi</span>
+      <span style="font-size:.82rem;color:var(--muted)">♄ □ ASC yaklaşıyor — İlişki ve kariyer sorumluluklarla yüzleşme başlıyor.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(137,87,229,.1);border:1px solid rgba(137,87,229,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#d2a8ff">Temmuz 2027</span>
+      <span class="vbadge vb-purple">♄ Sınav</span>
+      <span style="font-size:.82rem;color:var(--muted)">♄ □ ASC/DSC TAM — Kariyer + evlilik kararı noktası. Kim olmak istiyorsun?</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(137,87,229,.1);border:1px solid rgba(137,87,229,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#d2a8ff">Ağustos 2027</span>
+      <span class="vbadge vb-purple">♄ Dönüşüm</span>
+      <span style="font-size:.82rem;color:var(--muted)">♄ ☌ ♄ yaklaşıyor — 29 yıllık döngü kapanıyor. Kariyer + kimlik + aşk kararları netleşiyor.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#2dd4bf">Eylül 2027</span>
+      <span class="vbadge vb-teal">🌱 İyileşme</span>
+      <span style="font-size:.82rem;color:var(--muted)">♃ △ ☽ TAM, ♂ ☌ ♂ TAM — Enerji yenileniyor. Ödüller görünmeye başlıyor.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#2dd4bf">Ekim 2027</span>
+      <span class="vbadge vb-teal">📈 Olumlu</span>
+      <span style="font-size:.82rem;color:var(--muted)">♂ △ ♀ TAM — Romantizm ve kariyer bir arada. İş görüşmeleri ve aşk için iyi dönem.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(31,111,235,.1);border:1px solid rgba(31,111,235,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#79c0ff">Kasım 2027</span>
+      <span class="vbadge vb-blue">📊 İyi</span>
+      <span style="font-size:.82rem;color:var(--muted)">♆ ☌ ♃ ℞, ♇ ⚹ ♃ — Derin vizyon ve dönüşüm. Yıl değerlendirmesi yap.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 80px 1fr;gap:12px;align-items:center;padding:10px 16px;background:rgba(31,111,235,.1);border:1px solid rgba(31,111,235,.3);border-radius:8px;">
+      <span style="font-weight:600;color:#79c0ff">Aralık 2027</span>
+      <span class="vbadge vb-blue">📊 İyi</span>
+      <span style="font-size:.82rem;color:var(--muted)">♃ ⚹ ASC — 2028'e güçlü geçiş. Satürn dönüşünü atlatan biri olarak hazırsın.</span>
+    </div>
+
+  </div>
+
+  <div class="disclaimer" style="margin-top:24px;"><strong>⚠️ Yasal Uyarı:</strong> Bu içerik yalnızca eğlence ve kişisel keşif amaçlıdır. Astroloji yorumları bilimsel temelli değildir; yatırım, kariyer, sağlık veya ilişki kararları için kullanılmamalıdır. Lütfen profesyonel danışmanlık alın.</div>
+</div>
+</div><!-- /panel-gen -->
+
+<!-- JAVASCRIPT -->
+<script>
+function switchTab(tab, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(b => {
+    b.classList.remove('active-kar','active-yat','active-ask','active-gen');
+  });
+  document.getElementById('panel-' + tab).classList.add('active');
+  btn.classList.add('active-' + tab);
+}
+
+function switchYear(panel, year, btn) {
+  const tabs = document.getElementById(panel + '-year-tabs');
+  if (!tabs) return;
+  tabs.querySelectorAll('.year-tab').forEach(b => {
+    b.classList.remove('active-kar','active-yat','active-ask','active-gen');
+  });
+  btn.classList.add('active-' + panel);
+  document.querySelectorAll('[id^="' + panel + '-2"]').forEach(p => {
+    if (p.classList.contains('year-panel')) p.classList.remove('active');
+  });
+  const t = document.getElementById(panel + '-' + year);
+  if (t) t.classList.add('active');
+}
+
+// Starfield
+(function(){
+  const sf = document.getElementById('starfield');
+  if (!sf) return;
+  for (let i = 0; i < 100; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2 + 1;
+    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      opacity:${Math.random()*0.7+0.1};
+      animation:twinkle ${2+Math.random()*3}s ${Math.random()*2}s infinite alternate;`;
+    sf.appendChild(s);
+  }
+})();
+</script>
+<style>
+@keyframes twinkle { from{opacity:.1} to{opacity:.9} }
+</style>
+</body>
+</html>
