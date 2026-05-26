@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Piyasa Astroloji Analizi 2026–2027 · BIST100 · Altın · Gümüş</title>
+  <style>
+    :root{
+      --bg:#0d0d14;--card:#13131f;--border:#1e1e30;
+      --text:#e2e8f0;--muted:#94a3b8;--neutral:#6b7280;
+      --bull:#22c55e;--bear:#ef4444;--mixed:#f59e0b;--volatile:#a78bfa;
+      --bist:#3b82f6;--gold:#f7931a;--silver:#9ca3af;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.6}
+
+    /* HEADER */
+    header{
+      background:linear-gradient(135deg,#0d0d14 0%,#1a1030 50%,#0d0d14 100%);
+      border-bottom:1px solid var(--border);padding:36px 24px 28px;text-align:center;position:relative;overflow:hidden
+    }
+    header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.10) 0%,transparent 70%)}
+    header h1{font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:800;color:var(--text);position:relative}
+    header h1 span.bist{color:var(--bist)}
+    header h1 span.gold{color:var(--gold)}
+    header h1 span.silv{color:var(--silver)}
+    header p{color:var(--muted);margin-top:8px;font-size:.9rem;position:relative}
+
+    /* INSTRUMENT TABS */
+    .inst-tabs{display:flex;justify-content:center;gap:10px;padding:28px 24px 0;flex-wrap:wrap}
+    .inst-btn{
+      padding:10px 28px;border-radius:10px;border:2px solid var(--border);
+      background:var(--card);color:var(--muted);cursor:pointer;font-size:1rem;font-weight:700;transition:all .2s
+    }
+    .inst-btn.bist.active,.inst-btn.bist:hover{background:rgba(59,130,246,.15);border-color:var(--bist);color:var(--bist)}
+    .inst-btn.gold.active,.inst-btn.gold:hover{background:rgba(247,147,26,.15);border-color:var(--gold);color:var(--gold)}
+    .inst-btn.silv.active,.inst-btn.silv:hover{background:rgba(156,163,175,.15);border-color:var(--silver);color:var(--silver)}
+
+    /* INSTRUMENT PANEL */
+    .inst-panel{display:none;max-width:1140px;margin:0 auto;padding:0 16px 48px}
+    .inst-panel.visible{display:block}
+
+    /* NATAL BOX */
+    .natal-section{margin:24px 0 16px}
+    .natal-title{font-size:1rem;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase}
+    .natal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+    .natal-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 13px;display:flex;align-items:center;gap:8px}
+    .natal-item .sym{font-size:1.2rem}
+    .natal-item .lbl{font-size:.72rem;color:var(--muted)}
+    .natal-item .val{font-size:.88rem;font-weight:700}
+
+    /* YEAR TABS */
+    .year-tabs{display:flex;justify-content:center;gap:8px;padding:20px 0 16px}
+    .year-btn{background:var(--card);border:1px solid var(--border);border-radius:7px;color:var(--muted);padding:7px 26px;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+    .year-btn.active,.year-btn:hover{background:rgba(255,255,255,.08);color:var(--text);border-color:rgba(255,255,255,.2)}
+
+    /* TIMELINE */
+    .tl-wrap{overflow-x:auto;padding:0 0 8px}
+    .tl{display:flex;gap:5px;min-width:680px;padding:8px 0 4px}
+    .tl-col{flex:1;text-align:center}
+    .tl-bar{height:44px;border-radius:6px;margin:0 1px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+    .tl-lbl{font-size:.65rem;color:var(--muted);margin-top:3px}
+
+    /* YEAR SECTION */
+    .year-section{display:none}
+    .year-section.visible{display:block}
+    .months-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-top:12px}
+
+    /* MONTH CARD */
+    .mc{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform .18s,box-shadow .18s}
+    .mc:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+    .mc.bull{border-top:3px solid var(--bull)}
+    .mc.bear{border-top:3px solid var(--bear)}
+    .mc.mixed{border-top:3px solid var(--mixed)}
+    .mc.volatile{border-top:3px solid var(--volatile)}
+
+    .mc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 8px}
+    .mc-name{font-size:.98rem;font-weight:700}
+    .badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:3px 11px;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+    .bull .badge{background:rgba(34,197,94,.13);color:var(--bull)}
+    .bear .badge{background:rgba(239,68,68,.13);color:var(--bear)}
+    .mixed .badge{background:rgba(245,158,11,.13);color:var(--mixed)}
+    .volatile .badge{background:rgba(167,139,250,.13);color:var(--volatile)}
+
+    .sbar{height:3px;margin:0 14px 10px;background:var(--border);border-radius:3px;overflow:hidden}
+    .sfill{height:100%;border-radius:3px}
+    .bull .sfill{background:var(--bull)}
+    .bear .sfill{background:var(--bear)}
+    .mixed .sfill{background:var(--mixed)}
+    .volatile .sfill{background:var(--volatile)}
+
+    .mc-body{padding:0 14px 14px}
+    .asp-list{}
+    .asp-item{display:flex;align-items:flex-start;gap:7px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.8rem}
+    .asp-item:last-child{border-bottom:none}
+    .asp-ic{font-size:.95rem;flex-shrink:0;margin-top:1px}
+    .asp-tx{color:var(--muted);line-height:1.4;flex:1}
+    .asp-tx strong{color:var(--text)}
+    .asp-orb{color:var(--neutral);font-size:.7rem;white-space:nowrap;flex-shrink:0}
+    .analysis{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;padding:9px 11px;margin-top:9px;font-size:.8rem;color:var(--muted);line-height:1.5}
+    .analysis strong{color:var(--text)}
+
+    /* BIG PICTURE */
+    .bp-title{font-size:1.1rem;font-weight:700;color:var(--muted);margin:28px 0 12px;text-transform:uppercase;letter-spacing:.5px}
+    .bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:16px}
+    .bp-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px}
+    .bp-card h3{font-size:.92rem;font-weight:700;margin-bottom:8px}
+    .bp-card p{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+    /* LEGEND */
+    .legend{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;padding:16px;font-size:.8rem;color:var(--muted)}
+    .ldot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px}
+
+    .disclaimer{text-align:center;padding:20px;font-size:.75rem;color:var(--neutral);border-top:1px solid var(--border);max-width:680px;margin:0 auto}
+    footer{text-align:center;padding:20px;color:var(--neutral);font-size:.75rem;border-top:1px solid var(--border)}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>
+    <span class="bist">BIST100</span> · <span class="gold">Altın</span> · <span class="silv">Gümüş</span>
+    &nbsp;Astroloji Analizi 2026–2027
+  </h1>
+  <p>Natal harita + gezegen transitlerine dayalı aylık piyasa yönelim analizi · <em>flatlib</em> ile hesaplanmıştır</p>
+</header>
+
+<div class="legend">
+  <span><span class="ldot" style="background:var(--bull)"></span>Yükseliş</span>
+  <span><span class="ldot" style="background:var(--bear)"></span>Düşüş/Baskı</span>
+  <span><span class="ldot" style="background:var(--mixed)"></span>Karışık</span>
+  <span><span class="ldot" style="background:var(--volatile)"></span>Yüksek Volatilite</span>
+</div>
+
+<!-- INSTRUMENT TABS -->
+<div class="inst-tabs">
+  <button class="inst-btn bist active" onclick="showInst('bist',this)">📈 BIST100</button>
+  <button class="inst-btn gold" onclick="showInst('gold',this)">🥇 Altın</button>
+  <button class="inst-btn silv" onclick="showInst('silv',this)">🥈 Gümüş</button>
+</div>
+
+<!-- ══════════════ BIST100 ══════════════ -->
+<div id="panel-bist" class="inst-panel visible">
+  <div class="natal-section">
+    <div class="natal-title">📋 BIST100 Natal Haritası · İMKB İlk Gün · 2 Ocak 1986, 10:00, İstanbul</div>
+    <div class="natal-grid">
+      <div class="natal-item"><span class="sym">☉</span><div><div class="lbl">Güneş</div><div class="val">♑ Oğlak 11°37'</div></div></div>
+      <div class="natal-item"><span class="sym">☽</span><div><div class="lbl">Ay</div><div class="val">♍ Başak 22°49'</div></div></div>
+      <div class="natal-item"><span class="sym">☿</span><div><div class="lbl">Merkür</div><div class="val">♐ Yay 24°49'</div></div></div>
+      <div class="natal-item"><span class="sym">♀</span><div><div class="lbl">Venüs</div><div class="val">♑ Oğlak 7°29'</div></div></div>
+      <div class="natal-item"><span class="sym">♂</span><div><div class="lbl">Mars</div><div class="val">♏ Akrep 11°23'</div></div></div>
+      <div class="natal-item"><span class="sym">♃</span><div><div class="lbl">Jüpiter</div><div class="val">♒ Kova 18°32'</div></div></div>
+      <div class="natal-item"><span class="sym">♄</span><div><div class="lbl">Satürn</div><div class="val">♐ Yay 5°18'</div></div></div>
+      <div class="natal-item"><span class="sym">↑</span><div><div class="lbl">ASC / MC</div><div class="val">♒ Kova / ♐ Yay</div></div></div>
+    </div>
+  </div>
+  <div class="tl-wrap"><div class="tl" id="tl-bist"></div></div>
+  <div class="year-tabs">
+    <button class="year-btn active" onclick="showYear('bist',2026,this)">2026</button>
+    <button class="year-btn" onclick="showYear('bist',2027,this)">2027</button>
+  </div>
+  <div id="bist-2026" class="year-section visible"><div class="months-grid" id="grid-bist-2026"></div></div>
+  <div id="bist-2027" class="year-section"><div class="months-grid" id="grid-bist-2027"></div></div>
+
+  <div class="bp-title">🌌 BIST100 Büyük Resim</div>
+  <div class="bp-grid">
+    <div class="bp-card"><h3>♅ Uranüs ♊ İkizler → natal Satürn Karşıtı</h3><p>Uranüs'ün Boğa'dan İkizler'e geçişi natal Satürn (Yay 5°) üzerinden tam karşıt yapıyor. Bu yapı 2026 yaz–2027 boyunca sürecek. TL döviz kuru kırılımları, yabancı sermaye sürprizleri ve ani piyasa hareketlerine zemin hazırlıyor.</p></div>
+    <div class="bp-card"><h3>♄ Satürn ♈ Koç → natal Güneş / Venüs Karesi</h3><p>Satürn 2026 boyunca natal Güneş (Oğlak 11°) ve Venüs'ü (Oğlak 7°) kare yapıyor. Düzenleyici kısıtlamalar, likidite sıkışması, hisse değerleme baskısı anlamına gelir. En yoğun dönem Nisan–Ekim 2026.</p></div>
+    <div class="bp-card"><h3>♃ Jüpiter Yolculuğu → Başak 2027</h3><p>Jüpiter 2027'de Başak'a geçerek natal Güneş trigonu (Eylül) ve natal Ay'a conjunct (Kasım) yapacak. Bu dönem BIST için organik büyüme, kurumsal ilgi ve yabancı sermaye girişi sinyali verir.</p></div>
+    <div class="bp-card"><h3>⚡ Kritik Anlar</h3><p><strong>Şub 2026:</strong> Mars conjunct natal Jüpiter (0.4°) — ani yükseliş<br><strong>Ağu 2026:</strong> Uranüs exact natal Satürn karşıtı — büyük sürpriz<br><strong>Eyl 2027:</strong> Jüpiter trigon natal Güneş + Mars sextil natal Güneş<br><strong>Kas 2027:</strong> Jüpiter conjunct natal Ay (0.1°) — güçlü boğa</p></div>
+  </div>
+</div>
+
+<!-- ══════════════ ALTIN ══════════════ -->
+<div id="panel-gold" class="inst-panel">
+  <div class="natal-section">
+    <div class="natal-title">📋 Altın Natal Haritası · COMEX Gold Futures · 31 Aralık 1974, 09:30, New York</div>
+    <div class="natal-grid">
+      <div class="natal-item"><span class="sym">☉</span><div><div class="lbl">Güneş</div><div class="val">♑ Oğlak 9°32'</div></div></div>
+      <div class="natal-item"><span class="sym">☽</span><div><div class="lbl">Ay</div><div class="val">♌ Aslan 13°18'</div></div></div>
+      <div class="natal-item"><span class="sym">☿</span><div><div class="lbl">Merkür</div><div class="val">♑ Oğlak 16°24'</div></div></div>
+      <div class="natal-item"><span class="sym">♀</span><div><div class="lbl">Venüs</div><div class="val">♑ Oğlak 22°53'</div></div></div>
+      <div class="natal-item"><span class="sym">♂</span><div><div class="lbl">Mars</div><div class="val">♐ Yay 14°41'</div></div></div>
+      <div class="natal-item"><span class="sym">♃</span><div><div class="lbl">Jüpiter</div><div class="val">♓ Balık 13°15'</div></div></div>
+      <div class="natal-item"><span class="sym">♄</span><div><div class="lbl">Satürn</div><div class="val">♋ Yengeç 15°54'</div></div></div>
+      <div class="natal-item"><span class="sym">↑</span><div><div class="lbl">ASC / MC</div><div class="val">♒ Kova / ♐ Yay</div></div></div>
+    </div>
+  </div>
+  <div class="tl-wrap"><div class="tl" id="tl-gold"></div></div>
+  <div class="year-tabs">
+    <button class="year-btn active" onclick="showYear('gold',2026,this)">2026</button>
+    <button class="year-btn" onclick="showYear('gold',2027,this)">2027</button>
+  </div>
+  <div id="gold-2026" class="year-section visible"><div class="months-grid" id="grid-gold-2026"></div></div>
+  <div id="gold-2027" class="year-section"><div class="months-grid" id="grid-gold-2027"></div></div>
+
+  <div class="bp-title">🌌 Altın Büyük Resim</div>
+  <div class="bp-grid">
+    <div class="bp-card"><h3>♄ Satürn → natal Güneş Karesi (Oğlak 9°)</h3><p>2026 Nisan–Ocak 2027 arası Satürn natal Güneş'i kare yapıyor. Altın için yavaş, ezici baskı dönemi. Gerçek değer arttığında bile fiyat baskılanabilir. Düzenleyici tedbirler, dolar güçlenmesi gibi faktörler bunu tetikler.</p></div>
+    <div class="bp-card"><h3>♃ Jüpiter → natal Ay Conjunct (Aslan 13°)</h3><p>Jüpiter Ağustos–Ekim 2026 arasında natal Ay'ı (Aslan 13°) conjunctlıyor. Altın için Ay = değer deposu, emtia duygusu. Bu transit spekülatif ilgi artışı ve güvenli liman talebi ile birleşebilir.</p></div>
+    <div class="bp-card"><h3>♃ Jüpiter Başak'ta → natal Güneş Trigonu</h3><p>2027 Eylül–Ekim: Jüpiter natal Güneş'i trigonluyor. Organik, köklü yükseliş sinyali. Kurumsal alım ve merkez bankası rezerv artışı ile örtüşebilir. 2027'nin en güçlü altın rallisi bu dönemde.</p></div>
+    <div class="bp-card"><h3>⚡ Kritik Anlar</h3><p><strong>Mar 2026:</strong> Mars sextil natal Güneş (0.6°) — kısa yükseliş<br><strong>Ağu–Eyl 2026:</strong> Jüpiter natal Ay conjunct — spekülatif zirve<br><strong>Mar–May 2027:</strong> Saturn trigon natal Mars (0.1°) — sağlam zemin<br><strong>Eyl 2027:</strong> Jüpiter natal Güneş trigon (1.5°) — yıl zirvesi</p></div>
+  </div>
+</div>
+
+<!-- ══════════════ GÜMÜŞ ══════════════ -->
+<div id="panel-silv" class="inst-panel">
+  <div class="natal-section">
+    <div class="natal-title">📋 Gümüş Natal Haritası · COMEX Silver Futures · 12 Eylül 1963, 10:00, New York</div>
+    <div class="natal-grid">
+      <div class="natal-item"><span class="sym">☉</span><div><div class="lbl">Güneş</div><div class="val">♍ Başak 19°07'</div></div></div>
+      <div class="natal-item"><span class="sym">☽</span><div><div class="lbl">Ay</div><div class="val">♋ Yengeç 16°22'</div></div></div>
+      <div class="natal-item"><span class="sym">☿</span><div><div class="lbl">Merkür</div><div class="val">♎ Terazi 3°26'</div></div></div>
+      <div class="natal-item"><span class="sym">♀</span><div><div class="lbl">Venüs</div><div class="val">♍ Başak 22°49'</div></div></div>
+      <div class="natal-item"><span class="sym">♂</span><div><div class="lbl">Mars</div><div class="val">♏ Akrep 0°10'</div></div></div>
+      <div class="natal-item"><span class="sym">♃</span><div><div class="lbl">Jüpiter</div><div class="val">♈ Koç 17°38'</div></div></div>
+      <div class="natal-item"><span class="sym">♄</span><div><div class="lbl">Satürn</div><div class="val">♒ Kova 17°40'</div></div></div>
+      <div class="natal-item"><span class="sym">↑</span><div><div class="lbl">ASC / MC</div><div class="val">♊ İkizler / ♒ Kova</div></div></div>
+    </div>
+  </div>
+  <div class="tl-wrap"><div class="tl" id="tl-silv"></div></div>
+  <div class="year-tabs">
+    <button class="year-btn active" onclick="showYear('silv',2026,this)">2026</button>
+    <button class="year-btn" onclick="showYear('silv',2027,this)">2027</button>
+  </div>
+  <div id="silv-2026" class="year-section visible"><div class="months-grid" id="grid-silv-2026"></div></div>
+  <div id="silv-2027" class="year-section"><div class="months-grid" id="grid-silv-2027"></div></div>
+
+  <div class="bp-title">🌌 Gümüş Büyük Resim</div>
+  <div class="bp-grid">
+    <div class="bp-card"><h3>♃ Jüpiter → natal Ay Conjunct (Ocak–Nisan 2026)</h3><p>2026 başında Jüpiter natal Ay'ı (Yengeç 16°) ve natal Güneş'i sextilliyor. Gümüş için Ay = emtia/değer arşivi. Bu transit yoğun alım ilgisi ve fiyat patlama sinyali verir. 2026'nın en güçlü gümüş dönemi Ocak-Şubat.</p></div>
+    <div class="bp-card"><h3>♇ Plüton + ♅ Uranüs → natal Merkür Trigonu</h3><p>Plüton ve Uranüs 2026–2027 boyunca natal Merkür'ü (Terazi 3°) trigonluyor. Sanayi talebi (teknoloji/enerji geçişi) ve kripto–gümüş korelasyonu bu transitle güçleniyor. Yapısal uzun vadeli yükseliş desteği.</p></div>
+    <div class="bp-card"><h3>♃ Jüpiter Kasım 2027 → natal Venüs Conjunct (0.1°)</h3><p>Jupiter tam natal Venüs'ü (Başak 22°) conjunctlıyor. Venüs = değer, güzellik, somut varlık. Bu transit gümüş için yılın en büyük fiyat zirvesini işaret eder. Kasım 2027 güçlü bir hedef.</p></div>
+    <div class="bp-card"><h3>⚡ Kritik Anlar</h3><p><strong>Oca 2026:</strong> Jüpiter sextil natal Güneş (0.3°, TAM) — yükseliş başlangıcı<br><strong>Şub 2026:</strong> Jüpiter conjunct natal Ay (0.4°) — patlama<br><strong>Nis 2027:</strong> Uranüs trigon natal Merkür (0.0°, EXACT) — teknoloji<br><strong>Eki–Kas 2027:</strong> Jüpiter natal Güneş/Venüs conjunct — en güçlü zirve</p></div>
+  </div>
+</div>
+
+<div class="disclaimer">⚠️ Bu analiz yalnızca astroloji verileri üzerine kuruludur. Yatırım tavsiyesi değildir. DYOR.</div>
+<footer>Hesaplama: <em>flatlib</em> · BIST100: 2 Oca 1986 · Altın COMEX: 31 Ara 1974 · Gümüş COMEX: 12 Eyl 1963 · Oluşturulma: 2026-05-26</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// VERİ
+// ══════════════════════════════════════════════════════════
+const DATA = {
+bist: {
+  2026: [
+    {m:"Ocak 2026",v:"mixed",s:52,aspects:[
+      {i:"✅",t:"<strong>Jüpiter sextil natal Ay</strong> (3.4°) — hafif büyüme desteği","o":"3.4°"},
+      {i:"⚠️",t:"<strong>Satürn karşıt natal Ay</strong> (4.4°) — yabancı baskısı başlıyor","o":"4.4°"},
+      {i:"✅",t:"<strong>Mars trigon natal Ay</strong> (1.1°) — kısa vadeli ivme","o":"1.1°"},
+      {i:"✅",t:"<strong>Plüton sextil natal Satürn</strong> (2.1°) — derin yapısal güç","o":"2.1°"},
+    ],an:"Karışık açılar. Satürn baskısı başlarken Mars destek veriyor. <strong>Nötr/hafif yükseliş, büyük hareket yok.</strong>"},
+    {m:"Şubat 2026",v:"bull",s:72,aspects:[
+      {i:"✅",t:"<strong>Mars conjunct natal Jüpiter</strong> (0.4°, TAM) — ani güçlü yükseliş tetikleyicisi","o":"0.4°"},
+      {i:"✅",t:"<strong>Jupiter trigon natal Mars</strong> (4.6°) — büyüme enerjisi","o":"4.6°"},
+      {i:"✅",t:"<strong>Plüton sextil natal Satürn</strong> (1.2°) — kurumsal yapılanma","o":"1.2°"},
+      {i:"⚠️",t:"Jüpiter karşıt natal Güneş başlıyor","o":"4.4°"},
+    ],an:"Mars tam natal Jüpiter üzerinde — BIST için sektörel liderlik, güçlü yabancı ilgisi. <strong>Güçlü yükseliş ayı.</strong>"},
+    {m:"Mart 2026",v:"bull",s:68,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Mars</strong> (3.7°) — büyüme enerjisi sürüyor","o":"3.7°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Satürn</strong> (1.8°) — yapısal destek","o":"1.8°"},
+      {i:"✅",t:"<strong>Mars sextil natal Güneş</strong> (1.5°) — momentum güçlü","o":"1.5°"},
+      {i:"✅",t:"<strong>Mars trigon natal Mars</strong> (1.2°) — hareket ivmeli","o":"1.2°"},
+      {i:"✅",t:"<strong>Plüton sextil natal Satürn</strong> (0.4°, EXACT) — derin güç","o":"0.4°"},
+    ],an:"Birden fazla pozitif aspect. Satürn natal Satürn trigonu yılın en sağlam yapısal desteği. <strong>Güçlü yükseliş, sektör rotasyonu.</strong>"},
+    {m:"Nisan 2026",v:"bear",s:30,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Venüs</strong> (0.2°, TAM EXACT) — değerleme baskısı zirve","o":"0.2°"},
+      {i:"⚠️",t:"<strong>Satürn kare natal Güneş</strong> (4.3°) — kurumsal baskı","o":"4.3°"},
+      {i:"⚠️",t:"Jüpiter karşıt natal Güneş (5.4°) — aşırı genişleme riski","o":"5.4°"},
+    ],an:"Satürn tam natal Venüs'ü sıkıştırıyor — hisse değerlemelerine sert baskı. <strong>Düşüş ayı, kâr satışı beklenir.</strong>"},
+    {m:"Mayıs 2026",v:"bear",s:35,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Güneş</strong> (0.9°, EXACT yakın) — ağır baskı","o":"0.9°"},
+      {i:"⚠️",t:"<strong>Satürn kare natal Venüs</strong> (3.2°) — hâlâ etkili","o":"3.2°"},
+      {i:"✅",t:"<strong>Jüpiter sextil natal Ay</strong> (1.7°) — zayıf destek","o":"1.7°"},
+    ],an:"Satürn natal Güneş'e çok yakın kare. <strong>Zayıf piyasa, dip arama süreci.</strong>"},
+    {m:"Haziran 2026",v:"mixed",s:50,aspects:[
+      {i:"⚠️",t:"<strong>Satürn kare natal Güneş</strong> (1.7°) — baskı devam","o":"1.7°"},
+      {i:"✅",t:"<strong>Plüton sextil natal Satürn</strong> (0.1°, EXACT) — kurumsal köklü güç","o":"0.1°"},
+      {i:"✅",t:"<strong>Neptune trigon natal Satürn</strong> (1.0°) — uzun vadeli vizyon","o":"1.0°"},
+      {i:"✅",t:"<strong>Mars trigon natal Ay</strong> (2.4°) — toparlanma tetikleyicisi","o":"2.4°"},
+    ],an:"Satürn baskısı sürse de Plüton tam sextil ile kurumsal yatırım ilgisi olabilir. <strong>Karışık, seçici hisseler öne çıkar.</strong>"},
+    {m:"Temmuz 2026",v:"volatile",s:55,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Satürn</strong> (2.0°) — yapısal büyüme başlıyor","o":"2.0°"},
+      {i:"⚡",t:"<strong>Uranüs karşıt natal Satürn</strong> (0.9°, EXACT yakın) — ani sürpriz","o":"0.9°"},
+      {i:"⚠️",t:"Satürn kare natal Güneş (3.0°) — hâlâ aktif","o":"3.0°"},
+    ],an:"Uranüs natal Satürn'e karşıt — ani kur hareketi, siyasi sürpriz, yabancı çıkışı. <strong>Yüksek volatilite, yönsel belirsizlik.</strong>"},
+    {m:"Ağustos 2026",v:"volatile",s:35,aspects:[
+      {i:"⚡",t:"<strong>Uranüs karşıt natal Satürn</strong> (0.1°, TAM EXACT) — en sürprizli an","o":"0.1°"},
+      {i:"⚠️",t:"<strong>Satürn kare natal Güneş</strong> (2.8°) — baskı hâlâ yoğun","o":"2.8°"},
+      {i:"⚠️",t:"<strong>Jüpiter kare natal Mars</strong> (1.2°) — aşırı hareket sonrası düzeltme","o":"1.2°"},
+    ],an:"Uranüs tam natal Satürn'e karşıt — tarihsel açıdan büyük kırılım anı. Döviz/faiz sürprizi veya BIST'i allak bullak eden haber. <strong>En riskli ay.</strong>"},
+    {m:"Eylül 2026",v:"bear",s:33,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Güneş</strong> (1.1°) — baskı taze","o":"1.1°"},
+      {i:"⚡",t:"<strong>Uranüs karşıt natal Satürn</strong> (0.4°) — sürpriz etkisi sürüyor","o":"0.4°"},
+      {i:"⚠️",t:"Jüpiter karşıt natal Jüpiter (1.9°) — değerleme şişkinliği","o":"1.9°"},
+    ],an:"Hem Satürn hem Uranüs baskısı aktif. <strong>Zayıf dönem, güvensizlik ortamı.</strong>"},
+    {m:"Ekim 2026",v:"volatile",s:48,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Merkür</strong> (2.8°) — olumlu haberler","o":"2.8°"},
+      {i:"⚡",t:"<strong>Uranüs karşıt natal Satürn</strong> (0.1°, TAM EXACT) — ikinci dalga sürpriz","o":"0.1°"},
+      {i:"⚠️",t:"<strong>Satürn kare natal Güneş</strong> (1.2°, retrograd) — baskı","o":"1.2°"},
+    ],an:"Jüpiter pozitif haber getirebilir ama Uranüs sürprize devam. <strong>Volatil toparlanma denemesi.</strong>"},
+    {m:"Kasım 2026",v:"mixed",s:53,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Merkür</strong> (1.0°, EXACT) — sektör haberleri güçlü","o":"1.0°"},
+      {i:"✅",t:"<strong>Mars trigon natal Merkür</strong> (0.7°) — ivme tetikleyici","o":"0.7°"},
+      {i:"⚠️",t:"Satürn retrograd kare natal Venüs (1.0°) — değerleme baskısı hâlâ","o":"1.0°"},
+    ],an:"Jüpiter ve Mars birlikte natal Merkür'ü tetikliyor — açıklama, birleşme, sektör haberleri. <strong>Seçici yükseliş, bazı hisseler fırlayabilir.</strong>"},
+    {m:"Aralık 2026",v:"bull",s:63,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Merkür</strong> (2.2°) — büyüme haberleri sürüyor","o":"2.2°"},
+      {i:"✅",t:"<strong>Mars trigon natal Venüs</strong> (0.9°, EXACT) — güçlü değer hareketi","o":"0.9°"},
+      {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (5.0°) — ek destek","o":"5.0°"},
+    ],an:"Mars natal Venüs'ü tam trigonluyor + Jüpiter Merkür desteği. <strong>Yıl sonu rallisi, banka/finans hisseleri öne çıkabilir.</strong>"},
+  ],
+  2027: [
+    {m:"Ocak 2027",v:"bull",s:70,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Merkür</strong> (0.5°, TAM EXACT) — çok güçlü büyüme habercisi","o":"0.5°"},
+      {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (1.4°) — momentum","o":"1.4°"},
+      {i:"✅",t:"<strong>Mars trigon natal Venüs</strong> (2.8°) — değer hareketi","o":"2.8°"},
+    ],an:"Jüpiter tam natal Merkür trigonunda — kurumsal duyurular, yabancı ilgisi. <strong>2027'nin açılış rallisi.</strong>"},
+    {m:"Şubat 2027",v:"bear",s:28,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Güneş</strong> (0.0°, TAM EXACT) — yılın en ağır noktası","o":"0.0°"},
+      {i:"⚠️",t:"Jüpiter karşıt natal Jüpiter (2.9°) — aşırı beklenti kırılımı","o":"2.9°"},
+      {i:"⚠️",t:"Mars kare natal Satürn (2.9°) — enerji bloğu","o":"2.9°"},
+    ],an:"Satürn tam kare natal Güneş — BIST için yılın en kötü ayı olabilir. Siyasi/ekonomik kriz, faiz baskısı. <strong>Sert düşüş.</strong>"},
+    {m:"Mart 2027",v:"mixed",s:45,aspects:[
+      {i:"⚡",t:"<strong>Jüpiter karşıt natal Jüpiter</strong> (0.3°, TAM EXACT) — hayal kırıklığı/düzeltme","o":"0.3°"},
+      {i:"⚠️",t:"Satürn kare natal Güneş (3.2°) hâlâ aktif","o":"3.2°"},
+      {i:"✅",t:"<strong>Mars trigon natal Merkür</strong> (2.0°) — hafif toparlanma sinyali","o":"2.0°"},
+    ],an:"Jupiter natal Jüpiter karşıtı = beklenti zirvesi sonrası hayal kırıklığı. <strong>Karışık, toparlanma denemesi ama sınırlı.</strong>"},
+    {m:"Nisan 2027",v:"bull",s:62,aspects:[
+      {i:"✅",t:"<strong>Satürn sextil natal Jüpiter</strong> (0.1°, TAM EXACT) — yapısal büyüme desteği","o":"0.1°"},
+      {i:"✅",t:"<strong>Mars trigon natal Merkür</strong> (2.8°) — iletişim/haber ivmesi","o":"2.8°"},
+      {i:"⚠️",t:"Jüpiter karşıt natal Jüpiter (1.5°) zayıflıyor","o":"1.5°"},
+    ],an:"Satürn tam natal Jüpiter sextili — yapısal reform, borsa regülasyonu olumlu gelişme. <strong>Toparlanma hızlanıyor.</strong>"},
+    {m:"Mayıs 2027",v:"volatile",s:50,aspects:[
+      {i:"⚡",t:"<strong>Jüpiter karşıt natal Jüpiter</strong> (0.0°, TAM EXACT) — en uç nokta","o":"0.0°"},
+      {i:"⚡",t:"<strong>Uranüs karşıt natal Satürn</strong> (0.2°, EXACT) — ikinci büyük sürpriz","o":"0.2°"},
+      {i:"✅",t:"Satürn trigon natal Merkür (2.5°) — yapısal destek","o":"2.5°"},
+    ],an:"İki major konfigürasyon aynı anda. <strong>Yılın en volatil ayı — hem zirve hem çöküş ihtimali var.</strong>"},
+    {m:"Haziran 2027",v:"bull",s:72,aspects:[
+      {i:"✅",t:"<strong>Satürn trigon natal Merkür</strong> (0.6°, EXACT) — güçlü yapısal destek","o":"0.6°"},
+      {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (2.4°) — yükseliş ivmesi","o":"2.4°"},
+      {i:"✅",t:"<strong>Mars sextil natal Mars</strong> (2.7°) — enerji güçlü","o":"2.7°"},
+    ],an:"Satürn tam natal Merkür trigonu + Mars desteği. <strong>Güçlü yükseliş ayı, finans/iletişim sektörleri öne çıkar.</strong>"},
+    {m:"Temmuz 2027",v:"bull",s:65,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Merkür</strong> (3.0°) — büyüme desteği","o":"3.0°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Merkür</strong> (2.5°) — yapısal sağlamlık","o":"2.5°"},
+      {i:"⚠️",t:"Neptune kare natal Venüs (0.8°) — belirsiz fiyatlama","o":"0.8°"},
+    ],an:"Hem Jüpiter hem Satürn natal Merkür'ü trigonluyor. <strong>Yükseliş devam, teknoloji/iletişim hisseleri güçlü.</strong>"},
+    {m:"Ağustos 2027",v:"volatile",s:60,aspects:[
+      {i:"✅",t:"<strong>Mars conjunct natal Jüpiter</strong> (0.2°, TAM EXACT) — ani güçlü tetik","o":"0.2°"},
+      {i:"⚠️",t:"<strong>Jüpiter kare natal Satürn</strong> (1.0°) — büyüme freni","o":"1.0°"},
+      {i:"⚠️",t:"Neptune kare natal Venüs (1.2°) — belirsiz","o":"1.2°"},
+    ],an:"Mars tam natal Jüpiter'de — sert ve ani yükseliş tetiklenebilir. Jüpiter kare ters çekiyor. <strong>Volatil ama yukarı yönlü.</strong>"},
+    {m:"Eylül 2027",v:"bull",s:82,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Güneş</strong> (0.6°, EXACT) — yılın en güçlü boğa sinyali","o":"0.6°"},
+      {i:"✅",t:"<strong>Jüpiter sextil natal Mars</strong> (0.4°, EXACT) — enerji + büyüme","o":"0.4°"},
+      {i:"✅",t:"<strong>Mars sextil natal Güneş</strong> (2.7°) — ek ivme","o":"2.7°"},
+      {i:"✅",t:"Satürn trigon natal Merkür (2.0°) — yapısal destek","o":"2.0°"},
+    ],an:"İki major Jüpiter exact aspecti aynı anda! <strong>2027'nin BIST zirvesi bu dönemde. Güçlü alım.</strong>"},
+    {m:"Ekim 2027",v:"bull",s:75,aspects:[
+      {i:"✅",t:"<strong>Satürn trigon natal Merkür</strong> (0.2°, EXACT) — yapısal zirve","o":"0.2°"},
+      {i:"✅",t:"<strong>Neptune trigon natal Satürn</strong> (0.5°) — uzun vadeli vizyon desteği","o":"0.5°"},
+    ],an:"Satürn exact natal Merkür trigonu — düzenleyici/kurumsal açıklamalar, olumlu reform. <strong>Yapısal yükseliş devam.</strong>"},
+    {m:"Kasım 2027",v:"volatile",s:55,aspects:[
+      {i:"⚡",t:"<strong>Jüpiter conjunct natal Ay</strong> (0.1°, TAM EXACT) — çok büyük halk/yatırımcı coşkusu","o":"0.1°"},
+      {i:"⚠️",t:"<strong>Mars kare natal Ay</strong> (0.5°, EXACT) — ani satış tetikleyicisi","o":"0.5°"},
+    ],an:"Jupiter tam natal Ay = borsa coşkusu ve geniş katılım. Mars kare = sert düzeltme vuruşu. <strong>Çok volatil — hızlı yükseliş/düşüş dalgaları.</strong>"},
+    {m:"Aralık 2027",v:"bull",s:68,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (3.5°) — coşku sürüyor","o":"3.5°"},
+      {i:"✅",t:"<strong>Mars conjunct natal Güneş</strong> (3.5°) — yıl sonu ivmesi","o":"3.5°"},
+      {i:"✅",t:"<strong>Satürn sextil natal Jüpiter</strong> (2.5°) — yapısal destek","o":"2.5°"},
+      {i:"✅",t:"<strong>Neptune trigon natal Satürn</strong> (1.4°) — vizyon desteği","o":"1.4°"},
+    ],an:"Çok pozitif kapanış sinyalleri. <strong>Güçlü yıl sonu rallisi. Yabancı yatırımcı ilgisi.</strong>"},
+  ]
+},
+gold: {
+  2026: [
+    {m:"Ocak 2026",v:"volatile",s:52,aspects:[
+      {i:"⚡",t:"<strong>Jüpiter karşıt natal Merkür/Venüs</strong> (3.0–3.5°) — aşırı değerleme tartışması","o":"3–3.5°"},
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Satürn</strong> (3.5°) — zorlukları aşma başlıyor","o":"3.5°"},
+      {i:"⚡",t:"<strong>Mars conjunct natal Venüs</strong> (1.0°) — değer üzerinde ani hareket","o":"1.0°"},
+    ],an:"Mars natal Venüs'te — altın için değer hareketi tetiklenebilir. Jüpiter karşıt Merkür = beklenti çatışması. <strong>Volatil, ani spikelar.</strong>"},
+    {m:"Şubat 2026",v:"bull",s:65,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Satürn</strong> (0.1°, TAM EXACT) — engel aşma, yapısal güç","o":"0.1°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (2.7°) — genişleme","o":"2.7°"},
+      {i:"✅",t:"<strong>Mars sextil natal Mars</strong> (3.4°) — enerji desteği","o":"3.4°"},
+    ],an:"Jüpiter natal Satürn'ü tam conjunctlıyor — altın için uzun süredir bekleyen talep patlaması. <strong>Güçlü yükseliş başlıyor.</strong>"},
+    {m:"Mart 2026",v:"bull",s:75,aspects:[
+      {i:"✅",t:"<strong>Mars sextil natal Güneş</strong> (0.6°, TAM EXACT) — çok güçlü yükseliş tetiki","o":"0.6°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (1.9°) — genişleme sürüyor","o":"1.9°"},
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Satürn</strong> (0.8°) — güç desteği","o":"0.8°"},
+      {i:"✅",t:"<strong>Mars conjunct natal Jüpiter</strong> (3.1°) — büyüme ivmesi","o":"3.1°"},
+    ],an:"Mars tam natal Güneş sextili + Jüpiter natal Satürn conjunct. <strong>ATH denemesi, merkez bankası alımları hızlanabilir.</strong>"},
+    {m:"Nisan 2026",v:"mixed",s:50,aspects:[
+      {i:"⚠️",t:"<strong>Satürn kare natal Güneş</strong> (2.2°) — baskı başlıyor","o":"2.2°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (3.8°) — hâlâ pozitif","o":"3.8°"},
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Satürn</strong> (1.1°) — destek azalıyor","o":"1.1°"},
+    ],an:"Satürn basısı başlıyor ama Jüpiter hâlâ destek veriyor. <strong>Konsolidasyon, yön arayışı.</strong>"},
+    {m:"Mayıs 2026",v:"bear",s:35,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Güneş</strong> (1.2°) — sert baskı","o":"1.2°"},
+      {i:"⚠️",t:"Jüpiter karşıt natal Venüs (1.8°) — değerleme tepkisi","o":"1.8°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Ay</strong> (2.6°) — duygusal taban desteği","o":"2.6°"},
+    ],an:"Satürn güneş karesi + Jüpiter değerleme baskısı. <strong>Dolar güçlenir, altın düşer — dip oluşumu.</strong>"},
+    {m:"Haziran 2026",v:"mixed",s:55,aspects:[
+      {i:"✅",t:"<strong>Satürn trigon natal Ay</strong> (0.0°, TAM EXACT) — emtia değeri taban desteği","o":"0.0°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Mars</strong> (1.3°) — enerji/harekette yapısal destek","o":"1.3°"},
+      {i:"⚠️",t:"Satürn kare natal Güneş (3.8°) — hâlâ aktif","o":"3.8°"},
+    ],an:"Satürn natal Ay'ı tam trigonluyor — altın için Ay = değer arşivi. Yükselmesi zorlaşmış ama zemin güçlenmiş. <strong>Yatay/hafif pozitif, dip sağlamlaşıyor.</strong>"},
+    {m:"Temmuz 2026",v:"mixed",s:52,aspects:[
+      {i:"✅",t:"<strong>Satürn trigon natal Mars</strong> (0.0°, TAM EXACT) — hareket desteği","o":"0.0°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Ay</strong> (1.3°) — değer desteği sürüyor","o":"1.3°"},
+      {i:"⚠️",t:"Satürn kare natal Merkür (1.8°) — iletişim/haber freni","o":"1.8°"},
+      {i:"⚠️",t:"Mars karşıt natal Mars (2.9°) — çatışmalı enerji","o":"2.9°"},
+    ],an:"Satürn natal Mars ve Ay trigonu sağlam bir temel oluşturuyor. Mars çatışması kısa süreli sert hareketler getirir. <strong>Karışık, haber odaklı.</strong>"},
+    {m:"Ağustos 2026",v:"bull",s:70,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (3.1°, yaklaşıyor) — güvenli liman talebi","o":"3.1°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Ay</strong> (1.1°) — değer desteği","o":"1.1°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Mars</strong> (0.3°, EXACT) — enerji desteği","o":"0.3°"},
+    ],an:"Jüpiter natal Ay'a yaklaşıyor + Satürn natal Mars tam trigon. <strong>Altın yükselişi başlıyor, güvenli liman talebi.</strong>"},
+    {m:"Eylül 2026",v:"bull",s:78,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (3.4°, EXACT yakın) — spekülatif ilgi artışı","o":"3.4°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Mars</strong> (2.0°) — yükseliş ivmesi","o":"2.0°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Ay</strong> (0.6°) — temel destek","o":"0.6°"},
+      {i:"⚠️",t:"Mars karşıt natal Venüs (0.5°) — kısa süreli düzeltme riski","o":"0.5°"},
+    ],an:"Jüpiter natal Ay üzerinde + çoklu destek. <strong>Güçlü yükseliş — yılın altın zirvesi bu dönemde olabilir.</strong>"},
+    {m:"Ekim 2026",v:"bear",s:38,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Güneş</strong> (0.9°, EXACT) — yeniden güçlü baskı","o":"0.9°"},
+      {i:"⚠️",t:"Satürn trigon natal Ay (2.9°, zayıflıyor)","o":"2.9°"},
+    ],an:"Satürn natal Güneş'i tam sıkıştırıyor — eylül zirvesinden düzeltme. <strong>Satış baskısı, kâr realizasyonu.</strong>"},
+    {m:"Kasım 2026",v:"bear",s:35,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Güneş</strong> (1.0°) — baskı güçlü","o":"1.0°"},
+    ],an:"Satürn basısı tek başına. Destek açısı azalmış. <strong>Zayıf ay, yatay/aşağı.</strong>"},
+    {m:"Aralık 2026",v:"mixed",s:48,aspects:[
+      {i:"⚠️",t:"Satürn kare natal Güneş (1.6°) — devam","o":"1.6°"},
+      {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (2.9°) — kısa süreli yükseliş tetiki","o":"2.9°"},
+    ],an:"Satürn baskısı hafifliyor, Mars tetikliyor. <strong>Karışık, 2027 beklentisiyle hafif pozitif.</strong>"},
+  ],
+  2027: [
+    {m:"Ocak 2027",v:"mixed",s:52,aspects:[
+      {i:"🔴",t:"<strong>Satürn kare natal Güneş</strong> (0.5°, EXACT) — en sert baskı noktası","o":"0.5°"},
+      {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (0.7°, EXACT) — güçlü anlık tetik","o":"0.7°"},
+    ],an:"Satürn ve Mars aynı anda ama zıt yönde. <strong>Volatil — sert düşüş sonrası ani geri dönüş senaryosu.</strong>"},
+    {m:"Şubat 2027",v:"mixed",s:48,aspects:[
+      {i:"⚠️",t:"Satürn kare natal Güneş (2.1°) — azalıyor","o":"2.1°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Ay</strong> (1.7°) — değer desteği","o":"1.7°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Mars</strong> (3.0°) — enerji desteği","o":"3.0°"},
+    ],an:"Satürn basısı azalıyor, pozitif açılar güçleniyor. <strong>Dip oluşumu, toparlanma hazırlığı.</strong>"},
+    {m:"Mart 2027",v:"bull",s:72,aspects:[
+      {i:"✅",t:"<strong>Satürn trigon natal Mars</strong> (0.1°, TAM EXACT) — yılın güçlü desteği","o":"0.1°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Ay</strong> (1.5°) — değer taban güçlü","o":"1.5°"},
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (5.0°, yaklaşıyor) — talep artışı","o":"5.0°"},
+    ],an:"Satürn tam natal Mars trigonu — önemli yapısal yükseliş başlangıcı. <strong>Güçlü yükseliş dönemi, güvenli liman talebi.</strong>"},
+    {m:"Nisan 2027",v:"bull",s:75,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (3.7°) — spekülatif talep artışı","o":"3.7°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Mars</strong> (2.3°) — yükseliş ivmesi","o":"2.3°"},
+      {i:"✅",t:"<strong>Satürn trigon natal Mars</strong> (4.0°) — yapısal destek hâlâ aktif","o":"4.0°"},
+    ],an:"Jüpiter natal Ay'a yakın + Satürn desteği. <strong>Yükseliş güçleniyor, merkez bankası alım haberleri olabilir.</strong>"},
+    {m:"Mayıs 2027",v:"bull",s:72,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (5.3°, zirve yakın) — talep süren","o":"5.3°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Mars</strong> (3.9°) — büyüme","o":"3.9°"},
+    ],an:"Jüpiter natal Ay geçişi devam ediyor. <strong>Güçlü yükseliş, Nisan–Mayıs zirve bölgesi olabilir.</strong>"},
+    {m:"Haziran 2027",v:"volatile",s:55,aspects:[
+      {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (4.5°) — enerji desteği","o":"4.5°"},
+      {i:"⚠️",t:"<strong>Mars kare natal Mars</strong> (0.6°, EXACT) — ani ters hareket","o":"0.6°"},
+      {i:"⚠️",t:"Mars karşıt natal Jüpiter (0.8°) — aşırılık sonrası düzeltme","o":"0.8°"},
+    ],an:"Mars çakışan açılar yapıyor — hem yukarı hem aşağı tetikleyici. <strong>Volatil, kâr satışı ve yeniden alım dalgaları.</strong>"},
+    {m:"Temmuz 2027",v:"mixed",s:48,aspects:[
+      {i:"⚠️",t:"Neptune kare natal Güneş (2.9°) — yanıltıcı fiyatlama, belirsizlik","o":"2.9°"},
+      {i:"⚠️",t:"Uranüs sextil natal Ay (4.9°) — sürpriz talep","o":"4.9°"},
+    ],an:"Neptune natal Güneş karesi — yanıltıcı haberler, değerleme belirsizliği. <strong>Nötr/zayıf dönem.</strong>"},
+    {m:"Ağustos 2027",v:"mixed",s:55,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Güneş</strong> (5.3°, başlıyor) — büyüme başlıyor","o":"5.3°"},
+      {i:"⚠️",t:"Neptune kare natal Güneş (3.2°) — hâlâ belirsizlik","o":"3.2°"},
+      {i:"⚠️",t:"Mars kare natal Saturn (2.8°) — enerji freni","o":"2.8°"},
+    ],an:"Jüpiter trigon natal Güneş başlıyor ama Neptune belirsizliği var. <strong>Yön değişimi hazırlığı.</strong>"},
+    {m:"Eylül 2027",v:"bull",s:80,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Güneş</strong> (1.5°, EXACT yakın) — klasik güçlü boğa sinyali","o":"1.5°"},
+      {i:"✅",t:"<strong>Mars sextil natal Güneş</strong> (0.6°, EXACT) — anlık tetikleyici","o":"0.6°"},
+      {i:"✅",t:"<strong>Jüpiter sextil natal Satürn</strong> (4.9°) — yapısal büyüme","o":"4.9°"},
+    ],an:"Jüpiter natal Güneş trigonu + Mars tetik. <strong>2027'nin altın zirvesi — güçlü yükseliş, ATH denemesi mümkün.</strong>"},
+    {m:"Ekim 2027",v:"bull",s:76,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Merkür</strong> (0.8°, EXACT) — değer habercisi","o":"0.8°"},
+      {i:"✅",t:"<strong>Jüpiter sextil natal Satürn</strong> (1.3°) — yapısal büyüme","o":"1.3°"},
+      {i:"⚠️",t:"Jüpiter kare natal Mars (2.5°) — aşırı hareket riski","o":"2.5°"},
+    ],an:"Jüpiter natal Merkür trigonu — altın değerlemesine ilişkin önemli haber/rapor. <strong>Yükseliş sürüyor.</strong>"},
+    {m:"Kasım 2027",v:"volatile",s:60,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Venüs</strong> (0.2°, TAM EXACT) — değer/güzellik zirvesi","o":"0.2°"},
+      {i:"⚠️",t:"<strong>Satürn kare natal Venüs</strong> (0.6°) — baskı","o":"0.6°"},
+    ],an:"Jüpiter tam natal Venüs trigonu (altın için en mükemmel transit) ama Satürn de kare yapıyor. <strong>Zirve volatilitesi — coşku ve düzeltme iç içe.</strong>"},
+    {m:"Aralık 2027",v:"mixed",s:50,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Venüs</strong> (3.4°) — destek sürüyor","o":"3.4°"},
+      {i:"⚠️",t:"<strong>Satürn kare natal Venüs</strong> (1.8°) — baskı","o":"1.8°"},
+      {i:"✅",t:"<strong>Mars conjunct natal Merkür</strong> (1.3°) — haberler aktif","o":"1.3°"},
+      {i:"⚠️",t:"Mars karşıt natal Satürn (0.8°) — gerilim","o":"0.8°"},
+    ],an:"Karma sinyaller. <strong>Karışık kapanış, yıl sonu kar realizasyonu beklenir.</strong>"},
+  ]
+},
+silv: {
+  2026: [
+    {m:"Ocak 2026",v:"bull",s:82,aspects:[
+      {i:"✅",t:"<strong>Jüpiter sextil natal Güneş</strong> (0.3°, TAM EXACT) — yılın en güçlü başlangıcı","o":"0.3°"},
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (3.0°) — emtia talebi artıyor","o":"3.0°"},
+      {i:"⚡",t:"<strong>Plüton trigon natal Merkür</strong> (0.3°, TAM EXACT) — sanayi dönüşümü","o":"0.3°"},
+      {i:"✅",t:"<strong>Mars trigon natal Venüs</strong> (1.1°) — değer ivmesi","o":"1.1°"},
+    ],an:"Jüpiter tam natal Güneş sextili — COMEX gümüş için nadiren görülen güçlü kombinasyon. <strong>Yılın en güçlü gümüş ayı, hızlı yükseliş.</strong>"},
+    {m:"Şubat 2026",v:"bull",s:78,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (0.4°, TAM EXACT) — emtia/güvenli liman talebi patlar","o":"0.4°"},
+      {i:"✅",t:"<strong>Mars sextil natal Jüpiter</strong> (0.5°, EXACT) — büyüme tetikleyicisi","o":"0.5°"},
+      {i:"⚠️",t:"Jüpiter kare natal Jüpiter (1.6°) — köpük riski","o":"1.6°"},
+    ],an:"Jüpiter tam natal Ay conjunct — güçlü spekülatif talep. <strong>Yüksek ivmeli yükseliş, dikkatli olunmalı.</strong>"},
+    {m:"Mart 2026",v:"mixed",s:48,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (1.3°) — talep devam","o":"1.3°"},
+      {i:"🔴",t:"<strong>Satürn karşıt natal Merkür</strong> (0.1°, TAM EXACT) — sanayi/ticaret freni","o":"0.1°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (1.9°) — fiyatlama belirsizliği","o":"1.9°"},
+    ],an:"Satürn tam natal Merkür karşıtı — fiyatlama ve arz/talep anlaşmazlığı. Ocak-Şubat yükselişi duraksıyor. <strong>Karışık/konsolidasyon.</strong>"},
+    {m:"Nisan 2026",v:"mixed",s:45,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Ay</strong> (0.6°, EXACT) — hâlâ güçlü","o":"0.6°"},
+      {i:"⚠️",t:"<strong>Jüpiter kare natal Jüpiter</strong> (0.6°, EXACT) — aşırı yükseliş düzeltmesi","o":"0.6°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (0.7°) — belirsizlik","o":"0.7°"},
+    ],an:"Jupiter natal Ay conjunct hâlâ aktif ama Jupiter-Jupiter karesi = balonun söndüğü nokta. <strong>Volatil düzeltme ayı.</strong>"},
+    {m:"Mayıs 2026",v:"mixed",s:50,aspects:[
+      {i:"✅",t:"<strong>Jüpiter sextil natal Venüs</strong> (1.7°) — değer artışı","o":"1.7°"},
+      {i:"⚠️",t:"<strong>Neptune karşıt natal Merkür</strong> (0.2°, EXACT) — yanıltıcı haberler","o":"0.2°"},
+      {i:"⚠️",t:"Mars karşıt natal Mars (2.8°) — enerji çatışması","o":"2.8°"},
+    ],an:"Neptune tam natal Merkür karşıtı = yanıltıcı arz/talep haberleri. <strong>Belirsizlik — gerçek fiyat trendini okumak güçleşir.</strong>"},
+    {m:"Haziran 2026",v:"bull",s:70,aspects:[
+      {i:"✅",t:"<strong>Uranüs trigon natal Merkür</strong> (0.5°, EXACT) — teknoloji/yeşil enerji sanayi talebi","o":"0.5°"},
+      {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (1.3°) — güçlü tetikleyici","o":"1.3°"},
+      {i:"✅",t:"<strong>Plüton trigon natal Merkür</strong> (1.7°) — dönüşüm enerjisi","o":"1.7°"},
+    ],an:"Uranüs tam natal Merkür trigonu — EV/güneş enerjisi/elektronik sanayi gümüş talebi patlayabilir. <strong>Güçlü yükseliş, sanayi odaklı.</strong>"},
+    {m:"Temmuz 2026",v:"bull",s:68,aspects:[
+      {i:"✅",t:"<strong>Jüpiter sextil natal Merkür</strong> (0.1°, TAM EXACT) — değer/haber zirvesi","o":"0.1°"},
+      {i:"✅",t:"<strong>Uranüs trigon natal Merkür</strong> (1.0°) — teknoloji talebi devam","o":"1.0°"},
+      {i:"⚠️",t:"Satürn kare natal Ay (1.7°) — emtia talebi frenleniyor","o":"1.7°"},
+    ],an:"Jupiter tam natal Merkür sextili + Uranüs. <strong>Olumlu haberler ve sanayi açıklamaları gümüşü yukarı taşır.</strong>"},
+    {m:"Ağustos 2026",v:"bear",s:32,aspects:[
+      {i:"🔴",t:"<strong>Mars kare natal Merkür</strong> (0.7°, EXACT) — sert düzeltme tetikleyici","o":"0.7°"},
+      {i:"⚠️",t:"Satürn kare natal Ay (1.9°) — emtia baskısı","o":"1.9°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (0.6°) — yeniden belirsizlik","o":"0.6°"},
+    ],an:"Mars tam natal Merkür karesi — haber odaklı ani sert düşüş. <strong>Düşüş ayı, kısa satış tehlikesi.</strong>"},
+    {m:"Eylül 2026",v:"volatile",s:55,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (1.0°) — büyüme","o":"1.0°"},
+      {i:"⚠️",t:"<strong>Jüpiter karşıt natal Satürn</strong> (1.0°) — büyüme ile kısıtlama çatışması","o":"1.0°"},
+      {i:"✅",t:"<strong>Mars sextil natal Venüs</strong> (0.4°, EXACT) — değer tetikleyicisi","o":"0.4°"},
+      {i:"⚡",t:"<strong>Plüton+Neptune ikili tetik natal Merkür</strong> (0.1–0.2°) — büyük dönüşüm anı","o":"0.1°"},
+    ],an:"Jüpiter Satürn kutbu ve Plüton+Neptune natal Merkür üzerinde. <strong>Çok büyük volatilite — yön belirsiz ama hareket keskin.</strong>"},
+    {m:"Ekim 2026",v:"mixed",s:50,aspects:[
+      {i:"✅",t:"<strong>Uranüs trigon natal Merkür</strong> (1.8°) — teknoloji desteği","o":"1.8°"},
+      {i:"✅",t:"<strong>Plüton trigon natal Merkür</strong> (0.4°) — dönüşüm desteği","o":"0.4°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (1.0°) — hâlâ belirsizlik","o":"1.0°"},
+    ],an:"Teknoloji sanayi desteği sürüyor ama Neptune belirsizlik katıyor. <strong>Nötr/hafif pozitif.</strong>"},
+    {m:"Kasım 2026",v:"bull",s:62,aspects:[
+      {i:"✅",t:"<strong>Uranüs trigon natal Merkür</strong> (0.7°, EXACT) — sanayi talebi güçlü","o":"0.7°"},
+      {i:"✅",t:"<strong>Plüton trigon natal Merkür</strong> (0.1°, TAM EXACT) — yapısal dönüşüm","o":"0.1°"},
+    ],an:"Hem Uranüs hem Plüton natal Merkür üzerinde — yeşil enerji dönüşümü, EV sektörü gümüş talebi. <strong>Sanayi kaynaklı yükseliş.</strong>"},
+    {m:"Aralık 2026",v:"bull",s:60,aspects:[
+      {i:"✅",t:"<strong>Uranüs trigon natal Merkür</strong> (0.6°, EXACT yakın) — teknoloji desteği","o":"0.6°"},
+      {i:"✅",t:"<strong>Plüton trigon natal Merkür</strong> (0.5°) — dönüşüm","o":"0.5°"},
+    ],an:"Plüton ve Uranüs natal Merkür üzerinde. <strong>Yıl sonu kapanışa doğru teknoloji/enerji kaynaklı yükseliş.</strong>"},
+  ],
+  2027: [
+    {m:"Ocak 2027",v:"mixed",s:50,aspects:[
+      {i:"✅",t:"<strong>Uranüs trigon natal Merkür</strong> (1.5°) — teknoloji desteği","o":"1.5°"},
+      {i:"✅",t:"<strong>Plüton trigon natal Merkür</strong> (1.4°) — dönüşüm","o":"1.4°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (1.5°) — belirsizlik","o":"1.5°"},
+    ],an:"Hem pozitif hem negatif Merkür transitleri. <strong>Nötr, yön arayışı.</strong>"},
+    {m:"Şubat 2027",v:"mixed",s:48,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (3.8°) — büyüme","o":"3.8°"},
+      {i:"⚠️",t:"<strong>Jüpiter karşıt natal Satürn</strong> (3.8°) — gerilim","o":"3.8°"},
+      {i:"✅",t:"<strong>Mars sextil natal Mars</strong> (2.3°) — enerji","o":"2.3°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (0.7°, EXACT) — yanlış haberler","o":"0.7°"},
+    ],an:"Neptune exact natal Merkür karşıtı — yanlış arz/talep bilgileri, fiyat manipülasyonu riski. <strong>Dikkatli olunmalı, yanıltıcı aylar.</strong>"},
+    {m:"Mart 2027",v:"mixed",s:52,aspects:[
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (0.6°, EXACT) — büyüme zirvesi","o":"0.6°"},
+      {i:"⚠️",t:"Satürn kare natal Ay (1.6°) — emtia baskısı","o":"1.6°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (0.3°, EXACT) — belirsizlik zirve","o":"0.3°"},
+    ],an:"Jupiter natal Jüpiter trigonu güçlü ama Neptune belirsizliği max noktada. <strong>Fiyat haberleriyle hareket eder, net trend yok.</strong>"},
+    {m:"Nisan 2027",v:"bull",s:76,aspects:[
+      {i:"✅",t:"<strong>Uranüs trigon natal Merkür</strong> (0.0°, TAM EXACT) — yılın en güçlü teknoloji sinyali","o":"0.0°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (0.6°) — büyüme","o":"0.6°"},
+      {i:"✅",t:"<strong>Jüpiter karşıt natal Satürn</strong> (0.7°) — engel aşma","o":"0.7°"},
+    ],an:"Uranüs tam natal Merkür trigonu — EV, güneş paneli, elektronik sektöründen ani gümüş talebi patlaması. <strong>Güçlü sanayi kaynaklı yükseliş.</strong>"},
+    {m:"Mayıs 2027",v:"bull",s:72,aspects:[
+      {i:"✅",t:"<strong>Mars sextil natal Mars</strong> (0.2°, TAM EXACT) — yıl içi en güçlü enerji tetiki","o":"0.2°"},
+      {i:"✅",t:"<strong>Jüpiter trigon natal Jüpiter</strong> (0.9°) — büyüme devam","o":"0.9°"},
+      {i:"✅",t:"Uranüs trigon natal Merkür (1.6°) — teknoloji desteği","o":"1.6°"},
+    ],an:"Mars tam natal Mars sextili — güçlü enerji tetikleyici. <strong>Güçlü yükseliş, Nisan-Mayıs zirve bölgesi.</strong>"},
+    {m:"Haziran 2027",v:"mixed",s:48,aspects:[
+      {i:"⚠️",t:"Satürn karşıt natal Mars (4.8°) — enerji freni","o":"4.8°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (3.1°) — hâlâ etkili","o":"3.1°"},
+    ],an:"Zirve sonrası konsolidasyon. <strong>Yatay/hafif düşüş, dinlenme ayı.</strong>"},
+    {m:"Temmuz 2027",v:"bear",s:35,aspects:[
+      {i:"⚠️",t:"<strong>Jüpiter sextil natal Mars</strong> (2.3°) — zayıf destek","o":"2.3°"},
+      {i:"🔴",t:"<strong>Satürn karşıt natal Mars</strong> (2.8°) — enerji baskısı","o":"2.8°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (3.2°) — belirsizlik","o":"3.2°"},
+    ],an:"Satürn natal Mars karşıtı — sanayi talebi frenlenebilir. <strong>Düşüş/zayıf ay.</strong>"},
+    {m:"Ağustos 2027",v:"mixed",s:50,aspects:[
+      {i:"✅",t:"<strong>Mars karşıt natal Jüpiter</strong> (1.1°) + <strong>trigon natal Satürn</strong> (1.1°) — çift yönlü enerji","o":"1.1°"},
+      {i:"⚠️",t:"Satürn karşıt natal Mars (2.3°) — hâlâ baskı","o":"2.3°"},
+    ],an:"Çelişkili sinyaller. <strong>Karışık, seçici haber odaklı hareketler.</strong>"},
+    {m:"Eylül 2027",v:"mixed",s:48,aspects:[
+      {i:"⚠️",t:"Satürn karşıt natal Mars (3.4°) — azalan baskı","o":"3.4°"},
+      {i:"✅",t:"<strong>Plüton trigon natal Merkür</strong> (1.6°) — dönüşüm desteği","o":"1.6°"},
+    ],an:"Satürn baskısı azalıyor. <strong>Toparlanma hazırlığı, zemin test ediliyor.</strong>"},
+    {m:"Ekim 2027",v:"bull",s:80,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Güneş</strong> (1.9°, EXACT yakın) — çok güçlü boğa sinyali","o":"1.9°"},
+      {i:"✅",t:"<strong>Jüpiter sextil natal Ay</strong> (0.8°, EXACT) — emtia talebi","o":"0.8°"},
+      {i:"⚠️",t:"Neptune karşıt natal Merkür (1.3°) — belirsizlik","o":"1.3°"},
+    ],an:"Jüpiter natal Güneş conjunct + natal Ay sextil — iki büyük güç aynı anda. <strong>Güçlü yükseliş — yılın ikinci büyük zirvesi.</strong>"},
+    {m:"Kasım 2027",v:"bull",s:85,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Venüs</strong> (0.1°, TAM EXACT) — 2027'nin en güçlü değer sinyali","o":"0.1°"},
+      {i:"⚠️",t:"<strong>Mars kare natal Venüs</strong> (0.5°, EXACT) — ani düzeltme riski","o":"0.5°"},
+    ],an:"Jüpiter tam natal Venüs conjunct = gümüşün değer zirvesi. Mars da tetikliyor. <strong>Kasım 2027 = 2-yıllık gümüş zirvesi. Yüksek risk/ödül.</strong>"},
+    {m:"Aralık 2027",v:"mixed",s:50,aspects:[
+      {i:"✅",t:"<strong>Jüpiter conjunct natal Venüs</strong> (3.5°) — hâlâ aktif","o":"3.5°"},
+      {i:"⚠️",t:"<strong>Neptune karşıt natal Merkür</strong> (0.4°, EXACT) — belirsizlik","o":"0.4°"},
+      {i:"⚠️",t:"Mars karşıt natal Ay (1.3°) — emtia satışı","o":"1.3°"},
+    ],an:"Zirve sonrası karışık. <strong>Kâr realizasyonu ve yıl sonu konsolidasyonu beklenir.</strong>"},
+  ]
+}
+};
+
+// ══════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════
+const VERDICT_LABEL = {bull:'📈 Yükseliş',bear:'📉 Düşüş',mixed:'↔️ Karışık',volatile:'⚡ Volatil'};
+const TL_COLORS = {bull:'rgba(34,197,94,.22)',bear:'rgba(239,68,68,.22)',mixed:'rgba(245,158,11,.22)',volatile:'rgba(167,139,250,.22)'};
+const TL_ICONS  = {bull:'📈',bear:'📉',mixed:'↔️',volatile:'⚡'};
+const MONTHS_SHORT = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+
+function renderGrid(inst, year) {
+  const grid = document.getElementById(`grid-${inst}-${year}`);
+  if (!grid || grid.children.length) return;
+  DATA[inst][year].forEach((m, idx) => {
+    const card = document.createElement('div');
+    card.className = `mc ${m.v}`;
+    const aspsHtml = m.aspects.map(a =>
+      `<div class="asp-item"><span class="asp-ic">${a.i}</span><span class="asp-tx">${a.t}</span><span class="asp-orb">${a.o}</span></div>`
+    ).join('');
+    card.innerHTML = `
+      <div class="mc-head">
+        <span class="mc-name">${m.m}</span>
+        <span class="badge">${VERDICT_LABEL[m.v]}</span>
+      </div>
+      <div class="sbar"><div class="sfill" style="width:${m.s}%"></div></div>
+      <div class="mc-body">
+        <div class="asp-list">${aspsHtml}</div>
+        <div class="analysis">${m.an}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderTimeline(inst) {
+  const tl = document.getElementById(`tl-${inst}`);
+  if (!tl || tl.children.length) return;
+  [2026, 2027].forEach(year => {
+    DATA[inst][year].forEach((m, idx) => {
+      const col = document.createElement('div');
+      col.className = 'tl-col';
+      col.innerHTML = `
+        <div style="font-size:.6rem;color:${year===2026?'#f7931a':'#3b82f6'};font-weight:700;margin-bottom:2px">${idx===0?year:''}</div>
+        <div class="tl-bar" style="background:${TL_COLORS[m.v]}">${TL_ICONS[m.v]}</div>
+        <div class="tl-lbl">${MONTHS_SHORT[idx]}</div>`;
+      tl.appendChild(col);
+    });
+  });
+}
+
+function showInst(inst, btn) {
+  document.querySelectorAll('.inst-panel').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.inst-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`panel-${inst}`).classList.add('visible');
+  btn.classList.add('active');
+  renderTimeline(inst);
+  renderGrid(inst, 2026);
+}
+
+function showYear(inst, year, btn) {
+  document.querySelectorAll(`#panel-${inst} .year-section`).forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll(`#panel-${inst} .year-btn`).forEach(b => b.classList.remove('active'));
+  document.getElementById(`${inst}-${year}`).classList.add('visible');
+  btn.classList.add('active');
+  renderGrid(inst, year);
+}
+
+// Init
+renderTimeline('bist'); renderGrid('bist', 2026);
+</script>
+</body>
+</html>
