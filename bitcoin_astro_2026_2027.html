@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>₿ Bitcoin Astroloji Analizi 2026–2027</title>
+  <style>
+    :root {
+      --bg:       #0d0d14;
+      --card:     #13131f;
+      --border:   #1e1e30;
+      --accent:   #f7931a;
+      --accent2:  #3b82f6;
+      --bull:     #22c55e;
+      --bear:     #ef4444;
+      --mixed:    #f59e0b;
+      --neutral:  #6b7280;
+      --text:     #e2e8f0;
+      --muted:    #94a3b8;
+      --glow:     rgba(247,147,26,.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #0d0d14 0%, #1a1030 50%, #0d0d14 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 24px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(247,147,26,.12) 0%, transparent 70%);
+    }
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -.5px;
+      color: var(--accent);
+      position: relative;
+      text-shadow: 0 0 40px rgba(247,147,26,.5);
+    }
+    header p.subtitle {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: .95rem;
+      position: relative;
+    }
+
+    /* ── NATAL CARD ── */
+    .natal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      padding: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .natal-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .natal-item .sym { font-size: 1.4rem; }
+    .natal-item .info .label { font-size: .75rem; color: var(--muted); }
+    .natal-item .info .val { font-weight: 700; font-size: .95rem; }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      text-align: center;
+      padding: 32px 24px 16px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ── YEAR TABS ── */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 24px 20px;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      padding: 8px 28px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all .2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    /* ── MONTH GRID ── */
+    .months-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 48px;
+    }
+    .year-section { display: none; }
+    .year-section.visible { display: block; }
+
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── MONTH CARD ── */
+    .month-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .month-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    }
+    .month-card.bull  { border-top: 3px solid var(--bull); }
+    .month-card.bear  { border-top: 3px solid var(--bear); }
+    .month-card.mixed { border-top: 3px solid var(--mixed); }
+    .month-card.volatile { border-top: 3px solid #a78bfa; }
+
+    .month-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 10px;
+    }
+    .month-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .verdict-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .bull  .verdict-badge { background: rgba(34,197,94,.15);  color: var(--bull); }
+    .bear  .verdict-badge { background: rgba(239,68,68,.15);  color: var(--bear); }
+    .mixed .verdict-badge { background: rgba(245,158,11,.15); color: var(--mixed); }
+    .volatile .verdict-badge { background: rgba(167,139,250,.15); color: #a78bfa; }
+
+    .strength-bar {
+      height: 4px;
+      margin: 0 16px 12px;
+      border-radius: 4px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .strength-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .5s ease;
+    }
+    .bull  .strength-fill { background: var(--bull); }
+    .bear  .strength-fill { background: var(--bear); }
+    .mixed .strength-fill { background: var(--mixed); }
+    .volatile .strength-fill { background: #a78bfa; }
+
+    .month-body { padding: 0 16px 16px; }
+
+    .planets-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .planet-chip {
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: .75rem;
+      white-space: nowrap;
+    }
+    .planet-chip.retro { color: #f87171; border-color: rgba(239,68,68,.3); }
+    .planet-chip.direct { color: #86efac; border-color: rgba(34,197,94,.2); }
+
+    .aspects-list { margin-top: 8px; }
+    .aspect-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      font-size: .82rem;
+    }
+    .aspect-item:last-child { border-bottom: none; }
+    .asp-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .asp-text { color: var(--muted); line-height: 1.4; }
+    .asp-text strong { color: var(--text); }
+    .asp-orb { margin-left: auto; color: var(--muted); font-size: .73rem; flex-shrink: 0; white-space: nowrap; }
+
+    .analysis-box {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .analysis-box strong { color: var(--text); }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 20px;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── BIG PICTURE ── */
+    .big-picture {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 48px;
+    }
+    .bp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .bp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .bp-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bp-card p { font-size: .85rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer {
+      text-align: center;
+      padding: 24px;
+      font-size: .78rem;
+      color: var(--neutral);
+      border-top: 1px solid var(--border);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ── SUMMARY TIMELINE ── */
+    .timeline-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 32px;
+      overflow-x: auto;
+    }
+    .timeline {
+      display: flex;
+      gap: 6px;
+      min-width: 700px;
+      padding: 16px 0;
+    }
+    .tl-month {
+      flex: 1;
+      text-align: center;
+    }
+    .tl-bar {
+      height: 48px;
+      border-radius: 6px;
+      margin: 0 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .tl-label { font-size: .68rem; color: var(--muted); margin-top: 4px; }
+    .tl-year  { font-size: .72rem; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--neutral);
+      font-size: .78rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header>
+  <h1>₿ Bitcoin Astroloji Analizi · 2026–2027</h1>
+  <p class="subtitle">
+    Genesis Block (3 Ocak 2009, 18:15 UTC) natal haritasına<br>
+    gezegen transitlerinin aylık analizi · <em>flatlib</em> ile hesaplanmıştır
+  </p>
+</header>
+
+<!-- ════════════════ NATAL ════════════════ -->
+<div class="section-title">🪐 Bitcoin Natal Haritası</div>
+<div class="natal-grid">
+  <div class="natal-item">
+    <span class="sym">☉</span>
+    <div class="info"><div class="label">Güneş</div><div class="val">♑ Oğlak 13°30'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">☽</span>
+    <div class="info"><div class="label">Ay</div><div class="val">♈ Koç 4°33'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">☿</span>
+    <div class="info"><div class="label">Merkür</div><div class="val">♒ Kova 2°47'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">♀</span>
+    <div class="info"><div class="label">Venüs</div><div class="val">♓ Balık 0°15'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">♂</span>
+    <div class="info"><div class="label">Mars</div><div class="val">♑ Oğlak 5°36'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">♃</span>
+    <div class="info"><div class="label">Jüpiter</div><div class="val">♑ Oğlak 29°33'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">♄</span>
+    <div class="info"><div class="label">Satürn</div><div class="val">♍ Başak 21°45' ℞</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">↑</span>
+    <div class="info"><div class="label">Yükselen (ASC)</div><div class="val">♋ Yengeç 15°55'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">↑</span>
+    <div class="info"><div class="label">MC (Kariyer)</div><div class="val">♈ Koç 18°43'</div></div>
+  </div>
+  <div class="natal-item">
+    <span class="sym">♇</span>
+    <div class="info"><div class="label">Plüton</div><div class="val">♑ Oğlak 1°21'</div></div>
+  </div>
+</div>
+
+<!-- ════════════════ LEGEND ════════════════ -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--bull)"></div> Yükseliş Beklentisi</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--bear)"></div> Düşüş / Baskı</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--mixed)"></div> Karışık / Fırsatçı</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Yüksek Volatilite</div>
+</div>
+
+<!-- ════════════════ TIMELINE ════════════════ -->
+<div class="section-title">📊 Özet Takvim</div>
+<div class="timeline-wrap">
+  <div class="timeline" id="timeline"></div>
+</div>
+
+<!-- ════════════════ TABS ════════════════ -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showYear(2026,this)">2026</button>
+  <button class="tab-btn" onclick="showYear(2027,this)">2027</button>
+</div>
+
+<!-- ════════════════ MONTHS ════════════════ -->
+<div class="months-container">
+
+  <!-- ════ 2026 ════ -->
+  <div id="year-2026" class="year-section visible">
+    <div class="months-grid" id="grid-2026"></div>
+  </div>
+
+  <!-- ════ 2027 ════ -->
+  <div id="year-2027" class="year-section">
+    <div class="months-grid" id="grid-2027"></div>
+  </div>
+
+</div>
+
+<!-- ════════════════ BIG PICTURE ════════════════ -->
+<div class="section-title">🌌 Büyük Resim — 2026-2027 Transit Temaları</div>
+<div class="big-picture">
+  <div class="bp-grid">
+    <div class="bp-card">
+      <h3><span>♇</span> Plüton ♒ Kova'da — Natal Merkür &amp; Jüpiter Üzerinde</h3>
+      <p>Plüton, Bitcoin'in doğum haritasındaki Merkür (2°47' Kova) ve Jüpiter (29°33' Oğlak) üzerinden geçerek dönüşüm yaratıyor. Bu multi-yıllık transit; kurumsal benimseme, kripto düzenlemesi ve protokol dönüşümü gibi köklü değişimleri tetikler. 2026 başı ve 2027 sonunda en güçlü orb noktalarına ulaşıyor.</p>
+    </div>
+    <div class="bp-card">
+      <h3><span>♅</span> Uranüs ♊ İkizler'e Giriyor (Mayıs 2026)</h3>
+      <p>Uranüs, İkizler burcu üzerinden Bitcoin'in natal Ay'ına (Koç) sextil ve natal Merkür'e (Kova) trigon yapıyor. İkizler = iletişim + ağlar + teknoloji. Bu transit Layer-2, yeni protokoller ya da kripto mainstream kabulü için son derece güçlü bir dönem işareti. 2026 Mayıs–2027 tüm yılı boyunca etkili.</p>
+    </div>
+    <div class="bp-card">
+      <h3><span>♄</span> Satürn ♈ Koç'ta — Natal Ay &amp; Güneş'e Baskı</h3>
+      <p>Satürn'ün Koç'ta ilerleyişi, natal Ay'ı (Koç 4°) conjunctionla ve natal Güneş'i (Oğlak 13°) kareyle zorluyor. 2026 Şubat–Ekim arası en yoğun. Bu dönem kâr satışı, düzenleyici baskı, geçici dip seviyeleri anlamına gelebilir. Ancak Satürn testleri uzun vadede güçlendirici de olabilir.</p>
+    </div>
+    <div class="bp-card">
+      <h3><span>♃</span> Jüpiter'in Yolculuğu: Yengeç → Aslan → Başak</h3>
+      <p><strong>Yengeç (2026 başı):</strong> Natal Güneş'e karşıt — aşırı genişleme riski.<br>
+      <strong>Aslan (2026 Tem–2027 Ağu):</strong> Natal Ay'a trigon, natal Merkür'e karşıt — yüksek volatilite, popüler hype.<br>
+      <strong>Başak (2027 Ağu+):</strong> Natal Güneş'e trigon, natal Satürn'e conjunct — gerçekçi, sağlam büyüme dönemi.</p>
+    </div>
+    <div class="bp-card">
+      <h3><span>♂</span> Mars Tetikleyicileri</h3>
+      <p>Mars'ın natal noktalara yaptığı geçişler kısa vadeli fiyat hareketlerini tetikler. Özellikle Nisan 2026 (natal Ay conjunct), Ağustos 2026 (natal Mars karşıtı), Haziran 2027 (natal Güneş trigon), Ekim 2027 (natal Jüpiter trigon) hareketli dönemler olarak öne çıkıyor.</p>
+    </div>
+    <div class="bp-card">
+      <h3><span>⚡</span> Öne Çıkan Kritik Anlar</h3>
+      <p>
+        <strong>Nis 2026:</strong> Uranüs 0°orb natal Jüpiter'e — ani sıçrama potansiyeli<br>
+        <strong>Tem 2026:</strong> Plüton 0°orb natal Ay — büyük dönüşüm anı<br>
+        <strong>Haz 2027:</strong> Mars trigon natal Güneş (0.5°) — yükseliş tetikleyicisi<br>
+        <strong>Eki 2027:</strong> Mars trigon natal Jüpiter (0.1°) — en güçlü boğa sinyali
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ DISCLAIMER ════════════════ -->
+<div class="disclaimer">
+  ⚠️ <strong>Bu analiz yalnızca astroloji verileri üzerine kuruludur.</strong>
+  Gerçek kripto fiyat hareketleri makroekonomik, teknik ve psikolojik faktörlerden etkilenir.
+  Yatırım tavsiyesi değildir. Kendi araştırmanızı yapın (DYOR).
+</div>
+
+<footer>
+  Hesaplama: <em>flatlib</em> · Genesis Block: 3 Ocak 2009, 18:15:05 UTC
+  · Oluşturulma: 2026-05-26
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  VERİ
+// ══════════════════════════════════════════
+const months2026 = [
+  {
+    month: "Ocak 2026", verdict: "bull", strength: 72,
+    label: "Yükseliş",
+    planets: [
+      {sym:"☉", name:"Güneş", pos:"♑ Oğlak 25°", retro: false},
+      {sym:"♃", name:"Jüpiter", pos:"♋ Yengeç 19°", retro: true},
+      {sym:"♄", name:"Satürn", pos:"♓ Balık 27°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♉ Boğa 27°", retro: true},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 3°", retro: false},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Jüpiter sextil natal Satürn</strong> (orb 2.3°) — büyüme + disiplin uyumu", orb:"2.3°"},
+      {icon:"✅", text:"<strong>Satürn sextil natal Jüpiter</strong> (orb 2.4°) — yapısal destek", orb:"2.4°"},
+      {icon:"✅", text:"<strong>Uranüs trigon natal Jüpiter</strong> (orb 1.9°) — ani teknoloji ivmesi", orb:"1.9°"},
+      {icon:"⚡", text:"<strong>Plüton conjunct natal Merkür</strong> (orb 0.4°) — derin dönüşüm, kurumsal giriş sinyali", orb:"0.4°"},
+    ],
+    analysis: "Destekleyici açılar çoğunlukta. Plüton'un natal Merkür üzerindeki tam basımı büyük haberler/açıklamalar getirebilir. <strong>Güçlü yükseliş beklentisi.</strong>"
+  },
+  {
+    month: "Şubat 2026", verdict: "mixed", strength: 45,
+    label: "Karışık",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♋ Yengeç 15°", retro: true},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 0°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♉ Boğa 27°", retro: false},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 4°", retro: false},
+    ],
+    aspects: [
+      {icon:"⚠️", text:"<strong>Jüpiter karşıt natal Güneş</strong> (orb 2.5°) — aşırı genişleme, spekülatif köpük riski", orb:"2.5°"},
+      {icon:"⚠️", text:"<strong>Satürn Koç'a giriyor — natal Ay'a yaklaşıyor</strong> (orb 4.4°) — baskı başlıyor", orb:"4.4°"},
+      {icon:"✅", text:"<strong>Satürn sextil natal Jüpiter</strong> (orb 0.6°) — zayıf yapısal destek", orb:"0.6°"},
+      {icon:"⚡", text:"<strong>Plüton conjunct natal Merkür</strong> (orb 1.4°) — transformatif enerji sürüyor", orb:"1.4°"},
+    ],
+    analysis: "Jüpiter'in natal Güneş'e karşıt duruşu ve Satürn'ün Koç'a girişi baskı oluşturuyor. <strong>Kâr satışı ve konsolidasyon beklenir.</strong>"
+  },
+  {
+    month: "Mart 2026", verdict: "bear", strength: 30,
+    label: "Düşüş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♋ Yengeç 15°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 3°", retro: false},
+      {sym:"☿", name:"Merkür", pos:"♓ Balık 9°", retro: true},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 4°", retro: false},
+    ],
+    aspects: [
+      {icon:"🔴", text:"<strong>Jüpiter karşıt natal Güneş</strong> (orb 1.6°) — en yakın karşıtlık noktası", orb:"1.6°"},
+      {icon:"🔴", text:"<strong>Satürn conjunct natal Ay</strong> (orb 1.1°) — çok güçlü baskı noktası", orb:"1.1°"},
+      {icon:"🔴", text:"<strong>Satürn kare natal Mars</strong> (orb 2.1°) — enerji bloğu, düşüş ivmesi", orb:"2.1°"},
+      {icon:"⚠️", text:"Merkür retrograd — iletişim karmaşası", orb:"—"},
+    ],
+    analysis: "Satürn natal Ay'ı tam olarak sıkıştırıyor, Jüpiter natal Güneş'e en yakın karşıt noktasında. <strong>Ciddi düşüş / dip bölgesi. Alım fırsatı olabilir.</strong>"
+  },
+  {
+    month: "Nisan 2026", verdict: "volatile", strength: 60,
+    label: "Volatil",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♋ Yengeç 17°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 7°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♈ Koç 4°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♉ Boğa 29°", retro: false},
+    ],
+    aspects: [
+      {icon:"⚡", text:"<strong>Uranüs 0°orb natal Jüpiter</strong> — son derece nadir, ani/beklenmedik büyük hareket", orb:"0.1°"},
+      {icon:"⚡", text:"<strong>Mars conjunct natal Ay</strong> (orb 0.1°) — tetikleyici, ani volatilite", orb:"0.1°"},
+      {icon:"🔴", text:"<strong>Satürn conjunct natal Ay</strong> (orb 2.8°) — hâlâ baskı altında", orb:"2.8°"},
+      {icon:"🔴", text:"<strong>Satürn kare natal Mars</strong> (orb 1.7°) — enerji gerilimi", orb:"1.7°"},
+    ],
+    analysis: "Uranüs tam natal Jüpiter üzerinde + Mars natal Ay'da. <strong>Tarihsel ATH kırılması ya da dramatik dip — ikisi de mümkün. En volatil ay.</strong>"
+  },
+  {
+    month: "Mayıs 2026", verdict: "bull", strength: 68,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♋ Yengeç 21°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 10°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 1°", retro: false},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 5°", retro: true},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Uranüs İkizler'e giriyor!</strong> Natal Ay sextil, natal Merkür trigon — teknoloji rönesansı", orb:"~"},
+      {icon:"✅", text:"<strong>Jüpiter sextil natal Satürn</strong> (orb 0.6°) — en güçlü stabilizasyon açısı", orb:"0.6°"},
+      {icon:"⚠️", text:"<strong>Satürn kare natal Güneş</strong> (orb 2.8°) — hâlâ gerilim var", orb:"2.8°"},
+    ],
+    analysis: "Uranüs'ün İkizler'e girişi kripto için yeni bir dönem başlatabilir. Jüpiter de destekleyici. <strong>Güçlü boğa sinyali, yeni yükseliş trendinin başlangıcı olabilir.</strong>"
+  },
+  {
+    month: "Haziran 2026", verdict: "bear", strength: 28,
+    label: "Düşüş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♋ Yengeç 26°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 13°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 2°", retro: false},
+    ],
+    aspects: [
+      {icon:"🔴", text:"<strong>Satürn tam kare natal Güneş</strong> (orb 0.2°) — yılın en ağır basıncı", orb:"0.2°"},
+      {icon:"⚠️", text:"<strong>Jüpiter karşıt natal Jüpiter</strong> (orb 2.6°) — aşırı iyimserlik düzeltmesi", orb:"2.6°"},
+      {icon:"✅", text:"<strong>Uranüs trigon natal Merkür</strong> (orb 0.1°) — teknoloji haberleri", orb:"0.1°"},
+    ],
+    analysis: "Satürn natal Güneş'i tam kareden sıkıştırıyor. <strong>Sert düzeltme dönemi. Uzun vadeli dip alımı için izleme zamanı.</strong>"
+  },
+  {
+    month: "Temmuz 2026", verdict: "volatile", strength: 65,
+    label: "Volatil",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 3°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 14°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 4°", retro: false},
+      {sym:"☿", name:"Merkür", pos:"♋ Yengeç 19°", retro: true},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 4°", retro: true},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Jüpiter Aslan'a geçiyor — natal Ay trigon</strong> (orb 1.2°) — halka yönelik büyüme", orb:"1.2°"},
+      {icon:"⚡", text:"<strong>Plüton sextil natal Ay</strong> (orb 0.0°) — tam isabet! Büyük dönüşüm anı", orb:"0.0°"},
+      {icon:"🔴", text:"<strong>Satürn kare natal Güneş</strong> (orb 1.1°) — hâlâ baskı", orb:"1.1°"},
+      {icon:"⚠️", text:"Merkür retrograd — sahte sinyal riski yüksek", orb:"—"},
+    ],
+    analysis: "Jüpiter Aslan'a geçiyor (halkçı enerji), Plüton tam natal Ay üzerinde. <strong>Çatışmalı sinyaller → yüksek volatilite. Kısa vadeli dalgalanmalar keskin olabilir.</strong>"
+  },
+  {
+    month: "Ağustos 2026", verdict: "bear", strength: 32,
+    label: "Düşüş",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 14°", retro: true},
+      {sym:"♂", name:"Mars", pos:"♋ Yengeç 2°", retro: false},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 3°", retro: true},
+    ],
+    aspects: [
+      {icon:"🔴", text:"<strong>Satürn kare natal Güneş</strong> (orb 0.9°) — Satürn retrograd, baskı yoğunlaşıyor", orb:"0.9°"},
+      {icon:"🔴", text:"<strong>Mars kare natal Ay</strong> (orb 1.8°) — agresif satış tetikleyicisi", orb:"1.8°"},
+      {icon:"🔴", text:"<strong>Mars karşıt natal Mars</strong> (orb 2.9°) — enerji çatışması", orb:"2.9°"},
+    ],
+    analysis: "Satürn retrograd hâlâ Güneş'i basıyor, Mars da çift olumsuz açı yapıyor. <strong>Zayıf, düşük hacimli düşüş dönemi.</strong>"
+  },
+  {
+    month: "Eylül 2026", verdict: "mixed", strength: 48,
+    label: "Karışık",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 12°", retro: true},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 5°", retro: true},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 3°", retro: true},
+    ],
+    aspects: [
+      {icon:"⚠️", text:"<strong>Satürn kare natal Güneş</strong> (orb 0.8°) — hâlâ yakın", orb:"0.8°"},
+      {icon:"✅", text:"<strong>Mars sextil natal Satürn</strong> (orb 0.7°) — kısa süreli toparlanma itici", orb:"0.7°"},
+      {icon:"✅", text:"<strong>Uranüs sextil natal Ay</strong> (orb 1.1°) — teknoloji haberleri destek", orb:"1.1°"},
+    ],
+    analysis: "Satürn baskısı sürüyor ama hafif toparlanma sinyalleri de var. <strong>Yatay/nötr seyir, dip test dönemi.</strong>"
+  },
+  {
+    month: "Ekim 2026", verdict: "mixed", strength: 52,
+    label: "Karışık",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 10°", retro: true},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 3°", retro: false},
+    ],
+    aspects: [
+      {icon:"⚡", text:"<strong>Plüton durağan (stationary) — natal Merkür üzerinde</strong> (orb 0.3°) — yönetim/regülasyon olayı", orb:"0.3°"},
+      {icon:"✅", text:"<strong>Uranüs sextil natal Ay</strong> (orb 0.7°) — pozitif teknoloji dönüşümü", orb:"0.7°"},
+      {icon:"⚠️", text:"Satürn retrograd, ama hafifliyor", orb:"—"},
+    ],
+    analysis: "Plüton durağan noktada natal Merkür üzerinde = büyük kripto haberi/açıklaması beklenir. <strong>Volatil ama toparlanma başlangıcı olabilir.</strong>"
+  },
+  {
+    month: "Kasım 2026", verdict: "mixed", strength: 50,
+    label: "Karışık",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 8°", retro: true},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 4°", retro: true},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 3°", retro: false},
+    ],
+    aspects: [
+      {icon:"⚠️", text:"<strong>Satürn conjunct natal Ay</strong> (orb 4.0°) — Satürn retrograd, hâlâ etkili", orb:"4.0°"},
+      {icon:"🔴", text:"<strong>Satürn kare natal Mars</strong> (orb 2.9°) — enerji baskısı devam", orb:"2.9°"},
+      {icon:"✅", text:"<strong>Uranüs trigon natal Merkür</strong> (orb 1.3°) — teknoloji inovasyonu", orb:"1.3°"},
+    ],
+    analysis: "Satürn retrograd hâlâ bölgede. <strong>Yatay seyir, belirsizlik. Yıl sonu öncesi bekleme modunda.</strong>"
+  },
+  {
+    month: "Aralık 2026", verdict: "bull", strength: 62,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 7°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 2°", retro: true},
+      {sym:"♂", name:"Mars", pos:"♍ Başak 6°", retro: false},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 3°", retro: false},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Uranüs trigon natal Merkür</strong> (orb 0.1°) — tam isabet, teknoloji haberlerine duyarlı", orb:"0.1°"},
+      {icon:"✅", text:"<strong>Mars trigon natal Mars</strong> (orb 1.0°) — güçlü enerjik ivme", orb:"1.0°"},
+      {icon:"⚠️", text:"Satürn hâlâ Koç bölgesinde (ama zayıflıyor)", orb:"—"},
+    ],
+    analysis: "Uranüs tam natal Merkür trigonunda, Mars da natal Mars'ı trigonluyor. <strong>Yıl sonu rallisi için güçlü sinyal. Toparlanma ivme kazanıyor.</strong>"
+  },
+];
+
+const months2027 = [
+  {
+    month: "Ocak 2027", verdict: "mixed", strength: 48,
+    label: "Karışık",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 9°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♍ Başak 10°", retro: true},
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 25°", retro: true},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 1°", retro: true},
+    ],
+    aspects: [
+      {icon:"⚠️", text:"<strong>Satürn kare natal Güneş/Ay</strong> — hem Güneş hem Ay baskı altında", orb:"4.5°"},
+      {icon:"✅", text:"<strong>Mars trigon natal Güneş</strong> (orb 3.2°) — zayıf pozitif ivme", orb:"3.2°"},
+      {icon:"✅", text:"<strong>Uranüs trigon natal Merkür</strong> (orb 0.9°) — teknoloji haberleri", orb:"0.9°"},
+      {icon:"⚠️", text:"Mars retrograd — enerji bölünük", orb:"—"},
+    ],
+    analysis: "Karışık sinyaller. Birden fazla gezegen retrograd. <strong>Konsolidasyon devam ediyor, büyük hareket beklenmiyor.</strong>"
+  },
+  {
+    month: "Şubat 2027", verdict: "bear", strength: 35,
+    label: "Düşüş",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 11°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♍ Başak 2°", retro: true},
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 21°", retro: true},
+      {sym:"☿", name:"Merkür", pos:"♓ Balık 3°", retro: true},
+    ],
+    aspects: [
+      {icon:"🔴", text:"<strong>Satürn kare natal Güneş</strong> (orb 1.9°) — Satürn geri giriyor sıkışmaya", orb:"1.9°"},
+      {icon:"⚠️", text:"Üç gezegen retrograd aynı anda", orb:"—"},
+      {icon:"✅", text:"<strong>Uranüs trigon natal Merkür</strong> (orb 1.1°) — zayıf destek", orb:"1.1°"},
+    ],
+    analysis: "Üçlü retrograd + Satürn basısı. <strong>Zayıf aylardan biri, fiyat geri çekilmesi veya yatay seyir.</strong>"
+  },
+  {
+    month: "Mart 2027", verdict: "bear", strength: 33,
+    label: "Düşüş",
+    planets: [
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 14°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♌ Aslan 22°", retro: true},
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 18°", retro: true},
+    ],
+    aspects: [
+      {icon:"🔴", text:"<strong>Satürn kare natal Güneş</strong> (orb 1.3°) — baskı yeniden güçleniyor", orb:"1.3°"},
+      {icon:"⚠️", text:"Jüpiter ve Mars retrograd Leo'da", orb:"—"},
+      {icon:"✅", text:"<strong>Uranüs trigon natal Merkür</strong> (orb 0.6°) — teknoloji ivmesi", orb:"0.6°"},
+    ],
+    analysis: "Satürn basısı, retrograd enerjisi. <strong>Dip bölgesi, 2027'nin en zayıf dönemi.</strong>"
+  },
+  {
+    month: "Nisan 2027", verdict: "bull", strength: 66,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 17°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 18°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 3°", retro: false},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Uranüs sextil natal Ay</strong> (orb 1.1°) — teknoloji pozitif", orb:"1.1°"},
+      {icon:"✅", text:"<strong>Uranüs trigon natal Merkür</strong> (orb 0.7°) — inovasyon ivmesi", orb:"0.7°"},
+      {icon:"⚠️", text:"Satürn uzaklaşıyor, baskı hafifliyor", orb:"—"},
+    ],
+    analysis: "Retrograd dönemleri bitiyor, Satürn uzaklaşıyor. <strong>Toparlanma hızlanıyor, yeni yükseliş dalgası başlayabilir.</strong>"
+  },
+  {
+    month: "Mayıs 2027", verdict: "bull", strength: 74,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 18°", retro: false},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 5°", retro: false},
+      {sym:"♇", name:"Plüton", pos:"♒ Kova 7°", retro: true},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Uranüs sextil natal Ay</strong> (orb 0.5°) — yılın en güçlü Uranüs aktivasyonu", orb:"0.5°"},
+      {icon:"✅", text:"Majör malefic baskısı yok", orb:"—"},
+      {icon:"✅", text:"Jüpiter Leo'da ilerliyor — popüler ilgi artıyor", orb:"—"},
+    ],
+    analysis: "Uranüs tam natal Ay'ı sextilliyor, Satürn uzakta. <strong>Güçlü yükseliş dönemi. Mainstream ilgi artışı.</strong>"
+  },
+  {
+    month: "Haziran 2027", verdict: "bull", strength: 78,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 22°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 25°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♍ Başak 14°", retro: false},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Mars trigon natal Güneş</strong> (orb 0.5°) — çok güçlü yükseliş tetikleyicisi", orb:"0.5°"},
+      {icon:"⚠️", text:"Satürn kare natal Jüpiter başlıyor (orb 4.2°)", orb:"4.2°"},
+    ],
+    analysis: "Mars natal Güneş'e tam trigon yapıyor. <strong>Yılın en güçlü haberci aylarından biri. Yüksek fiyat hedefleri test edilebilir.</strong>"
+  },
+  {
+    month: "Temmuz 2027", verdict: "mixed", strength: 52,
+    label: "Karışık",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♌ Aslan 27°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 27°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♎ Terazi 0°", retro: false},
+    ],
+    aspects: [
+      {icon:"⚠️", text:"<strong>Satürn kare natal Jüpiter</strong> (orb 2.2°) — yükseliş frenleniyor", orb:"2.2°"},
+      {icon:"✅", text:"<strong>Mars trigon natal Jüpiter</strong> (orb 0.6°) — kısa süreli ivme", orb:"0.6°"},
+    ],
+    analysis: "Satürn frenlemeye başlıyor ama Mars tetikliyor. <strong>Sert yukarı-aşağı dalgalanmalar. Kâr realizasyonu zamanı olabilir.</strong>"
+  },
+  {
+    month: "Ağustos 2027", verdict: "bull", strength: 76,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♍ Başak 4°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 27°", retro: true},
+      {sym:"♅", name:"Uranüs", pos:"♊ İkizler 9°", retro: false},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Jüpiter Başak'a geçiyor — trigon natal Mars</strong> (orb 1.3°) — organik büyüme", orb:"1.3°"},
+      {icon:"⚠️", text:"<strong>Satürn kare natal Jüpiter</strong> (orb 1.7°) — hafif frenleme", orb:"1.7°"},
+    ],
+    analysis: "Jüpiter Başak'a geçerek natal Mars'ı trigonluyor — organik, temelli büyüme. <strong>Güçlü yükseliş ayı.</strong>"
+  },
+  {
+    month: "Eylül 2027", verdict: "bull", strength: 80,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♍ Başak 10°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 26°", retro: true},
+      {sym:"♂", name:"Mars", pos:"♏ Akrep 8°", retro: false},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Jüpiter trigon natal Güneş</strong> (orb 2.5°) — klasik boğa sinyali!", orb:"2.5°"},
+      {icon:"✅", text:"<strong>Mars sextil natal Güneş</strong> (orb 4.6°) — ek ivme", orb:"4.6°"},
+      {icon:"⚠️", text:"Satürn retrograd, natal Jüpiter'e kare yaklaşıyor", orb:"—"},
+    ],
+    analysis: "Jüpiter natal Güneş'e trigon — geleneksel astrolojinin en güçlü boğa sinyallerinden biri. <strong>2027'nin zirvesi bu dönemde olabilir.</strong>"
+  },
+  {
+    month: "Ekim 2027", verdict: "bull", strength: 82,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♍ Başak 17°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♏ Akrep 29°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 24°", retro: true},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Jüpiter trigon natal Güneş</strong> (orb 3.7°) — devam", orb:"3.7°"},
+      {icon:"✅", text:"<strong>Mars trigon natal Jüpiter</strong> (orb 0.1°) — TAM tetikleyici", orb:"0.1°"},
+      {icon:"✅", text:"<strong>Jüpiter conjunct natal Satürn</strong> başlıyor (orb 4.6°)", orb:"4.6°"},
+    ],
+    analysis: "Mars tam natal Jüpiter'i trigonluyor + Jüpiter natal Güneş trigonu. <strong>İki yılın en güçlü boğa kombinasyonu. Potansiyel ATH bölgesi.</strong>"
+  },
+  {
+    month: "Kasım 2027", verdict: "mixed", strength: 45,
+    label: "Karışık",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♍ Başak 22°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 22°", retro: true},
+      {sym:"♂", name:"Mars", pos:"♐ Yay 22°", retro: false},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Jüpiter conjunct natal Satürn</strong> (orb 0.9°) — zorlukları aşma enerjisi", orb:"0.9°"},
+      {icon:"🔴", text:"<strong>Mars kare natal Satürn</strong> (orb 0.5°) — sert düzeltme tetikleyicisi", orb:"0.5°"},
+      {icon:"⚠️", text:"Satürn retrograd, geri dönüyor", orb:"—"},
+    ],
+    analysis: "Ekim zirvesinin ardından Mars kare natal Satürn keskin bir düzeltme getirebilir. <strong>Kâr satışı dönemi. Zirveyi kaçırmamak için dikkatli olunmalı.</strong>"
+  },
+  {
+    month: "Aralık 2027", verdict: "bull", strength: 65,
+    label: "Yükseliş",
+    planets: [
+      {sym:"♃", name:"Jüpiter", pos:"♍ Başak 26°", retro: false},
+      {sym:"♂", name:"Mars", pos:"♑ Oğlak 15°", retro: false},
+      {sym:"♄", name:"Satürn", pos:"♈ Koç 21°", retro: true},
+    ],
+    aspects: [
+      {icon:"✅", text:"<strong>Mars conjunct natal Güneş</strong> (orb 1.6°) — yıl sonu enerjisi", orb:"1.6°"},
+      {icon:"✅", text:"<strong>Jüpiter conjunct natal Satürn / trigon natal Jüpiter</strong> — yapısal büyüme", orb:"3.3°"},
+    ],
+    analysis: "Mars natal Güneş'i aktive ediyor, Jüpiter destekleyici. <strong>Toparlanma + yıl sonu rallisi beklentisi.</strong>"
+  },
+];
+
+// ══════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════
+function renderMonths(data, gridId) {
+  const grid = document.getElementById(gridId);
+  data.forEach(m => {
+    const card = document.createElement('div');
+    card.className = `month-card ${m.verdict}`;
+
+    const pChips = m.planets.map(p =>
+      `<span class="planet-chip ${p.retro ? 'retro' : 'direct'}">${p.sym} ${p.name} ${p.retro ? '℞' : ''}</span>`
+    ).join('');
+
+    const aspHtml = m.aspects.map(a =>
+      `<div class="aspect-item">
+        <span class="asp-icon">${a.icon}</span>
+        <span class="asp-text">${a.text}</span>
+        <span class="asp-orb">${a.orb}</span>
+      </div>`
+    ).join('');
+
+    const badgeText = {
+      bull: '📈 ' + m.label,
+      bear: '📉 ' + m.label,
+      mixed: '↔️ ' + m.label,
+      volatile: '⚡ ' + m.label,
+    }[m.verdict];
+
+    card.innerHTML = `
+      <div class="month-header">
+        <span class="month-name">${m.month}</span>
+        <span class="verdict-badge">${badgeText}</span>
+      </div>
+      <div class="strength-bar">
+        <div class="strength-fill" style="width:${m.strength}%"></div>
+      </div>
+      <div class="month-body">
+        <div class="planets-row">${pChips}</div>
+        <div class="aspects-list">${aspHtml}</div>
+        <div class="analysis-box">${m.analysis}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── TIMELINE ──────────────────────────────
+function renderTimeline() {
+  const tl = document.getElementById('timeline');
+  const allData = [
+    ...months2026.map(m => ({...m, year:'2026'})),
+    ...months2027.map(m => ({...m, year:'2027'})),
+  ];
+
+  const colors = {
+    bull: 'rgba(34,197,94,.25)',
+    bear: 'rgba(239,68,68,.25)',
+    mixed: 'rgba(245,158,11,.25)',
+    volatile: 'rgba(167,139,250,.25)',
+  };
+  const icons = { bull:'📈', bear:'📉', mixed:'↔️', volatile:'⚡' };
+
+  allData.forEach((m, i) => {
+    const div = document.createElement('div');
+    div.className = 'tl-month';
+    const shortLabel = m.month.split(' ')[0].substring(0,3);
+    const isFirst = i === 0 || allData[i-1].year !== m.year;
+    div.innerHTML = `
+      ${isFirst ? `<div class="tl-year">${m.year}</div>` : '<div class="tl-year" style="visibility:hidden">x</div>'}
+      <div class="tl-bar" style="background:${colors[m.verdict]}">${icons[m.verdict]}</div>
+      <div class="tl-label">${shortLabel}</div>`;
+    tl.appendChild(div);
+  });
+}
+
+function showYear(year, btn) {
+  document.querySelectorAll('.year-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`year-${year}`).classList.add('visible');
+  btn.classList.add('active');
+}
+
+renderMonths(months2026, 'grid-2026');
+renderMonths(months2027, 'grid-2027');
+renderTimeline();
+</script>
+</body>
+</html>
