@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Türkiye Cumhuriyeti · Mundane Astroloji Analizi 2026–2027</title>
+  <style>
+    :root{
+      --bg:#0e0c0a;--card:#16130f;--border:#251f17;
+      --accent:#dc8c3a;--accent2:#f0b060;
+      --bull:#22c55e;--bear:#ef4444;--mixed:#f59e0b;--volatile:#a78bfa;--critical:#ff6b6b;
+      --text:#e8e0d0;--muted:#9d9080;--neutral:#6b6055;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.6}
+
+    header{
+      background:linear-gradient(160deg,#0e0c0a 0%,#1a1205 40%,#0e0c0a 100%);
+      border-bottom:1px solid var(--border);padding:40px 24px 32px;text-align:center;position:relative;overflow:hidden
+    }
+    header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(220,140,58,.12) 0%,transparent 68%)}
+    .logo{font-size:2.6rem;margin-bottom:6px;position:relative}
+    header h1{font-size:clamp(1.4rem,3.2vw,2.1rem);font-weight:800;color:var(--accent2);position:relative;text-shadow:0 0 40px rgba(240,176,96,.35)}
+    header p{color:var(--muted);margin-top:8px;font-size:.88rem;position:relative}
+    .birth-info{
+      display:inline-flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:16px;
+      background:rgba(220,140,58,.07);border:1px solid rgba(220,140,58,.22);border-radius:10px;padding:10px 20px;position:relative
+    }
+    .bi{font-size:.8rem;color:var(--muted)}.bi strong{color:var(--text)}
+
+    .notice{
+      max-width:760px;margin:20px auto;padding:12px 18px;
+      background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:10px;
+      font-size:.82rem;color:var(--muted);text-align:center;line-height:1.5
+    }
+    .notice strong{color:var(--accent2)}
+
+    .section-title{text-align:center;padding:26px 24px 12px;font-size:1.15rem;font-weight:700;color:var(--accent2)}
+    .natal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:8px;max-width:1100px;margin:0 auto;padding:0 16px}
+    .ni{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:9px}
+    .ni .sym{font-size:1.25rem}
+    .ni .lbl{font-size:.7rem;color:var(--muted)}
+    .ni .val{font-size:.87rem;font-weight:700}
+
+    .legend{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;padding:18px;font-size:.8rem;color:var(--muted)}
+    .ldot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px}
+
+    .tl-wrap{max-width:1100px;margin:0 auto;padding:0 16px 8px;overflow-x:auto}
+    .tl{display:flex;gap:5px;min-width:680px;padding:8px 0 4px}
+    .tl-col{flex:1;text-align:center}
+    .tl-bar{height:44px;border-radius:6px;margin:0 1px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+    .tl-yr{font-size:.6rem;font-weight:700;margin-bottom:2px}
+    .tl-lb{font-size:.62rem;color:var(--muted);margin-top:3px}
+
+    .tabs{display:flex;justify-content:center;gap:8px;padding:20px 0 14px}
+    .tab-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:7px 26px;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+    .tab-btn.active,.tab-btn:hover{background:rgba(220,140,58,.15);color:var(--accent2);border-color:var(--accent)}
+
+    .year-section{display:none}
+    .year-section.visible{display:block}
+    .months-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;max-width:1100px;margin:0 auto;padding:0 16px}
+
+    .mc{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;transition:transform .18s,box-shadow .18s}
+    .mc:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,0,0,.5)}
+    .mc.stable{border-top:3px solid var(--bull)}
+    .mc.crisis{border-top:3px solid var(--bear)}
+    .mc.tense{border-top:3px solid var(--mixed)}
+    .mc.volatile{border-top:3px solid var(--volatile)}
+    .mc.critical{border-top:3px solid var(--critical);background:#1a0f0f}
+
+    .mc-head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px 8px}
+    .mc-name{font-size:.98rem;font-weight:700}
+    .badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:3px 11px;font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+    .stable .badge{background:rgba(34,197,94,.12);color:var(--bull)}
+    .crisis .badge{background:rgba(239,68,68,.12);color:var(--bear)}
+    .tense .badge{background:rgba(245,158,11,.12);color:var(--mixed)}
+    .volatile .badge{background:rgba(167,139,250,.12);color:var(--volatile)}
+    .critical .badge{background:rgba(255,107,107,.18);color:#ff8080;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+    .sbar{height:3px;margin:0 15px 10px;background:var(--border);border-radius:3px;overflow:hidden}
+    .sfill{height:100%;border-radius:3px}
+    .stable .sfill{background:var(--bull)}.crisis .sfill{background:var(--bear)}
+    .tense .sfill{background:var(--mixed)}.volatile .sfill{background:var(--volatile)}
+    .critical .sfill{background:var(--critical)}
+
+    .mc-body{padding:0 15px 15px}
+    .asp-item{display:flex;align-items:flex-start;gap:7px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.79rem}
+    .asp-item:last-child{border-bottom:none}
+    .asp-ic{font-size:.93rem;flex-shrink:0;margin-top:1px}
+    .asp-tx{color:var(--muted);line-height:1.4;flex:1}
+    .asp-tx strong{color:var(--text)}
+    .asp-orb{color:var(--neutral);font-size:.7rem;white-space:nowrap;flex-shrink:0}
+    .analysis{background:rgba(220,140,58,.06);border:1px solid rgba(220,140,58,.18);border-radius:8px;padding:9px 12px;margin-top:9px;font-size:.8rem;color:var(--muted);line-height:1.5}
+    .analysis strong{color:var(--text)}
+    .analysis.critical-box{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.3)}
+
+    /* SEÇİM KUTUSU */
+    .election-box{
+      max-width:1100px;margin:32px auto 0;padding:0 16px
+    }
+    .election-card{
+      background:var(--card);border:2px solid rgba(220,140,58,.4);border-radius:14px;padding:24px;
+      background:linear-gradient(135deg,#16130f 0%,#1c1608 100%)
+    }
+    .election-card h2{font-size:1.1rem;font-weight:800;color:var(--accent2);margin-bottom:16px}
+    .election-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+    .e-item{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:10px;padding:14px}
+    .e-item h3{font-size:.88rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+    .e-item p{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+    .bp-wrap{max-width:1100px;margin:32px auto 0;padding:0 16px 48px}
+    .bp-title{font-size:1.05rem;font-weight:700;color:var(--accent2);margin:0 0 12px;letter-spacing:.4px}
+    .bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:12px}
+    .bp-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:17px}
+    .bp-card h3{font-size:.9rem;font-weight:700;margin-bottom:8px;color:var(--accent2)}
+    .bp-card p{font-size:.8rem;color:var(--muted);line-height:1.55}
+
+    .disclaimer{text-align:center;padding:20px;font-size:.74rem;color:var(--neutral);border-top:1px solid var(--border);max-width:740px;margin:0 auto}
+    footer{text-align:center;padding:18px;color:var(--neutral);font-size:.73rem;border-top:1px solid var(--border)}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🇹🇷</div>
+  <h1>Türkiye Cumhuriyeti · Mundane Astroloji Analizi 2026–2027</h1>
+  <p>Cumhuriyet'in kuruluş natal haritasına dayalı siyasi döngü ve seçim takvimi analizi</p>
+  <div class="birth-info">
+    <div class="bi">📅 <strong>29 Ekim 1923</strong></div>
+    <div class="bi">🕗 <strong>20:30 yerel saat</strong></div>
+    <div class="bi">📍 <strong>Ankara (39°55'N, 32°52'E)</strong></div>
+    <div class="bi">🏠 <strong>Placidus · UTC+2</strong></div>
+  </div>
+</header>
+
+<div class="notice">
+  <strong>⚠️ Önemli Not:</strong> Bu analiz tamamen astrolojik transit hesaplarına dayanmaktadır.
+  Herhangi bir siyasi tarafı desteklemiyor, herhangi bir kişi veya partiyi hedef almıyor.
+  Müneccimlik (<em>mundane astrology</em>) ülkelerin döngüsel eğilimlerini inceleme yöntemidir.
+  Kesin öngörü iddiası taşımaz — bu bir yorum çerçevesidir.
+</div>
+
+<div class="section-title">🪐 Türkiye Cumhuriyeti Natal Haritası</div>
+<div class="natal-grid">
+  <div class="ni"><span class="sym">☉</span><div><div class="lbl">Güneş</div><div class="val">♏ Akrep 5°18'</div></div></div>
+  <div class="ni"><span class="sym">☽</span><div><div class="lbl">Ay</div><div class="val">♊ İkizler 29°55'</div></div></div>
+  <div class="ni"><span class="sym">☿</span><div><div class="lbl">Merkür</div><div class="val">♎ Terazi 24°27'</div></div></div>
+  <div class="ni"><span class="sym">♀</span><div><div class="lbl">Venüs</div><div class="val">♏ Akrep 18°12'</div></div></div>
+  <div class="ni"><span class="sym">♂</span><div><div class="lbl">Mars</div><div class="val">♎ Terazi 7°24'</div></div></div>
+  <div class="ni"><span class="sym">♃</span><div><div class="lbl">Jüpiter</div><div class="val">♏ Akrep 24°17'</div></div></div>
+  <div class="ni"><span class="sym">♄</span><div><div class="lbl">Satürn</div><div class="val">♎ Terazi 24°33'</div></div></div>
+  <div class="ni"><span class="sym">♅</span><div><div class="lbl">Uranüs</div><div class="val">♓ Balık 13°54' ℞</div></div></div>
+  <div class="ni"><span class="sym">♆</span><div><div class="lbl">Neptün</div><div class="val">♌ Aslan 20°13'</div></div></div>
+  <div class="ni"><span class="sym">♇</span><div><div class="lbl">Plüton</div><div class="val">♋ Yengeç 12°20' ℞</div></div></div>
+  <div class="ni"><span class="sym">↑</span><div><div class="lbl">Yükselen (ASC)</div><div class="val">♋ Yengeç 7°46'</div></div></div>
+  <div class="ni"><span class="sym">↑</span><div><div class="lbl">MC (Devlet Tepesi)</div><div class="val">♓ Balık 16°20'</div></div></div>
+</div>
+
+<div class="legend">
+  <span><span class="ldot" style="background:var(--bull)"></span>İstikrarlı/Pozitif</span>
+  <span><span class="ldot" style="background:var(--bear)"></span>Gergin/Baskı</span>
+  <span><span class="ldot" style="background:var(--mixed)"></span>Karışık/Belirsiz</span>
+  <span><span class="ldot" style="background:var(--volatile)"></span>Volatil/Hareketli</span>
+  <span><span class="ldot" style="background:var(--critical)"></span>Kritik Kırılma</span>
+</div>
+
+<div class="tl-wrap"><div class="tl" id="tl"></div></div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showYear(2026,this)">2026</button>
+  <button class="tab-btn" onclick="showYear(2027,this)">2027</button>
+</div>
+
+<div id="y2026" class="year-section visible"><div class="months-grid" id="g2026"></div></div>
+<div id="y2027" class="year-section"><div class="months-grid" id="g2027"></div></div>
+
+<!-- SEÇİM ANALİZİ -->
+<div class="election-box">
+  <div class="election-card">
+    <h2>🗳️ Seçim Takvimi Astrolojik Perspektifi</h2>
+    <div class="election-grid">
+      <div class="e-item">
+        <h3>📅 Planlanan Seçim: Haziran 2028</h3>
+        <p>Anayasal takvime göre cumhurbaşkanlığı ve milletvekili seçimleri Haziran 2028'de yapılacak. Astrolojik olarak bu tarihte Jüpiter Oğlak'ta natal Güneş'e yaklaşıyor — meşruiyet ve onay sinyali.</p>
+      </div>
+      <div class="e-item">
+        <h3>⚡ Erken Seçim Penceresi: Ekim–Aralık 2027</h3>
+        <p>Satürn çift exact natal Merkür/Satürn karşıtı (Ekim 2027, 0.1–0.2°) + Uranüs exact natal Mars trigonu (Aralık 2027, 0.1°) + Plüton natal Güneş karesi (0.2°) — üçlü konfigürasyon olağanüstü seçim ya da anayasal kırılma sinyali verir.</p>
+      </div>
+      <div class="e-item">
+        <h3>🔴 Kritik Stres Dönemleri</h3>
+        <p><strong>Nisan 2026:</strong> Satürn exact natal Mars karşıtı + Plüton exact natal Güneş karesi + Satürn exact natal ASC karesi — üç büyük transit aynı anda, en yüksek gerilim noktası.<br><strong>Haziran 2027:</strong> Satürn çift exact natal Merkür/Satürn karşıtı + Uranüs exact natal Mars trigonu.</p>
+      </div>
+      <div class="e-item">
+        <h3>🌱 Toparlanma Dönemleri</h3>
+        <p><strong>Ocak 2027:</strong> Jüpiter çift exact sextil (natal Merkür + Satürn) — müzakere, uzlaşma penceresi.<br><strong>Ağustos–Eylül 2027:</strong> Jüpiter sextil natal Güneş — liderlik güçleniyor, dış ilişkiler iyileşiyor.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BIG PICTURE -->
+<div class="bp-wrap">
+  <div class="bp-title">🌌 2026-2027 Ana Transit Temaları</div>
+  <div class="bp-grid">
+    <div class="bp-card">
+      <h3>♇ Plüton ♒ Kova → natal ☉ Akrep Karesi (Sürekli)</h3>
+      <p>Plüton Kova'dan natal Güneş'i (Akrep 5°) kare basıyor. Bu 2024'ten bu yana süregelen çok güçlü transit; köklü güç yapısı dönüşümü, anayasal yeniden yapılanma, otorite ile halk arasındaki gerilim. 2026 Nisan, 2026 Haziran, 2027 Ağustos ve 2027 Aralık'ta tam exact noktalar.</p>
+    </div>
+    <div class="bp-card">
+      <h3>♄ Satürn ♈ Koç → natal ♂ Terazi Karşıtı</h3>
+      <p>Satürn, natal Mars'ı (Terazi 7°) 2026 Nisan–Aralık arası karşıtlıyor. Güvenlik politikasında kırılma, askeri/dış politika gerginliği, yönetim kapasitesi testi. Tam exact noktası Nisan 2026 (0.1°).</p>
+    </div>
+    <div class="bp-card">
+      <h3>♄ Satürn → natal ☿ &amp; ♄ Terazi Karşıtı (2027)</h3>
+      <p>2027 boyunca Satürn natal Merkür (Terazi 24°) ve natal Satürn'ü (Terazi 24°) karşıtlıyor — ikisi de çok yakın derecede. Hükümet iletişimi, yasa çıkarma süreci, yargı sistemi üzerinde yoğun baskı. Ekim 2027'de ikisi de exact (0.1–0.2°). Tarihsel olarak bu konfigürasyon yönetimde değişim dönemlerine denk gelir.</p>
+    </div>
+    <div class="bp-card">
+      <h3>♅ Uranüs ♊ İkizler → natal ♂ Terazi Trigonu (2027)</h3>
+      <p>Uranüs 2027 Haziran'dan itibaren natal Mars'ı (Terazi 7°) trigonluyor. Aralık 2027'de tam exact (0.1°). Trigon = dönüşüm, ama hızlı ve sürprizli. Güvenlik/savunma politikasında ani yapısal değişim, beklenmedik ittifak değişimleri. Seçim/erken seçim tetikleyicisi olabilir.</p>
+    </div>
+    <div class="bp-card">
+      <h3>♆ Neptün ♈ Koç → natal ☽ İkizler Karesi</h3>
+      <p>Neptün natal Ay'ı (İkizler 29°) kare basıyor. Halk beklentileri ile gerçek arasındaki uçurum, yanıltıcı haberler, toplumsal hayal kırıklığı. 2026 Ocak'ta tam exact (0.2°). Sosyal medya dezenformasyonu, seçmen algısı belirsizliği.</p>
+    </div>
+    <div class="bp-card">
+      <h3>⚡ İki Kritik Konfigürasyon</h3>
+      <p>
+        <strong>Nisan 2026 (En Yoğun):</strong><br>
+        — Plüton exact kare natal Güneş (0.1°)<br>
+        — Satürn exact karşıt natal Mars (0.1°)<br>
+        — Satürn exact kare natal ASC (0.4°)<br>
+        → Üç büyük malefik transit aynı anda<br><br>
+        <strong>Ekim 2027 (Kurumsal Kırılma):</strong><br>
+        — Satürn exact karşıt natal Merkür (0.2°)<br>
+        — Satürn exact karşıt natal Satürn (0.1°)<br>
+        — Jüpiter karşıt natal MC (0.9°)
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  ⚠️ <strong>Bu analiz müneccimlik (mundane astrology) metodolojisiyle hazırlanmış akademik bir çerçevedir.</strong>
+  Herhangi bir siyasi parti, kişi veya ideolojiyi desteklemiyor; karalama amacı taşımıyor.
+  Astroloji tarihsel döngüleri yorumlamak için kullanılan kadim bir sistemdir — kesin öngörü değildir.
+  Türkiye Cumhuriyeti Anayasası çerçevesinde planlanan seçim tarihi Haziran 2028'dir.
+</div>
+<footer>Hesaplama: <em>flatlib</em> · Natal: 29 Ekim 1923, 20:30, Ankara · Oluşturulma: 2026-05-26</footer>
+
+<script>
+const months2026 = [
+  {m:"Ocak 2026",v:"tense",s:42,aspects:[
+    {i:"⚠️",t:"<strong>Neptün exact kare natal Ay</strong> (0.2°, TAM EXACT) — halk yanılgısı, yanlış haber dönemi zirve","o":"0.2°"},
+    {i:"✅",t:"<strong>Jüpiter trigon natal Venüs</strong> (1.2°) — ekonomik iyimserlik","o":"1.2°"},
+    {i:"✅",t:"<strong>Jüpiter trigon natal MC</strong> (3.1°) — uluslararası itibar desteği","o":"3.1°"},
+    {i:"⚠️",t:"Satürn kare natal Ay (2.8°) — toplumsal hoşnutsuzluk","o":"2.8°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (2.1°) — güç yapısı baskısı","o":"2.1°"},
+  ],an:"Neptün tam natal Ay üzerinde = en yoğun yanlış bilgi/yanıltma dönemi. Jüpiter ekonomiyi destekliyor. <strong>Karışık görünüm, güven sorunu ön planda.</strong>"},
+  {m:"Şubat 2026",v:"crisis",s:30,aspects:[
+    {i:"🔴",t:"<strong>Satürn exact kare natal Ay</strong> (0.2°, TAM EXACT) — halk memnuniyetsizliği zirve","o":"0.2°"},
+    {i:"🔴",t:"<strong>Mars exact kare natal Venüs</strong> (0.1°, TAM EXACT) — ekonomik kriz tetikleyicisi","o":"0.1°"},
+    {i:"✅",t:"<strong>Jüpiter trigon natal MC</strong> (0.3°, EXACT) — dış ilişkiler desteği","o":"0.3°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (1.2°) — güç krizi","o":"1.2°"},
+  ],an:"Satürn tam halkı (Ay) sıkıştırıyor + ekonomik tetikleyici. <strong>Muhalefet aktivasyonu, ekonomik şikayetler yoğun. Dış ilişkiler nispeten iyi.</strong>"},
+  {m:"Mart 2026",v:"crisis",s:32,aspects:[
+    {i:"🔴",t:"<strong>Plüton kare natal Güneş</strong> (0.4°, EXACT yakın) — güç krizi yoğunlaşıyor","o":"0.4°"},
+    {i:"⚠️",t:"Satürn karşıt natal Mars (3.9°, yaklaşıyor) — güvenlik gerginliği","o":"3.9°"},
+    {i:"⚠️",t:"Neptün kare natal Ay (1.7°) — belirsizlik","o":"1.7°"},
+    {i:"✅",t:"Jüpiter trigon natal MC (1.2°) — uluslararası destek","o":"1.2°"},
+    {i:"✅",t:"Mars trigon natal ASC (2.4°) — milli birlik momentumu","o":"2.4°"},
+  ],an:"Plüton güç krizini yoğunlaştırıyor. <strong>Anayasal/hukuki tartışmalar, yargı bağımsızlığı gündemde.</strong>"},
+  {m:"Nisan 2026",v:"critical",s:10,aspects:[
+    {i:"🚨",t:"<strong>Plüton exact kare natal Güneş</strong> (0.1°, TAM EXACT) — tarihsel kırılma: güç dengesi değişiyor","o":"0.1°"},
+    {i:"🚨",t:"<strong>Satürn exact karşıt natal Mars</strong> (0.1°, TAM EXACT) — güvenlik/dış politika krizi zirve","o":"0.1°"},
+    {i:"🚨",t:"<strong>Satürn exact kare natal ASC</strong> (0.4°) — devlet yapısı en ağır baskı altında","o":"0.4°"},
+    {i:"⚠️",t:"Neptün kare natal Ay (2.8°) — kamuoyu yanıltması","o":"2.8°"},
+  ],an:"ÜÇ BÜYÜK TRANSİT AYNI ANDA EXACT. Mundane astrolojide bu kombinasyon: anayasal kriz, hükümet değişikliği baskısı, dış tehdit veya büyük iç siyasi dönüşüm anı. <strong>2026'nın en kritik ayı.</strong>"},
+  {m:"Mayıs 2026",v:"crisis",s:22,aspects:[
+    {i:"🔴",t:"<strong>Plüton kare natal Güneş</strong> (0.2°, EXACT yakın) — güç krizi sürüyor","o":"0.2°"},
+    {i:"🔴",t:"<strong>Satürn karşıt natal Merkür</strong> (1.9°) — basın özgürlüğü, yargı baskısı","o":"1.9°"},
+    {i:"🔴",t:"<strong>Satürn karşıt natal Satürn</strong> (2.9°) — kurumsal çöküş riski","o":"2.9°"},
+    {i:"🔴",t:"Satürn karşıt natal Mars (3.3°) — güvenlik gerginliği devam","o":"3.3°"},
+    {i:"⚠️",t:"Satürn kare natal ASC (2.9°) — ulusal kimlik baskı altında","o":"2.9°"},
+  ],an:"Çoklu Satürn baskısı + Plüton. <strong>Kurumsal bunalım, basın/yargı/meclis gerginlikleri, ekonomik daralma sinyali.</strong>"},
+  {m:"Haziran 2026",v:"crisis",s:28,aspects:[
+    {i:"🔴",t:"<strong>Plüton exact kare natal Güneş</strong> (0.1°, TAM EXACT) — güç krizia en yoğun ikinci dalga","o":"0.1°"},
+    {i:"⚠️",t:"Satürn karşıt natal Mars (1.8°) — güvenlik gerginliği devam","o":"1.8°"},
+    {i:"✅",t:"Jüpiter kare natal Merkür/Satürn (2.4–2.5°) — yasa/karar süreci","o":"2–3°"},
+    {i:"⚠️",t:"Neptune kare natal Ay (4.4°) — belirsizlik","o":"4.4°"},
+  ],an:"Plüton ikinci dalgası. <strong>Anayasa mahkemesi, yüksek yargı kararları, olağanüstü hal tartışmaları olabilir.</strong>"},
+  {m:"Temmuz 2026",v:"tense",s:40,aspects:[
+    {i:"⚠️",t:"Jüpiter kare natal Güneş (2.0°) — liderlik baskısı","o":"2.0°"},
+    {i:"✅",t:"Jüpiter sextil natal Mars (4.1°) — hareket enerjisi","o":"4.1°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (0.7°) — güç baskısı sürüyor","o":"0.7°"},
+    {i:"⚠️",t:"Neptune kare natal Ay (4.5°) — belirsizlik","o":"4.5°"},
+  ],an:"Göreceli rahatlama ama baskı sürüyor. <strong>Yaz dönemi, bazı gerginlikler düşüyor; meclis tatili, müzakere zemini aranıyor.</strong>"},
+  {m:"Ağustos 2026",v:"volatile",s:48,aspects:[
+    {i:"⚡",t:"<strong>Mars conjunct natal Ay</strong> (2.8°) — halk harekete geçiyor, sokak dinamikleri","o":"2.8°"},
+    {i:"✅",t:"<strong>Mars trigon natal Güneş</strong> (2.6°) — liderlik ivmesi","o":"2.6°"},
+    {i:"✅",t:"Jüpiter sextil natal Mars (2.8°) — enerjik büyüme","o":"2.8°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (1.5°) — güç baskısı","o":"1.5°"},
+  ],an:"Mars hem halkı (Ay) hem lideri (Güneş) aktive ediyor. <strong>Halk hareketleri, gösteri ya da seçmenin güçlü sinyal vermesi. Volatil ama dinamik.</strong>"},
+  {m:"Eylül 2026",v:"tense",s:40,aspects:[
+    {i:"⚠️",t:"Satürn karşıt natal Mars (5.4°, başlıyor) — yeniden güvenlik gerilimi","o":"5.4°"},
+    {i:"⚠️",t:"Jüpiter kare natal Venüs (1.5°) — ekonomik şişkinlik","o":"1.5°"},
+    {i:"✅",t:"<strong>Mars trigon natal Jüpiter</strong> (1.9°) — kısa süreli büyüme desteği","o":"1.9°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (2.0°) — güç kısmi baskı","o":"2.0°"},
+  ],an:"Görece sakin ama gergin. <strong>Ekonomik/döviz baskısı yeniden gündemde, güvenlik konular taze.</strong>"},
+  {m:"Ekim 2026",v:"tense",s:45,aspects:[
+    {i:"✅",t:"<strong>Jüpiter sextil natal Merkür</strong> (2.4°) — olumlu haberler, müzakere","o":"2.4°"},
+    {i:"✅",t:"<strong>Jüpiter sextil natal Satürn</strong> (2.5°) — kurumsal yapı desteği","o":"2.5°"},
+    {i:"⚠️",t:"Satürn karşıt natal Mars (3.1°) — güvenlik baskısı","o":"3.1°"},
+    {i:"⚠️",t:"Plüton stationary kare natal Güneş (2.2°) — derin güç gerginliği","o":"2.2°"},
+  ],an:"Jüpiter müzakere kapıları açıyor. <strong>Uzlaşı girişimleri, muhalefet diyaloğu, dış ilişkilerde normalleşme fırsatı.</strong>"},
+  {m:"Kasım 2026",v:"critical",s:15,aspects:[
+    {i:"🚨",t:"<strong>Satürn exact kare natal ASC</strong> (0.7°, EXACT) — ulusal kimlik/devlet yapısı baskı altında","o":"0.7°"},
+    {i:"🔴",t:"<strong>Satürn karşıt natal Mars</strong> (1.1°) — güvenlik/ordu gerginliği yoğun","o":"1.1°"},
+    {i:"⚠️",t:"Neptün kare natal Ay (1.9°) — toplumsal belirsizlik","o":"1.9°"},
+    {i:"✅",t:"Jüpiter sextil natal Merkür/Satürn (1.3–1.4°) — müzakere sinyali","o":"1–1.5°"},
+  ],an:"Satürn tam natal ASC karesi — devletin kim olduğu, ne temsil ettiği sorgulanıyor. <strong>Kurumsal meşruiyet tartışması, anayasal kriz ya da kritik yargı kararı.</strong>"},
+  {m:"Aralık 2026",v:"critical",s:18,aspects:[
+    {i:"🚨",t:"<strong>Satürn exact kare natal ASC</strong> (0.2°, TAM EXACT) — en keskin devlet yapısı baskısı","o":"0.2°"},
+    {i:"🔴",t:"<strong>Satürn karşıt natal Mars</strong> (0.6°, EXACT yakın) — güvenlik/ordu gerginliği zirve","o":"0.6°"},
+    {i:"⚠️",t:"Neptün kare natal Ay (1.7°) — kamuoyu yanıltması","o":"1.7°"},
+    {i:"✅",t:"Mars sextil natal Güneş (1.3°) — kısa süreli liderlik ivmesi","o":"1.3°"},
+  ],an:"Satürn exact natal ASC karesi + natal Mars karşıtı — devlet ve ordu/güvenlik kurumları tam stres altında. <strong>Yıl sonu kurumsal kırılma riski yüksek. 2027 senaryoları şekillenmeye başlıyor.</strong>"},
+];
+
+const months2027 = [
+  {m:"Ocak 2027",v:"volatile",s:48,aspects:[
+    {i:"✅",t:"<strong>Jüpiter exact sextil natal Merkür</strong> (0.8°) — diyalog kapısı açılıyor","o":"0.8°"},
+    {i:"✅",t:"<strong>Jüpiter exact sextil natal Satürn</strong> (0.7°) — kurumsal toparlanma","o":"0.7°"},
+    {i:"⚠️",t:"Satürn karşıt natal Mars (1.7°) — güvenlik baskısı","o":"1.7°"},
+    {i:"⚠️",t:"Satürn kare natal ASC (1.3°) — hâlâ yoğun","o":"1.3°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (0.5°) — güç krizi","o":"0.5°"},
+  ],an:"Jüpiter hem natal Merkür hem Satürn'ü sextilliyor — uzlaşı ve müzakere penceresi. Ama Satürn hâlâ baskıda. <strong>Siyasi diyalog girişimleri, seçim takvimi tartışması başlayabilir.</strong>"},
+  {m:"Şubat 2027",v:"tense",s:45,aspects:[
+    {i:"✅",t:"<strong>Jüpiter exact sextil natal Jüpiter</strong> (0.2°, TAM EXACT) — kurumsal büyüme fırsatı","o":"0.2°"},
+    {i:"✅",t:"Mars sextil natal Güneş (2.9°) + sextil natal Ay (2.5°) — halk-lider uyumu","o":"2–3°"},
+    {i:"⚠️",t:"Satürn karşıt natal Mars (4.2°) — azalıyor","o":"4.2°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (0.5°) — derin baskı hâlâ aktif","o":"0.5°"},
+  ],an:"Jüpiter tam natal Jüpiter sextilinde — reform, büyüme enerjisi. <strong>Toparlanma başlangıcı, hükümet reformları, ekonomi canlanması sinyali.</strong>"},
+  {m:"Mart 2027",v:"tense",s:40,aspects:[
+    {i:"⚠️",t:"<strong>Jüpiter exact kare natal Venüs</strong> (0.1°, TAM EXACT) — ekonomik aşırı genişleme","o":"0.1°"},
+    {i:"⚠️",t:"Satürn kare natal Mars (0.3°, EXACT) — enerji/güvenlik tam freni","o":"0.3°"},
+    {i:"✅",t:"Mars sextil natal Merkür (1.7°) — iletişim ivmesi","o":"1.7°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (1.2°) — güç baskısı","o":"1.2°"},
+  ],an:"Jüpiter ekonomiyi şişiriyor, Satürn güvenliği freniyor. <strong>Ekonomik balon endişesi, güvenlik politikasında kısıtlamalar. Gergin bir dengeleme.</strong>"},
+  {m:"Nisan 2027",v:"tense",s:42,aspects:[
+    {i:"⚠️",t:"Plüton kare natal Güneş (1.7°) — güç baskısı","o":"1.7°"},
+    {i:"⚠️",t:"<strong>Neptün karşıt natal Mars</strong> (2.5°) — güvenlik/ordu belirsizliği","o":"2.5°"},
+    {i:"⚠️",t:"Neptün kare natal ASC (2.9°) — ulusal kimlik bulanıklığı","o":"2.9°"},
+    {i:"✅",t:"Jupiter kare natal Venüs (1.2°, uzaklaşıyor)","o":"1.2°"},
+  ],an:"Neptune natal Mars'ı karşıtlıyor — savunma/güvenlik politikasında belirsizlik, yanıltıcı haberler. <strong>Dış politika bulanıklığı, siyasi belirsizlik.</strong>"},
+  {m:"Mayıs 2027",v:"volatile",s:52,aspects:[
+    {i:"✅",t:"<strong>Jüpiter exact kare natal Venüs</strong> (0.4°) — ekonomi aktif","o":"0.4°"},
+    {i:"✅",t:"<strong>Mars exact sextil natal Ay</strong> (0.4°) — halk desteği","o":"0.4°"},
+    {i:"✅",t:"<strong>Plüton exact trigon natal Mars</strong> (0.2°, EXACT) — derin güç dönüşümü","o":"0.2°"},
+    {i:"⚠️",t:"Satürn karşıt natal Merkür (2.2°) — iletişim/basın baskısı","o":"2.2°"},
+    {i:"⚠️",t:"Neptün kare natal ASC (1.9°) — kimlik belirsizliği","o":"1.9°"},
+  ],an:"Plüton tam natal Mars trigonu — güç yapısında köklü dönüşüm. Mars halkı aktive ediyor. <strong>Büyük reformlar, gücün yeniden dağılımı, halk dinamik. Seçim tartışması güçleniyor.</strong>"},
+  {m:"Haziran 2027",v:"critical",s:20,aspects:[
+    {i:"🚨",t:"<strong>Satürn exact karşıt natal Merkür</strong> (0.9°) — yargı/basın tam freni","o":"0.9°"},
+    {i:"🚨",t:"<strong>Satürn exact karşıt natal Satürn</strong> (0.8°, TAM EXACT) — kurumsal kırılma","o":"0.8°"},
+    {i:"⚡",t:"<strong>Uranüs exact trigon natal Mars</strong> (0.5°) — ani, sürpriz güç hareketi","o":"0.5°"},
+    {i:"🔴",t:"<strong>Neptün exact karşıt natal Mars</strong> (0.9°) — güvenlik belirsizliği","o":"0.9°"},
+    {i:"⚠️",t:"Neptün kare natal ASC (1.3°) — kimlik krizi","o":"1.3°"},
+  ],an:"Satürn çift exact + Uranüs natal Mars + Neptune natal Mars. <strong>Haziran 2027 = 2027'nin en kritik siyasi dönüm noktası. Erken seçim kararı, anayasa değişikliği ya da büyük siyasi kırılma. Tarihsel öneme sahip ay.</strong>"},
+  {m:"Temmuz 2027",v:"critical",s:22,aspects:[
+    {i:"🔴",t:"<strong>Mars exact kare natal Ay</strong> (0.2°, TAM EXACT) — halk krizde, protesto","o":"0.2°"},
+    {i:"⚠️",t:"Satürn karşıt natal Merkür/Satürn (2.8–2.9°) — hâlâ aktif","o":"2–3°"},
+    {i:"✅",t:"Uranüs trigon natal Mars (1.0°) — dönüşüm sürüyor","o":"1.0°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (1.0°) — güç baskısı","o":"1.0°"},
+    {i:"⚠️",t:"Neptune kare natal ASC (1.1°) — ulusal belirsizlik","o":"1.1°"},
+  ],an:"Mars tam natal Ay üzerinde — halk krizinin en keskin noktası. Haziran'ın büyük kırılmasının yansımaları. <strong>Sokak hareketleri, seçmen baskısı, olağanüstü durum tartışması.</strong>"},
+  {m:"Ağustos 2027",v:"tense",s:45,aspects:[
+    {i:"✅",t:"<strong>Jüpiter exact sextil natal Güneş</strong> (1.0°) — liderlik güçleniyor","o":"1.0°"},
+    {i:"✅",t:"Jüpiter sextil natal ASC (3.5°) — uluslararası destek","o":"3.5°"},
+    {i:"🔴",t:"<strong>Plüton exact kare natal Güneş</strong> (0.3°, EXACT) — güç krizi yeniden zirve","o":"0.3°"},
+    {i:"⚠️",t:"Satürn karşıt natal Merkür/Satürn (3.3–3.4°) — sürüyor","o":"3–3.5°"},
+    {i:"⚠️",t:"Neptune kare natal ASC (1.5°) — belirsizlik","o":"1.5°"},
+  ],an:"Jüpiter liderliği destekliyor ama Plüton güç krizinin üçüncü büyük dalgası. <strong>Güç konsolidasyonu ya da liderlik değişimi ikisi de mümkün.</strong>"},
+  {m:"Eylül 2027",v:"tense",s:48,aspects:[
+    {i:"✅",t:"Jüpiter sextil natal ASC (3.2°) — uluslararası itibar","o":"3.2°"},
+    {i:"✅",t:"<strong>Mars trigon natal ASC</strong> (1.1°) — milli birlik momentumu","o":"1.1°"},
+    {i:"⚠️",t:"Satürn karşıt natal Merkür/Satürn (2.2–2.3°) — kurumsal baskı","o":"2–2.5°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (0.3°) — güç krizi","o":"0.3°"},
+    {i:"⚠️",t:"Neptune kare natal ASC (2.2°) — belirsizlik","o":"2.2°"},
+  ],an:"Görece toparlanma ama derin baskılar sürüyor. <strong>Erken seçim hazırlıkları, kampanya başlangıcı olabilir.</strong>"},
+  {m:"Ekim 2027",v:"critical",s:12,aspects:[
+    {i:"🚨",t:"<strong>Satürn exact karşıt natal Merkür</strong> (0.2°, TAM EXACT) — yargı/anayasa tam kırılma","o":"0.2°"},
+    {i:"🚨",t:"<strong>Satürn exact karşıt natal Satürn</strong> (0.1°, TAM EXACT) — kurumsal zirve kırılma","o":"0.1°"},
+    {i:"✅",t:"Uranüs trigon natal Mars (2.2°) — dönüşüm desteği","o":"2.2°"},
+    {i:"⚠️",t:"<strong>Jüpiter karşıt natal MC</strong> (0.9°) — devlet zirvesine baskı","o":"0.9°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (0.6°) — güç baskısı","o":"0.6°"},
+  ],an:"Satürn çift TAM EXACT natal Merkür ve Satürn karşıtı — mundane astrolojide en nadir ve güçlü kurumsal kırılma konfigürasyonu. <strong>Ekim 2027 = tarihsel öneme sahip siyasi dönüm noktası. Erken seçim kararı ya da anayasal referandum en güçlü ihtimal.</strong>"},
+  {m:"Kasım 2027",v:"tense",s:42,aspects:[
+    {i:"✅",t:"<strong>Jüpiter sextil natal Venüs</strong> (4.5°) — ekonomik iyimserlik","o":"4.5°"},
+    {i:"✅",t:"Uranüs trigon natal Mars (1.2°) — dönüşüm sürüyor","o":"1.2°"},
+    {i:"⚠️",t:"Satürn karşıt natal Merkür/Satürn (2.1–2.2°) — sürüyor","o":"2–2.5°"},
+    {i:"⚠️",t:"Plüton kare natal Güneş (0.4°) — güç baskısı","o":"0.4°"},
+  ],an:"Ekim'in büyük kırılmasından sonra toparlanma süreci. <strong>Seçim kampanyası ya da yeni hükümet kurma müzakereleri.</strong>"},
+  {m:"Aralık 2027",v:"critical",s:20,aspects:[
+    {i:"⚡",t:"<strong>Uranüs exact trigon natal Mars</strong> (0.1°, TAM EXACT) — güvenlik/güç yapısında ani köklü değişim","o":"0.1°"},
+    {i:"🔴",t:"<strong>Plüton exact kare natal Güneş</strong> (0.2°, EXACT) — güç krizi son büyük dalgası","o":"0.2°"},
+    {i:"✅",t:"<strong>Jüpiter sextil natal Jüpiter</strong> (2.0°) — büyüme/genişleme","o":"2.0°"},
+    {i:"⚠️",t:"Neptün kare natal Ay (3.9°) — toplumsal belirsizlik","o":"3.9°"},
+    {i:"✅",t:"Mars sextil natal MC (1.3°) — devlet aktivasyonu","o":"1.3°"},
+  ],an:"Uranüs + Plüton çift exact — iki büyük transit aynı anda kapanıyor. <strong>Aralık 2027 = 2 yıllık siyasi döngünün sonuç noktası. Yeni siyasi düzen ya da erken seçim kesinleşmesi.</strong>"},
+];
+
+const VL = {stable:'🟢 İstikrarlı',crisis:'🔴 Gergin',tense:'🟡 Karışık',volatile:'⚡ Volatil',critical:'🚨 Kritik'};
+const TC = {stable:'rgba(34,197,94,.2)',crisis:'rgba(239,68,68,.2)',tense:'rgba(245,158,11,.2)',volatile:'rgba(167,139,250,.2)',critical:'rgba(255,107,107,.25)'};
+const TI = {stable:'🟢',crisis:'🔴',tense:'🟡',volatile:'⚡',critical:'🚨'};
+const MS = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+
+function renderGrid(data, gridId) {
+  const g = document.getElementById(gridId);
+  if (!g || g.children.length) return;
+  data.forEach(m => {
+    const c = document.createElement('div');
+    c.className = `mc ${m.v}`;
+    const isCrit = m.v === 'critical';
+    c.innerHTML = `
+      <div class="mc-head">
+        <span class="mc-name">${m.m}</span>
+        <span class="badge">${VL[m.v]}</span>
+      </div>
+      <div class="sbar"><div class="sfill" style="width:${100-m.s}%"></div></div>
+      <div class="mc-body">
+        ${m.aspects.map(a=>`<div class="asp-item"><span class="asp-ic">${a.i}</span><span class="asp-tx">${a.t}</span><span class="asp-orb">${a.o}</span></div>`).join('')}
+        <div class="analysis${isCrit?' critical-box':''}">${m.an}</div>
+      </div>`;
+    g.appendChild(c);
+  });
+}
+
+function renderTL() {
+  const tl = document.getElementById('tl');
+  if (!tl || tl.children.length) return;
+  [[months2026,2026],[months2027,2027]].forEach(([data,year]) => {
+    data.forEach((m,i) => {
+      const col = document.createElement('div');
+      col.className = 'tl-col';
+      col.innerHTML = `
+        <div class="tl-yr" style="color:${year===2026?'#f0b060':'#dc8c3a'}">${i===0?year:''}</div>
+        <div class="tl-bar" style="background:${TC[m.v]}">${TI[m.v]}</div>
+        <div class="tl-lb">${MS[i]}</div>`;
+      tl.appendChild(col);
+    });
+  });
+}
+
+function showYear(year, btn) {
+  document.querySelectorAll('.year-section').forEach(s=>s.classList.remove('visible'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`y${year}`).classList.add('visible');
+  btn.classList.add('active');
+  renderGrid(year===2026?months2026:months2027,`g${year}`);
+}
+
+renderTL();
+renderGrid(months2026,'g2026');
+</script>
+</body>
+</html>
