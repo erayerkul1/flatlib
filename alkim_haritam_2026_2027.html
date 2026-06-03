@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Alkım Berk — Astroloji Haritası 2026-2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060d1a;--bg2:#0d1629;--bg3:#111e38;
+  --acc:#38bdf8;--cyan:#22d3ee;--steel:#7dd3fc;
+  --gold:#f59e0b;--rose:#f43f5e;--green:#22c55e;--violet:#a78bfa;
+  --text:#e2e8f0;--sub:#94a3b8;--card:#111827;
+  --border:rgba(56,189,248,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+canvas#starfield{position:fixed;top:0;left:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:1rem}
+
+/* HEADER */
+.hdr{text-align:center;padding:3rem 1rem 2rem;background:linear-gradient(180deg,rgba(56,189,248,0.07) 0%,transparent 100%)}
+.hdr h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;
+  background:linear-gradient(135deg,var(--acc),var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.4rem}
+.hdr p{color:var(--sub);font-size:0.92rem}
+.natal-box{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.8rem;
+  background:rgba(56,189,248,0.05);border:1px solid var(--border);border-radius:14px;
+  padding:1.2rem;margin:1.5rem 0}
+.ncard{background:rgba(13,22,41,0.6);border-radius:10px;padding:0.8rem 1rem}
+.ncard .nlbl{color:var(--sub);font-size:0.72rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:0.3rem}
+.ncard .nval{color:var(--acc);font-size:0.95rem;font-weight:600}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:1.5rem}
+.tab{padding:0.6rem 1.2rem;border:1px solid rgba(56,189,248,0.3);border-radius:30px;
+  background:rgba(56,189,248,0.05);color:var(--sub);cursor:pointer;font-size:0.88rem;
+  font-weight:500;transition:all .2s}
+.tab:hover{border-color:var(--acc);color:var(--acc)}
+.tab.active{background:rgba(56,189,248,0.2);border-color:var(--acc);color:var(--acc);font-weight:700}
+
+/* PANEL */
+.panel{display:none}
+.phero{background:linear-gradient(135deg,rgba(56,189,248,0.1),rgba(167,139,250,0.05));
+  border:1px solid var(--border);border-radius:14px;padding:1.4rem;margin-bottom:1.5rem}
+.phero h2{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700;color:var(--acc);margin-bottom:0.4rem}
+.phero p{color:var(--sub);font-size:0.84rem;line-height:1.6}
+.hero-stats{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem}
+.hstat{background:rgba(13,22,41,0.7);border-radius:8px;padding:0.6rem 1rem;text-align:center}
+.hval{display:block;color:var(--acc);font-size:1rem;font-weight:700}
+.hlbl{display:block;color:var(--sub);font-size:0.72rem;margin-top:0.15rem}
+
+/* YEAR TABS */
+.ytabs{display:flex;gap:0.5rem;margin-bottom:1rem}
+.ytab{padding:0.45rem 1rem;border:1px solid rgba(56,189,248,0.25);border-radius:20px;
+  background:rgba(56,189,248,0.04);color:var(--sub);cursor:pointer;font-size:0.82rem;transition:all .2s}
+.ytab.active{background:rgba(56,189,248,0.15);border-color:var(--acc);color:var(--acc);font-weight:600}
+
+.ypanel{display:block}
+.ysum{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0.8rem;margin-bottom:1.2rem}
+.ys-card{background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.15);border-radius:10px;padding:1rem}
+.ys-title{color:var(--acc);font-size:0.85rem;font-weight:700;margin-bottom:0.5rem}
+.ys-text{color:var(--sub);font-size:0.82rem;line-height:1.6}
+
+/* GRID */
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:1.5rem}
+
+/* CARDS */
+.mcard{background:var(--card);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;transition:transform .2s,border-color .2s}
+.mcard:hover{transform:translateY(-2px);border-color:var(--border)}
+.chead{display:flex;justify-content:space-between;align-items:flex-start;padding:0.9rem 1rem 0.6rem}
+.mname{font-weight:700;font-size:0.95rem;color:var(--text)}
+.mtag{font-size:0.7rem;color:var(--sub);margin-top:0.1rem}
+.cbody{padding:0 1rem 1rem}
+
+/* Color headers */
+.hkar{border-top:3px solid var(--acc)}
+.hyat{border-top:3px solid var(--gold)}
+.hask{border-top:3px solid var(--rose)}
+.hgen{border-top:3px solid var(--violet)}
+
+/* Score badges */
+.vb{padding:0.2rem 0.55rem;border-radius:12px;font-size:0.72rem;font-weight:700;white-space:nowrap}
+.ve{background:rgba(167,139,250,0.2);color:#d8b4fe}
+.vn{background:rgba(34,197,94,0.2);color:#86efac}
+.vt{background:rgba(56,189,248,0.2);color:#7dd3fc}
+.vy{background:rgba(245,158,11,0.2);color:#fde047}
+.vr{background:rgba(244,63,94,0.2);color:#fda4af}
+
+/* Score bar */
+.sw{display:flex;align-items:center;gap:0.5rem;margin:0.5rem 0}
+.slbl{color:var(--sub);font-size:0.72rem;min-width:30px}
+.sbg{flex:1;height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
+.sf{height:100%;border-radius:3px;transition:width .4s}
+.snum{font-size:0.85rem;font-weight:700;min-width:32px;text-align:right}
+
+/* Transits */
+.tw{margin:0.5rem 0}
+.tlbl{font-size:0.7rem;color:var(--sub);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:.06em}
+.tps{display:flex;flex-wrap:wrap;gap:0.25rem}
+.tp{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.18);color:var(--acc);
+  font-size:0.73rem;padding:0.15rem 0.45rem;border-radius:6px}
+.tex{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.35);color:#86efac}
+.tpt{background:rgba(244,63,94,0.08);border-color:rgba(244,63,94,0.25);color:#fda4af}
+
+/* Interpretation */
+.it{color:#94a3b8;font-size:0.82rem;line-height:1.65;margin:0.6rem 0 0.4rem}
+.tico{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.4rem}
+.tic{background:rgba(56,189,248,0.08);color:var(--steel);font-size:0.7rem;padding:0.15rem 0.45rem;border-radius:10px}
+
+/* Info box */
+.info-box{background:rgba(13,22,41,0.6);border-radius:12px;padding:1.2rem;margin-bottom:1.5rem}
+
+/* Disclaimer */
+.disc{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;
+  padding:0.8rem 1rem;color:#92400e;font-size:0.78rem;margin-top:1.5rem}
+.disc strong{color:#f59e0b}
+
+@media(max-width:600px){
+  .grid3{grid-template-columns:1fr}
+  .hero-stats{gap:0.5rem}
+  .hstat{padding:0.5rem 0.8rem}
+}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<div class="wrap">
+
+<div class="hdr">
+  <h1>⚙️ Alkım Berk — Astroloji Haritası 2026–2027</h1>
+  <p>02 Mart 1999 • 18:00 yerel saat • Ankara Yenimahalle • Makine Mühendisi • Bekar</p>
+  <p style="margin-top:0.3rem;font-size:0.8rem;color:#475569">Hesaplama: flatlib / Swiss Ephemeris • Placidus Ev Sistemi</p>
+  
+  <div class="natal-box">
+    <div class="ncard"><div class="nlbl">Yükselen Burç (ASC)</div><div class="nval">♍ Başak 16.30°</div></div>
+    <div class="ncard"><div class="nlbl">Gökyüzü Ortası (MC)</div><div class="nval">♊ İkizler 14.19°</div></div>
+    <div class="ncard"><div class="nlbl">☉ Güneş</div><div class="nval">♓ Balık 11.62° — H7</div></div>
+    <div class="ncard"><div class="nlbl">☽ Ay</div><div class="nval">♍ Başak 16.04° — H1 (ASC'de!)</div></div>
+    <div class="ncard"><div class="nlbl">☿ Merkür</div><div class="nval">♓ Balık 29.70° — H7</div></div>
+    <div class="ncard"><div class="nlbl">♀ Venüs</div><div class="nval">♈ Koç 10.82° — H8</div></div>
+    <div class="ncard"><div class="nlbl">♂ Mars</div><div class="nval">♏ Akrep 10.76° — H3</div></div>
+    <div class="ncard"><div class="nlbl">♃ Jüpiter</div><div class="nval">♈ Koç 3.99° — H8</div></div>
+    <div class="ncard"><div class="nlbl">♄ Satürn</div><div class="nval">♉ Boğa 0.16° — H9</div></div>
+    <div class="ncard"><div class="nlbl">♅ Uranüs</div><div class="nval">♒ Kova 14.38° — H6</div></div>
+    <div class="ncard"><div class="nlbl">♆ Neptün</div><div class="nval">♒ Kova 3.26° — H6</div></div>
+    <div class="ncard"><div class="nlbl">♇ Plüton</div><div class="nval">♐ Yay 10.46° — H4</div></div>
+  </div>
+</div>
+
+<!-- ANA SEKMELER -->
+<div class="tabs">
+  <button class="tab active" onclick="sw('kar',this)">⚙️ Kariyer & İş</button>
+  <button class="tab" onclick="sw('yat',this)">💰 Yatırım & Finans</button>
+  <button class="tab" onclick="sw('ask',this)">💍 Evlilik & Aşk</button>
+  <button class="tab" onclick="sw('gen',this)">🔮 Genel Görünüm</button>
+</div>
+
+
+<!-- ═══════════════════ PANEL 1 — KARİYER & İŞ ═══════════════════ -->
+<div id="panel-kar" class="panel" style="display:block">
+<div class="phero">
+  <h2>⚙️ Kariyer & İş 2026-2027</h2>
+  <p>MC İkizler (Çok Yönlü Kariyer) • Mars ♏ H3 (Stratejik Zeka) • Satürn H9 (Mühendislik Uzmanlığı) • Venüs+Jüpiter H8 (Değer Yaratma)</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hval">İkizler MC</span><span class="hlbl">Kariyer Enerjisi</span></div>
+    <div class="hstat"><span class="hval">♂ Akrep H3</span><span class="hlbl">Stratejik Analiz</span></div>
+    <div class="hstat"><span class="hval">Mayıs 2026</span><span class="hlbl">Kariyer Zirvesi</span></div>
+    <div class="hstat"><span class="hval">Eylül 2027</span><span class="hlbl">Büyük Fırsat</span></div>
+  </div>
+</div>
+
+<div class="info-box" style="border:1px solid rgba(56,189,248,0.2)">
+  <div style="font-size:1rem;font-weight:700;color:var(--acc);margin-bottom:0.6rem">🔩 Alkım'ın Kariyer Profili</div>
+  <div style="color:#94a3b8;font-size:0.88rem;line-height:1.8">
+    <strong style="color:var(--steel)">MC İkizler:</strong> Çok yönlü ve iletişim odaklı kariyer. Teknik bilgiyi aktarma, proje koordinasyonu ve çapraz fonksiyonel çalışma güçlü yönler.<br>
+    <strong style="color:var(--steel)">Mars Akrep H3:</strong> Derin analitik zeka, stratejik düşünce ve teknik araştırmada mükemmellik. Mühendislik problemlerini derinlemesine çözme kapasitesi.<br>
+    <strong style="color:var(--steel)">Satürn H9 Boğa:</strong> Yüksek lisans, sertifikasyon veya uzmanlık eğitimi kariyer yükselişini hızlandırır.<br>
+    <strong style="color:var(--steel)">Venüs + Jüpiter H8:</strong> Değer yaratma ve kaynak kullanımında olağanüstü — Ar-Ge, proje bazlı iş veya yatırım-mühendislik kesişiminde parlıyor.
+  </div>
+</div>
+
+<div class="ytabs">
+  <button class="ytab ay-kar active" onclick="sy('kar','2026',this)">📅 2026</button>
+  <button class="ytab ay-kar" onclick="sy('kar','2027',this)">📅 2027</button>
+</div>
+
+<!-- KAR 2026 -->
+<div id="kar-2026" class="ypanel">
+  <div class="ysum">
+    <div class="ys-card">
+      <div class="ys-title">🔩 2026 Kariyer Özeti</div>
+      <div class="ys-text">2026, Satürn'ün H8'deki Venüs ve Jüpiter'e (Koç) kavuşum dönemi — kariyer içi değer artışı, kritik projeler ve finansal büyüme fırsatları. Mart-Mayıs 2026 kariyer zirvesi. Temmuz-Ağustos MC sextili kariyer yapısını pekiştiriyor.</div>
+    </div>
+    <div class="ys-card">
+      <div class="ys-title">🔑 Kritik Dönemler</div>
+      <div class="ys-text">★ Mart 2026 (+29): Satürn ☌ Jüpiter H8 — büyük fırsat kapısı<br>★ Nisan 2026 (+30): En yüksek skor — kariyer momentumu zirve<br>★ Mayıs 2026 (+27): Satürn ☌ Venüs TAM — kariyer kararı/değer tescili</div>
+    </div>
+  </div>
+  <div class="grid3">
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Ocak 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ☿ H7 (2.53°)</span>
+          <span class="tp">♃ ⚹ ☽ H1 ℞ (3.37°)</span>
+          <span class="tp">♃ ⚹ ASC ℞ (3.11°)</span>
+        </div></div>
+        <div class="it">Satürn natal Merkür'e (Balık H7) kavuşum yaklaşıyor — zihinsel netlik ve uzun vadeli planlama. Jüpiter retrograde ASC ve Ay'a sextil: kariyer fırsatları içsel olarak işleniyor. Ocak kariyer planları yapmak, yeni bir pozisyon veya proje araştırmak için güçlü bir zemin.</div>
+        <div class="tico"><span class="tic">📋 Planlama</span><span class="tic">🔍 Araştırma</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Şubat 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:93%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+28</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ☿ H7 TAM (0.47°) ★★</span>
+          <span class="tp">♄ ☌ ♃ H8 (3.83°)</span>
+          <span class="tp">♃ △ ☉ H7 ℞ (4.37°)</span>
+        </div></div>
+        <div class="it">Satürn natal Merkür'e tam kavuşum (0.47°) — zihinsel odak ve iletişim gücü zirveye çıkıyor. Şubat 2026'da yapılan sunumlar, teknik raporlar veya iş görüşmeleri çok güçlü etki bırakır. Satürn aynı zamanda H8 Jüpiter'e yaklaşıyor — önemli bir kariyer fırsatı veya maddi kazanım kapısı açılıyor.</div>
+        <div class="tico"><span class="tic">🎙️ Sunum/Müzakere</span><span class="tic">📊 Teknik Rapor</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Mart 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb ve">🔥 Olağanüstü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:97%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+29</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♃ H8 (0.50°) ★</span>
+          <span class="tp">♄ ☌ ☿ H7 (3.80°)</span>
+          <span class="tp">♃ △ ☉ H7 (3.50°)</span>
+        </div></div>
+        <div class="it">★ MART 2026 — KARİYER FIRSATI ZİRVESİ: Satürn H8'deki natal Jüpiter'e tam kavuşum (0.5°). H8'deki Jüpiter zaten büyük maddi ve kariyer kazanımların sembolü; Satürn bu potansiyeli gerçeğe dönüştürüyor. Terfi görüşmesi, büyük bir proje sorumluluğu, önemli bir ihale veya yeni bir iş teklifi bu ayda hayat değiştirebilir. Kaçırmayın!</div>
+        <div class="tico"><span class="tic">🚀 Terfi Fırsatı</span><span class="tic">💼 Büyük Proje</span><span class="tic">🏆 Kariyer Zirvesi</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Nisan 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb ve">🔥 En Yüksek!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:100%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+30</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (3.49°)</span>
+          <span class="tp tex">♄ ☌ ♃ H8 (3.34°)</span>
+          <span class="tp">♃ △ ☉ H7 (5.40°)</span>
+        </div></div>
+        <div class="it">2 YILIN EN YÜKSEK SKORU: Satürn hem Venüs hem de Jüpiter'e aynı anda yakın — H8'deki güç çifti tam aktive. Nisan 2026 kariyer ve finans için hayatın nadir fırsatlarından biri. Bir anlaşma imzalamak, iş ortaklığı kurmak, büyük bir projeyi teslim etmek veya önemli bir iş kararı almak için astronomik destek var.</div>
+        <div class="tico"><span class="tic">⭐ 2yr Kariyer Zirvesi</span><span class="tic">🤝 Anlaşma</span><span class="tic">💡 Karar Vakti</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Mayıs 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:90%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+27</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 TAM (0.11°) ★★★</span>
+          <span class="tp">♄ ⚹ MC (3.49°)</span>
+          <span class="tp">♃ ⚹ ☽ H1 (5.09°)</span>
+        </div></div>
+        <div class="it">Satürn natal Venüs'e TAM kavuşum (0.11° — astronomik hassasiyet!) Bu transit "kariyer içi değer tescili" anlamına gelir. Yaptığınız iş resmi olarak tanınıyor, kazandığınız statü somutlaşıyor. Satürn aynı anda MC'ye sextil yaklaşıyor — kariyer yapısında kalıcı bir adım. Terfi kesinleşmesi, maaş artışı veya önemli bir kariyer onayı bu ay gelir.</div>
+        <div class="tico"><span class="tic">👑 Değer Tescili</span><span class="tic">📈 Terfi/Maaş</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Haziran 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC (0.85°) ★</span>
+          <span class="tp">♄ ☌ ♀ H8 (2.52°)</span>
+          <span class="tp">♃ △ ☿ H7 (2.78°)</span>
+        </div></div>
+        <div class="it">Satürn MC'ye sextil (0.85°) — kariyer yapısı güçleniyor. Mart-Mayıs'taki büyük fırsatların ardından Haziran pratik uygulama ve yapılanma ayı. Jüpiter Merkür üçgeni iletişim ve fikir paylaşımında genişleme. Yeni bir rol üstlendiyseniz, Haziran'da bu rolün altyapısını sağlam kurun.</div>
+        <div class="tico"><span class="tic">🏗️ Yapılanma</span><span class="tic">📝 Uygulama</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Temmuz 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:80%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+24</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC TAM (0.45°) ★★</span>
+          <span class="tp">♄ ☌ ♀ H8 (3.82°)</span>
+          <span class="tp">♃ △ ☿ H7 (3.62°)</span>
+        </div></div>
+        <div class="it">Satürn MC'ye tam sextil (0.45°) — kariyer yapısının en güçlü anı. MC İkizler ile Satürn'ün sextili kariyer iletişimini, sunumları ve yönetimsel görünürlüğü pekiştiriyor. Bu ay yapılan kariyer adımları kalıcı iz bırakır. Yöneticilerle stratejik görüşmeler veya önemli bir proje lansmanı için ideal.</div>
+        <div class="tico"><span class="tic">🎯 Stratejik Görüşme</span><span class="tic">📢 Görünürlük</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Ağustos 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:73%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+22</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC ℞ TAM (0.23°) ★★</span>
+          <span class="tp tex">♃ △ ♀ H8 (0.66°) ★</span>
+          <span class="tp">♄ ☌ ♀ H8 ℞ (3.61°)</span>
+        </div></div>
+        <div class="it">Satürn MC retrograde tam sextil (0.23°) + Jüpiter Venüs üçgeni (0.66°) — çift destekli güçlü ay. Retrograde dönemi kariyer kararlarının içselleştirilmesi için uygun. Jüpiter Venüs H8 üçgeni finansal bir kariyer kazanımı veya değerli bir iş bağlantısı anlamına gelebilir.</div>
+        <div class="tico"><span class="tic">💎 Değerli Bağlantı</span><span class="tic">🔄 İçselleştirme</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Eylül 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ (1.93°)</span>
+          <span class="tp">♄ ⚹ MC ℞ (1.44°) ★</span>
+          <span class="tp">♃ △ ♀ H8 (5.85°)</span>
+        </div></div>
+        <div class="it">Retrograde dönemi kariyer enerjisi biraz yavaşlıyor — bu normal ve sağlıklı. Temmuz-Ağustos'ta atılan adımların değerlendirilmesi ve pekiştirilmesi dönemi. Mühendislik projelerinde detay kontrolleri, teknik gözden geçirmeler veya ekip içi değerlendirmeler için uygun.</div>
+        <div class="tico"><span class="tic">🔍 Gözden Geçirme</span><span class="tic">🧩 Detay Kontrol</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Ekim 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:67%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+20</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ TAM (0.37°) ★★</span>
+          <span class="tp">♄ ⚹ MC ℞ (3.74°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 ℞ (5.51°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs retrograde tam kavuşum — Mayıs'ta başlayan kariyer değer sürecinin nihai değerlendirmesi. Bu ay yaptığınız işin somut karşılığını (maddi veya statü olarak) alıyorsunuz. Uranüs Merkür sextili yenilikçi fikirler ve teknik buluşlar için uygun — bir patent, AR-GE fikri veya teknik yayın düşünülebilir.</div>
+        <div class="tico"><span class="tic">💰 Somut Karşılık</span><span class="tic">🔬 Ar-Ge</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Kasım 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:77%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+23</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ (2.31°)</span>
+          <span class="tp">♄ ☌ ♃ H8 ℞ (4.51°)</span>
+          <span class="tp">♄ ⚹ MC ℞ (5.69°)</span>
+        </div></div>
+        <div class="it">Satürn H8'deki güç çiftine (Venüs + Jüpiter) eş zamanlı yakın — güçlü kariyer ve finans sinerji. Kasım 2026 yıl sonu bütçe ve proje planlaması için de stratejik. Ekibinizdeki veya şirketinizdeki önemli bir yapısal kararda söz sahibi olma ihtimali yüksek.</div>
+        <div class="tico"><span class="tic">📊 Yıl Sonu Strateji</span><span class="tic">🏗️ Yapısal Karar</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Aralık 2026</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:70%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+21</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (2.87°)</span>
+          <span class="tp">♄ ☌ ♃ H8 (3.96°)</span>
+          <span class="tp">♃ △ ♄ H9 ℞ (3.14°)</span>
+        </div></div>
+        <div class="it">Jüpiter natal Satürn H9'a üçgen — yüksek eğitim, uzmanlaşma veya uluslararası/sektörel bağlantılar için şans. Aralık 2026 bir yüksek lisans başvurusu, sertifikasyon veya önemli bir sektör etkinliğine katılım için mükemmel. 2027 planlarını şimdiden yapmak kariyer ivmesini yüksek tutuyor.</div>
+        <div class="tico"><span class="tic">🎓 Eğitim Başvuru</span><span class="tic">🌐 Sektör Bağlantı</span></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /kar-2026 -->
+
+<!-- KAR 2027 -->
+<div id="kar-2027" class="ypanel" style="display:none">
+  <div class="ysum">
+    <div class="ys-card">
+      <div class="ys-title">🔩 2027 Kariyer Özeti</div>
+      <div class="ys-text">2027 Satürn Return yılı (Boğa ~0°) — kariyer kimliğinin yeniden tanımlandığı kökten dönüşüm. Şubat-Mart Satürn ☌ Venüs H8 son turı. Temmuz-Ağustos Satürn Return (≈Taurus 0°). Eylül 2027 Jüpiter ☍ Güneş tam geçiş = tanınma ve büyük fırsat.</div>
+    </div>
+    <div class="ys-card">
+      <div class="ys-title">🔑 Kritik Dönemler</div>
+      <div class="ys-text">★ Eylül 2027 (+29): Jüpiter ☍ Güneş TAM — en büyük kariyer tanınması<br>⚡ Temmuz-Ağustos 2027: Satürn Return — kimlik yenilenmesi<br>★ Mart 2027 (+20): Satürn ⚹ MC — kariyer yapısı güçleniyor</div>
+    </div>
+  </div>
+  <div class="grid3">
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Ocak 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (1.76°)</span>
+          <span class="tp">♄ ☌ ♃ H8 (5.06°)</span>
+          <span class="tp">♄ ⚹ MC (5.13°)</span>
+        </div></div>
+        <div class="it">2027'ye güçlü giriliiyor. Satürn hâlâ H8'de Venüs etkisi kapsamında. 2026'da elde edilen kariyer kazanımlarının üzerine yeni hedefler belirleniyor. Ocak kariyer stratejisi güncellemesi için ideal — yıllık değerlendirme görüşmelerinde beklentilerinizi net ortaya koyun.</div>
+        <div class="tico"><span class="tic">🎯 Hedef Güncelleme</span><span class="tic">📋 Değerlendirme</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Şubat 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vy">📊 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:57%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+17</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (0.81°) ★</span>
+          <span class="tp">♄ ⚹ MC (2.56°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 (2.01°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs son kavuşumu ve Uranüs Merkür sextili — kariyer içi bir yenilik veya teknik atılım. Şubat 2027'de sunduğunuz bir fikir veya teklif alışılmışın dışında ama güçlü karşılık görebilir. Teknoloji, dijital sistem veya mühendislik otomasyonu konularında öne çıkma fırsatı.</div>
+        <div class="tico"><span class="tic">💡 Yenilikçi Fikir</span><span class="tic">🤖 Otomasyon</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Mart 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:67%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+20</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC (0.58°) ★</span>
+          <span class="tp">♄ ☌ ♀ H8 (3.96°)</span>
+          <span class="tp">♃ ⚹ MC ℞ (4.07°)</span>
+        </div></div>
+        <div class="it">Satürn MC'ye yakın sextil (0.58°) + Jüpiter MC retrograde sextil — kariyer yapısı hem disiplinle hem şansla destekleniyor. Mart kariyer görünürlüğü ve liderlik profili için güçlü. Doğum ayınıza girerken kariyer enerjisi yüksek; iş çevresinde kendinizi güvenle temsil edebilirsiniz.</div>
+        <div class="tico"><span class="tic">👤 Liderlik Profili</span><span class="tic">✨ Görünürlük</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Nisan 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ⚹ MC (4.46°)</span>
+          <span class="tp tex">♃ ⚹ MC (2.81°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 (3.76°)</span>
+        </div></div>
+        <div class="it">Jüpiter + Satürn aynı anda MC'ye sextil — çift gezegen desteği kariyer büyümesini hızlandırıyor. Nisan hem büyük resmi (Jüpiter) hem pratik adımları (Satürn) bir arada yönetme dönemi. Sektörel bir konferansa katılmak, mentorluk almak/vermek veya bir yayın yapmak etkili olabilir.</div>
+        <div class="tico"><span class="tic">🌐 Konferans</span><span class="tic">📝 Yayın/Blog</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Mayıs 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ⚹ MC (4.37°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 (5.38°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 (5.74°)</span>
+        </div></div>
+        <div class="it">Jüpiter MC sextili devam ediyor — kariyer büyüme momentumu sürekli. Uranüs Merkür ve Venüs H8 sextilleri yenilikçi finansal veya teknik çözümler üretmek için uygun. Bir Ar-Ge projesi veya girişimci fikri bu ay kristalleşebilir. Mayıs 2027 yaratıcı kariyer vizyonu ayı.</div>
+        <div class="tico"><span class="tic">🔭 Vizyon</span><span class="tic">🌱 Girişim Fikri</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Haziran 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vy">📊 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:53%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+16</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ♄ H9 (4.77°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (4.74°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 (3.94°)</span>
+        </div></div>
+        <div class="it">Satürn Return yaklaşıyor (Satürn natal Satürn'e Boğa'da) — kariyer yeniden yapılanma öncesi iç hazırlık. Uranüs Güneş karesi beklenmedik kariyer sürprizleri olabileceği sinyali veriyor. Büyük kariyer kararlarından ziyade hazırlık ve gözlemleme ayı olarak değerlendirin.</div>
+        <div class="tico"><span class="tic">🧘 Hazırlık</span><span class="tic">👁️ Gözlemle</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Temmuz 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vy">⚡ Saturn Return</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:43%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+13</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♄ H9 (2.82°)</span>
+          <span class="tp">♃ △ ♄ H9 (2.30°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (3.19°)</span>
+        </div></div>
+        <div class="it">⚡ SATÜRN RETURN BAŞLIYOR: Transiting Satürn natal Satürn'e (Boğa H9) yaklaşıyor — yaklaşık 29 yılda bir gerçekleşen bu transit kariyer kimliğinin köklü yeniden tanımlanmasıdır. Eski kariyer kısıtlamaları veya "yapmalıyım" kalıpları sorgulananacak. Bu dönem hayatın gerçek hedeflerini kristalize etmek için en güçlü fırsat.</div>
+        <div class="tico"><span class="tic">⚡ Kimlik Dönüşümü</span><span class="tic">🔄 Yeniden Tanım</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Ağustos 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vy">⚡ Saturn Return</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♄ H9 ℞ (2.31°)</span>
+          <span class="tp">♃ △ ♄ H9 (4.11°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (2.07°)</span>
+        </div></div>
+        <div class="it">Satürn Return retrograde — içsel işleme ve köklü değerlendirme. Jüpiter desteğiyle bu dönem yıkıcı değil, yapıcı bir dönüşüm. Mevcut kariyerinizde köklü bir değişiklik mi istediğinizi (sektör değişimi, kendi şirketi, akademi vs.) sormaya ve dürüst cevap almaya hazır olun.</div>
+        <div class="tico"><span class="tic">🌱 Yapıcı Dönüşüm</span><span class="tic">🔍 Dürüst Sorgulama</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Eylül 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb ve">🏆 Olağanüstü!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:97%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+29</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☍ ☉ H7 TAM (0.64°) ★</span>
+          <span class="tp tex">♃ ☌ ☽ H1 (5.06°)</span>
+          <span class="tp">♄ ☌ ♄ H9 ℞ (3.40°)</span>
+        </div></div>
+        <div class="it">★ EYLÜL 2027 — KARİYER TANINMA ZİRVESİ: Jüpiter natal Güneş'e tam karşıtlık (0.64°) H7-H1 aksında — bu kariyer genişlemesi ve tanınması için nadiren gelen bir transit. H7 Güneşi ile Jüpiter karşıtlığı ortaklıklar, müşteriler veya iş dünyası genelinde büyük bir tanınma ve güvenilirlik artışı demek. Eylül 2027 kariyer hayatının bir dönüm noktası.</div>
+        <div class="tico"><span class="tic">🌟 Büyük Tanınma</span><span class="tic">🤝 Prestijli Ortaklık</span><span class="tic">🔝 Kariyer Zirvesi</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Ekim 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:70%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+21</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☌ ☽ H1 (1.16°) ★</span>
+          <span class="tp">♄ ☌ ♄ H9 ℞ (5.54°)</span>
+          <span class="tp">♃ ☍ ☉ H7 (5.58°)</span>
+        </div></div>
+        <div class="it">Jüpiter natal Ay'a kavuşum (H1 — Başak) — duygusal tatmin ve kariyer içinde doğallık. Eylül'deki büyük tanınmanın ardından Ekim'de yeni sorumluluklara veya rolün genişlemesine adım atılıyor. Ekip veya müşteri ilişkileri özellikle güçlü.</div>
+        <div class="tico"><span class="tic">🌟 Yeni Sorumluluk</span><span class="tic">🤝 Ekip Gücü</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Kasım 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vy">📊 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:47%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+14</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tpt">♅ □ ☉ H7 ℞ (3.07°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (2.27°)</span>
+          <span class="tp">♅ ⚹ ♃ H8 ℞ (4.56°)</span>
+        </div></div>
+        <div class="it">Biraz yavaşlama dönemi. Uranüs Güneş karesi beklenmedik kariyer değişimleri veya sektörel sürprizler. Bununla birlikte Uranüs Venüs + Jüpiter H8 sextilleri yenilikçi finansal kariyer adımları için destek. Kasım büyük kararlar değil gözlemleme ve araştırma ayı olarak değerlendirin.</div>
+        <div class="tico"><span class="tic">🧘 Gözlemle</span><span class="tic">📖 Araştır</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hkar"><div><div class="mname">Aralık 2027</div><div class="mtag">Kariyer & İş</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:53%;background:#38bdf8"></div></div><span class="snum" style="color:#7dd3fc">+16</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☍ ☿ H7 (3.39°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 ℞ (4.32°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (3.51°)</span>
+        </div></div>
+        <div class="it">Jüpiter Merkür karşıtlığı iletişim, müzakere ve entelektüel ifade genişlemesi. 2027'yi büyük bir kariyer dönüşümü ve tanınma yılı olarak kapatıyorsunuz. 2028'e Satürn Return sonrası yenilenmiş kariyer kimliğiyle, daha net hedeflerle ve daha güçlü bir profiyle giriyorsunuz.</div>
+        <div class="tico"><span class="tic">📢 Güçlü İfade</span><span class="tic">🌅 2028'e Hazır</span></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /kar-2027 -->
+<div class="disc"><strong>⚠️ Uyarı:</strong> Bu yorum yalnızca eğlence/kişisel keşif amaçlıdır. Kariyer kararlarınızı kendi değerlendirmenize ve danışmanlara dayandırın.</div>
+</div><!-- /panel-kar -->
+
+
+<!-- ═══════════════════ PANEL 2 — YATIRIM & FİNANS ═══════════════════ -->
+<div id="panel-yat" class="panel" style="display:none">
+<div class="phero">
+  <h2>💰 Yatırım & Finans 2026-2027</h2>
+  <p>Natal ♀ + ♃ H8 Koç (Cesur Yatırım / Büyük Kazanım) • H2 Terazi (Dengeli Portföy) • Satürn H9 (Disiplinli Birikim)</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hval">♀ + ♃ H8</span><span class="hlbl">Güçlü Yatırım</span></div>
+    <div class="hstat"><span class="hval">Terazi H2</span><span class="hlbl">Dengeli Portföy</span></div>
+    <div class="hstat"><span class="hval">Nisan 2026</span><span class="hlbl">Finans Zirvesi</span></div>
+    <div class="hstat"><span class="hval">+248</span><span class="hlbl">2yr Toplam Skor</span></div>
+  </div>
+</div>
+
+<div class="info-box" style="border:1px solid rgba(245,158,11,0.2)">
+  <div style="font-size:1rem;font-weight:700;color:var(--gold);margin-bottom:0.6rem">💡 Alkım'ın Finansal Profili</div>
+  <div style="color:#94a3b8;font-size:0.88rem;line-height:1.8">
+    <strong style="color:#fde047">H8 Venüs + Jüpiter (Koç):</strong> Bu kombinasyon astrolojinin en güçlü finansal potansiyellerinden biri. H8 ortaklık gelirleri, yatırım kazancı, miras ve borç/kaldıraç yönetimiyle ilgili — Jüpiter burada şansı ve büyümeyi, Venüs değer algısını güçlendirir.<br>
+    <strong style="color:#fde047">H2 Terazi:</strong> Finansal kararlar dengeli ve estetik değer odaklı. Sanat, teknoloji veya partner ağıyla bağlantılı yatırımlar verimli.<br>
+    <strong style="color:#fde047">Satürn H9 Boğa:</strong> Uzun vadeli ve disiplinli birikim yapısı. Kısa vadeli spekülasyondan ziyade sistemli büyüme.
+  </div>
+</div>
+
+<div class="ytabs">
+  <button class="ytab ay-yat active" onclick="sy('yat','2026',this)">📅 2026</button>
+  <button class="ytab ay-yat" onclick="sy('yat','2027',this)">📅 2027</button>
+</div>
+
+<div id="yat-2026" class="ypanel">
+  <div class="ysum">
+    <div class="ys-card">
+      <div class="ys-title">💡 2026 Finans Özeti</div>
+      <div class="ys-text">Satürn'ün Koç H8'de Venüs ve Jüpiter'e kavuşum süreci 2026'nın en kritik finansal fırsatını oluşturuyor. Mart ☌ Jüpiter, Mayıs ☌ Venüs tam — uzun vadeli yatırım kararları için astronomik destek. Temmuz-Ağustos MC sextili finansal kariyer gelirini artırıyor.</div>
+    </div>
+    <div class="ys-card">
+      <div class="ys-title">📊 En Güçlü Aylar</div>
+      <div class="ys-text">🔥 Nisan 2026 (+30): Satürn hem Venüs hem Jüpiter yakın — zirve yatırım fırsatı<br>★ Mart 2026 (+29): ♄ ☌ ♃ H8 TAM — büyük büyüme sinyali<br>★ Mayıs 2026 (+27): ♄ ☌ ♀ H8 TAM 0.11° — değer tescili</div>
+    </div>
+  </div>
+  <div class="grid3">
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Ocak 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ☿ H7 (2.53°)</span>
+          <span class="tp">♃ ⚹ ☽ H1 ℞ (3.37°)</span>
+        </div></div>
+        <div class="it">Satürn Merkür kavuşumu finansal planlama ve araştırma için güçlü zemin. Ocak 2026'da yatırım portföyü analizi yapmak, piyasa araştırması yürütmek veya bir finansal danışmanla görüşmek için ideal dönem. H8'deki Jüpiter-Venüs gücünü harekete geçirmek için zemin hazırlanıyor.</div>
+        <div class="tico"><span class="tic">📊 Portföy Analizi</span><span class="tic">🔍 Piyasa Araştırma</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Şubat 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:93%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+28</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ☿ H7 TAM (0.47°) ★★</span>
+          <span class="tp">♄ ☌ ♃ H8 (3.83°)</span>
+        </div></div>
+        <div class="it">Satürn Merkür tam kavuşumu — zihinsel netlik ve finansal stratejik düşünce zirveye çıkıyor. Yatırım kararlarını analitik bir zemine oturtmak için en iyi ay. Şubat 2026'da bir yatırım hesabı açmak, ilk kripto/hisse alımı yapmak veya bir birikim planı başlatmak için güçlü enerji.</div>
+        <div class="tico"><span class="tic">🏦 Hesap Aç</span><span class="tic">📋 Birikim Planı</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Mart 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb ve">🔥 Finansal Zirve!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:97%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+29</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♃ H8 (0.50°) ★</span>
+          <span class="tp">♄ ☌ ☿ H7 (3.80°)</span>
+          <span class="tp">♃ △ ☉ H7 (3.50°)</span>
+        </div></div>
+        <div class="it">★ MART 2026 — FİNANSAL BÜYÜME KAPISI: Satürn H8'deki natal Jüpiter'e tam kavuşum (0.50°). Bu transit "potansiyel kazancın somut gerçeğe dönüşmesi" anlamına gelir. Hisse senetleri, gayrimenkul, kripto veya girişim yatırımı için bu ay atılan adımlar uzun vadede en büyük getiriyi getirebilir.</div>
+        <div class="tico"><span class="tic">🚀 En İyi Yatırım Ayı</span><span class="tic">📈 Büyüme Kapısı</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Nisan 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb ve">🔥 2yr Zirvesi!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:100%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+30</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (3.49°)</span>
+          <span class="tp tex">♄ ☌ ♃ H8 (3.34°)</span>
+          <span class="tp">♃ △ ☉ H7 (5.40°)</span>
+        </div></div>
+        <div class="it">2 YILIN EN YÜKSEK FİNANS SKORU: Satürn hem Venüs hem Jüpiter'e (H8 Koç) aynı anda yakın. Bu kombinasyon sadece kazanım değil, geniş çaplı finansal yapılanma anlamına gelir. Büyük bir yatırım kararı, kredi/kaldıraç kullanımı veya ortak yatırım anlaşması için en güçlü dönem. Cesaretli ama hesaplı adım atmak bu ayın formülü.</div>
+        <div class="tico"><span class="tic">💎 En Büyük Fırsat</span><span class="tic">📊 Portföy Kuruluşu</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Mayıs 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:90%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+27</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 TAM (0.11°) ★★★</span>
+          <span class="tp">♄ ⚹ MC (3.49°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs'e TAM kavuşum (0.11° — son derece hassas) — bu "değer tescili" transiti. H8'deki Venüs değerli varlıklar, mülk, sanat ve uzun vadeli finansal taahhütlerle ilgili. Bu ay alınan finansal kararlar gelecek yıllarda büyük değer kazanabilir. Gayrimenkul, altın veya uzun vadeli sabit yatırım için güçlü dönem.</div>
+        <div class="tico"><span class="tic">🏠 Gayrimenkul</span><span class="tic">💍 Değerli Varlık</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Haziran 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC (0.85°) ★</span>
+          <span class="tp">♄ ☌ ♀ H8 (2.52°)</span>
+          <span class="tp">♃ △ ☿ H7 (2.78°)</span>
+        </div></div>
+        <div class="it">Satürn MC sextili kariyer gelirini artırıyor. Haziran kariyer üzerinden gelen finansal kazanımların (zam, proje ücreti, bonus) somutlaşma ayı. Jüpiter Merkür üçgeni finansal iletişimi güçlendiriyor — bir müzakere veya sözleşme görüşmesi verimli olabilir.</div>
+        <div class="tico"><span class="tic">💼 Kariyer Geliri</span><span class="tic">📝 Sözleşme</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Temmuz 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:80%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+24</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC TAM (0.45°) ★★</span>
+          <span class="tp">♄ ☌ ♀ H8 (3.82°)</span>
+        </div></div>
+        <div class="it">Satürn MC tam sextil — kariyer üzerinden finansal kazanımın doruk noktası. Bu ay bir terfi veya zam gerçekleşiyorsa bunun finansal planlamaya yansıtılması önemli. Mevcut yatırım pozisyonlarını değerlendirmek ve gerekirse rebalancing yapmak için iyi dönem.</div>
+        <div class="tico"><span class="tic">⚖️ Rebalancing</span><span class="tic">📈 Kazanım Değerlendir</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Ağustos 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:73%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+22</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC ℞ TAM (0.23°) ★★</span>
+          <span class="tp tex">♃ △ ♀ H8 (0.66°) ★</span>
+        </div></div>
+        <div class="it">Jüpiter natal Venüs H8'e üçgen (0.66°) — yatırım portföyünde güçlü bir getiri sinyali. Ağustos'ta değer varlıklarda (altın, gayrimenkul, mavi chip hisse) pozitif hareket izlenebilir. Retrograde dönemi mevcut pozisyonları güçlendirmek için uygun — yeni büyük girişimlerden ziyade var olanı optimize edin.</div>
+        <div class="tico"><span class="tic">📊 Portföy Optimizasyonu</span><span class="tic">🥇 Değer Varlık</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Eylül 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ (1.93°)</span>
+          <span class="tp">♄ ⚹ MC ℞ (1.44°) ★</span>
+        </div></div>
+        <div class="it">Retrograde dönemi finansal değerlendirme ve konsolidasyon. Mart-Ağustos arasında yapılan yatırım kararları şimdi olgunlaşmaya başlıyor. Bu ay piyasaları yakından takip edin ancak büyük pozisyon değişikliklerinden kaçının. Birikim hedeflerinin yarı yıl değerlendirmesi için ideal.</div>
+        <div class="tico"><span class="tic">🔍 Değerlendirme</span><span class="tic">📉 Konservatif</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Ekim 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:67%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+20</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ TAM (0.37°) ★★</span>
+          <span class="tp">♄ ⚹ MC ℞ (3.74°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 ℞ (5.51°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs retrograde tam kavuşum (3. tur) — Mayıs'taki büyük finansal kararların son değerlendirmesi. Ekim'de yatırım portföyünde yapısal bir karar almak (satmak, tutmak veya rebalancing) için kritik an. Uranüs Merkür sextili teknoloji yatırımlarına bakış açısını genişletebilir.</div>
+        <div class="tico"><span class="tic">⚖️ Yapısal Karar</span><span class="tic">💻 Teknoloji Yatırım</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Kasım 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vn">✅ Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:77%;background:#22c55e"></div></div><span class="snum" style="color:#86efac">+23</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ (2.31°)</span>
+          <span class="tp">♄ ☌ ♃ H8 ℞ (4.51°)</span>
+        </div></div>
+        <div class="it">Satürn H8'deki güç çiftine (Venüs + Jüpiter) eş zamanlı retrograde kavuşum — yıl sonu finansal planlama için güçlü. Kasım sigortalar, emeklilik fonu veya uzun vadeli güvence sistemleri için optimal. Bir yatırım veya hayat sigortası planını gözden geçirmek ve güncellemek bu ay yapılabilir.</div>
+        <div class="tico"><span class="tic">🛡️ Sigorta/Güvence</span><span class="tic">🎯 Yıl Sonu Plan</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Aralık 2026</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:70%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+21</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (2.87°)</span>
+          <span class="tp">♄ ☌ ♃ H8 (3.96°)</span>
+          <span class="tp tex">♃ △ ♄ H9 ℞ (3.14°)</span>
+        </div></div>
+        <div class="it">Jüpiter natal Satürn H9'a üçgen — uzun vadeli finansal disiplin ve büyüme potansiyeli buluşması. Aralık 2026 gelecek yıl için finansal planlar yapmak ve 2026'nın birikimini değerlendirmek için güçlü. 2027 yatırım stratejisi bu ay belirlenmeli.</div>
+        <div class="tico"><span class="tic">🗺️ 2027 Strateji</span><span class="tic">📈 Birikim Değerlendirme</span></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /yat-2026 -->
+
+<div id="yat-2027" class="ypanel" style="display:none">
+  <div class="ysum">
+    <div class="ys-card">
+      <div class="ys-title">💡 2027 Finans Özeti</div>
+      <div class="ys-text">2027 finansal kimliğin olgunlaştığı yıl. Satürn Return (Temmuz-Ağustos) mevcut finansal alışkanlıkları köklü sorgular. Eylül Jüpiter ☍ Güneş büyük finansal tanınma ve kazanım. Uranüs transitleri yenilikçi finansal araçlar için fırsat.</div>
+    </div>
+    <div class="ys-card">
+      <div class="ys-title">📊 En Güçlü Aylar</div>
+      <div class="ys-text">★ Eylül 2027 (+29): ♃ ☍ ☉ TAM — büyük finansal kazanım/tanınma<br>★ Ekim 2027 (+21): ♃ ☌ ☽ — duygusal tatmin + finansal güvenlik<br>★ Ocak-Şubat 2027: Satürn H8 son turları</div>
+    </div>
+  </div>
+  <div class="grid3">
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Ocak 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (1.76°)</span>
+          <span class="tp">♄ ☌ ♃ H8 (5.06°)</span>
+          <span class="tp">♄ ⚹ MC (5.13°)</span>
+        </div></div>
+        <div class="it">Satürn H8 geçişinin son etkileri — 2026'nın finansal kararlarının somut meyveleri görülüyor. Ocak 2027 2026 portföy performansını değerlendirmek ve yeni yıl için pozisyon ayarlamak için ideal. 2026'da başlatılan uzun vadeli yatırımlar olgunlaşmaya başlıyor.</div>
+        <div class="tico"><span class="tic">📊 Performans Değerlendir</span><span class="tic">⚖️ Pozisyon Ayarla</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Şubat 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vy">📊 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:57%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+17</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (0.81°) ★</span>
+          <span class="tp">♄ ⚹ MC (2.56°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 (2.01°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs son kavuşumu — H8 yatırım döngüsü kapanıyor. Bu ay 2026-2027 boyunca devam eden finansal dönüşüm sürecini özetleyen bir an. Uranüs Merkür sextili yenilikçi finansal araçlar (DeFi, teknoloji girişimi, patent geliri) için sezgisel fikirler getirebilir.</div>
+        <div class="tico"><span class="tic">🔄 Döngü Kapanışı</span><span class="tic">💡 Yenilikçi Araç</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Mart 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:67%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+20</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC (0.58°) ★</span>
+          <span class="tp">♄ ☌ ♀ H8 (3.96°)</span>
+          <span class="tp">♃ ⚹ MC ℞ (4.07°)</span>
+        </div></div>
+        <div class="it">Satürn + Jüpiter aynı anda MC'ye sextil — kariyer gelirinde çift gezegen desteği. Mart 2027 özellikle kariyer üzerinden gelen pasif gelir veya yan gelir kaynakları için fırsatlar açılıyor. Teknik danışmanlık, serbest mühendislik projeleri veya eğitim içerik satışı değerlendirilebilir.</div>
+        <div class="tico"><span class="tic">💼 Danışmanlık</span><span class="tic">🌱 Yan Gelir</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Nisan 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ⚹ MC (4.46°)</span>
+          <span class="tp tex">♃ ⚹ MC (2.81°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 (3.76°)</span>
+        </div></div>
+        <div class="it">Jüpiter ve Satürn eş zamanlı MC sextili devam ediyor. Nisan kariyer büyümesini finansal büyümeye dönüştürme ayı. Bir sözleşme yenileme, fiyat artışı müzakeresi veya yeni bir gelir kanalı açmak için güçlü enerji. Uzun vadeli finansal hedefleri netleştirin.</div>
+        <div class="tico"><span class="tic">📊 Gelir Artışı</span><span class="tic">🎯 Hedef Netleştir</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Mayıs 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ⚹ MC (4.37°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 (5.38°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 (5.74°)</span>
+        </div></div>
+        <div class="it">Uranüs Venüs H8 sextili — değer varlıklarında beklenmedik değer artışı veya fırsatlar. Mayıs 2027 teknoloji, yenilenebilir enerji veya inovasyon odaklı sektörlerdeki yatırımlar için cesur bir adım atma zamanı. H8 sinerji güçleniyor — ortaklık üzerinden gelir veya yatırım büyümesi.</div>
+        <div class="tico"><span class="tic">⚡ Teknoloji Yatırım</span><span class="tic">🤝 Ortaklık Geliri</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Haziran 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vy">📊 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:53%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+16</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ♄ H9 (4.77°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (4.74°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 (3.94°)</span>
+        </div></div>
+        <div class="it">Satürn Return yaklaşıyor — finansal kimliğin yeniden sorgulanma dönemi. Haziran büyük yatırım kararlarından ziyade mevcut portföyü gözden geçirme ayı. Uranüs Güneş karesi öngörülemeyen piyasa hareketlerine dikkat. Nakit oranını artırarak bekle-gör pozisyonu alın.</div>
+        <div class="tico"><span class="tic">💵 Nakit Artır</span><span class="tic">👁️ Bekle-Gör</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Temmuz 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vy">⚡ Saturn Return</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:43%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+13</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♄ H9 (2.82°)</span>
+          <span class="tp">♃ △ ♄ H9 (2.30°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (3.19°)</span>
+        </div></div>
+        <div class="it">Satürn Return finansal alışkanlıkları ve değer sistemini yeniden tanımlatıyor. "Neye yatırım yapmak istiyorum ve neden?" sorusunun cevabı bu dönemde netleşiyor. Jüpiter Satürn üçgeni olgunluk ve şansı birleştiriyor — bu sorgulamalar pişmanlık değil netlik getiriyor.</div>
+        <div class="tico"><span class="tic">🌱 Değer Yeniden Tanım</span><span class="tic">💎 Netlik</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Ağustos 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♄ H9 ℞ (2.31°)</span>
+          <span class="tp">♃ △ ♄ H9 (4.11°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (2.07°)</span>
+        </div></div>
+        <div class="it">Satürn Return retrograde — finansal kimlik dönüşümünün en derin noktası. Jüpiter Satürn üçgeni bu zorlu dönemi destekliyor. Ağustos 2027'de temelli, uzun vadeli bir finansal sistem kurma — bütçe, emeklilik planı veya pasif gelir yapısı — için zihniniz hazır olacak.</div>
+        <div class="tico"><span class="tic">🏗️ Sistem Kur</span><span class="tic">💰 Pasif Gelir</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Eylül 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb ve">🔥 Kazanım Zirvesi!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:97%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+29</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☍ ☉ H7 TAM (0.64°) ★</span>
+          <span class="tp tex">♃ ☌ ☽ H1 (5.06°)</span>
+        </div></div>
+        <div class="it">★ EYLÜL 2027 — 2yr FİNANSAL KAZANIM ZİRVESİ: Jüpiter Güneş tam karşıtlığı — bu transit büyük finansal genişleme ve kazanım anlamına gelir. 2026-2027 boyunca yapılan tüm yatırımların ve kariyer kararlarının finansal meyvesi Eylül'de somutlaşıyor. Bu ay büyük bir prim, proje ödemesi, yatırım getirisi veya iş anlaşması gündeme gelebilir.</div>
+        <div class="tico"><span class="tic">💰 Büyük Kazanım</span><span class="tic">📈 Yatırım Getirisi</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Ekim 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:70%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+21</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☌ ☽ H1 (1.16°) ★</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (2.27°)</span>
+        </div></div>
+        <div class="it">Jüpiter Ay H1 kavuşumu finansal duygusal tatmin — yaptığınız yatırımlardan aldığınız huzur ve güven. Uranüs Venüs H8 sextili değer varlıklarında beklenmedik değer artışı. Ekim 2027'de Eylül'de gelen büyük kazancı akıllıca dağıtmak ve portföyü güçlendirmek önemli.</div>
+        <div class="tico"><span class="tic">🏦 Akıllı Dağıtım</span><span class="tic">📊 Portföy Güçlendir</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Kasım 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vy">📊 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:47%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+14</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tpt">♅ □ ☉ H7 ℞ (3.07°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (2.27°)</span>
+          <span class="tp">♅ ⚹ ♃ H8 ℞ (4.56°)</span>
+        </div></div>
+        <div class="it">Biraz yavaşlama. Uranüs Güneş karesi beklenmedik piyasa hareketleri olasılığı — riskli pozisyonlarda dikkat. Buna karşın Uranüs H8 sextilleri mühendislik veya teknoloji odaklı değer varlıklarda fırsat sinyali. Kasım korumalı bir tutumla yılı tamamlamaya hazırlanın.</div>
+        <div class="tico"><span class="tic">🛡️ Korumalı Tutum</span><span class="tic">👁️ Dikkat</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hyat"><div><div class="mname">Aralık 2027</div><div class="mtag">Yatırım & Finans</div></div><span class="vb vt">📈 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:53%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+16</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☍ ☿ H7 (3.39°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 ℞ (4.32°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (3.51°)</span>
+        </div></div>
+        <div class="it">Jüpiter Merkür karşıtlığı — finansal iletişim ve müzakere enerjisi. 2027'yi finansal açıdan büyük bir dönüşüm ve kazanım yılı olarak kapatıyorsunuz. 2028'e Satürn Return sonrası olgunlaşmış finansal kimliğinizle güçlü giriyorsunuz. Yılsonu portföy değerlendirmesi ve 2028 planlaması yapın.</div>
+        <div class="tico"><span class="tic">🌅 Güçlü Kapanış</span><span class="tic">🗺️ 2028 Plan</span></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /yat-2027 -->
+<div class="disc"><strong>⚠️ Uyarı:</strong> Astroloji finansal tavsiye değildir. Yatırım kararlarınızı uzman danışmanlarla alın.</div>
+</div><!-- /panel-yat -->
+
+<!-- ═══════════════════ PANEL 3 — EVLİLİK & AŞK ═══════════════════ -->
+<div id="panel-ask" class="panel" style="display:none">
+<div class="phero">
+  <h2>💍 Evlilik & Aşk 2026-2027</h2>
+  <p>Natal ☉ + ☿ H7 Balık (Ruhsal Ortaklık) • ☽ = ASC Başak (Derin Duyarlılık) • H5 Oğlak (Ciddi/Olgun Aşk) • K.Düğüm H12 (Gizli Kaderin Açılımı)</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hval">☉ + ☿ H7</span><span class="hlbl">Ortaklık Odağı</span></div>
+    <div class="hstat"><span class="hval">☽ ≈ ASC</span><span class="hlbl">Güçlü Sezgi</span></div>
+    <div class="hstat"><span class="hval">H5 Oğlak</span><span class="hlbl">Ciddi Aşk</span></div>
+    <div class="hstat"><span class="hval">Eylül 2027</span><span class="hlbl">Aşk Zirvesi</span></div>
+  </div>
+</div>
+
+<div class="info-box" style="border:1px solid rgba(244,63,94,0.2)">
+  <div style="font-size:1rem;font-weight:700;color:var(--rose);margin-bottom:0.6rem">💕 Alkım'ın Aşk & İlişki Profili</div>
+  <div style="color:#94a3b8;font-size:0.88rem;line-height:1.8">
+    <strong style="color:#fda4af">☉ + ☿ H7 Balık:</strong> Yaşamın merkezi ortaklıklar ve ilişkilerdir. Balık enerjisiyle ruhsal, empatik ve derin bağlantılar arıyor. Partner ile zihinsel ve ruhsal uyum şart.<br>
+    <strong style="color:#fda4af">☽ ≈ ASC Başak (16.04° vs 16.30°):</strong> Ay ve ASC neredeyse tam örtüşüyor — bu nadiren gelen bir konfigürasyon. Dış görünüş ve iç his birbiriyle çok uyumlu; duygusal otantiklik çok yüksek. Çevresindekiler bu duyarlılığı hisseder.<br>
+    <strong style="color:#fda4af">H5 Oğlak:</strong> Flörtü ciddiye alır, uzun vadeli düşünür. Hızlı ilişkilerden çok derin ve sürdürülebilir bağlara yönelir.<br>
+    <strong style="color:#fda4af">Kuzey Düğüm H12 Leo:</strong> Kader yolu gizli güçlerin ve yaratıcı liderliğin açılımını gerektiriyor — doğru partner bu yolculukta kılavuz olur.
+  </div>
+</div>
+
+<div class="ytabs">
+  <button class="ytab ay-ask active" onclick="sy('ask','2026',this)">📅 2026</button>
+  <button class="ytab ay-ask" onclick="sy('ask','2027',this)">📅 2027</button>
+</div>
+
+<div id="ask-2026" class="ypanel">
+  <div class="ysum">
+    <div class="ys-card">
+      <div class="ys-title">💕 2026 Aşk Özeti</div>
+      <div class="ys-text">2026'da Satürn H8 geçişi (Venüs-Jüpiter) hem kariyer hem aşkta "ciddi taahhüt" enerjisi getiriyor. Ağustos 2026 Jüpiter Venüs H8 üçgeni güçlü aşk fırsatı. Şubat-Mart güçlü zihinsel bağlantı ve iletişim.</div>
+    </div>
+    <div class="ys-card">
+      <div class="ys-title">❤️ Öne Çıkan Dönemler</div>
+      <div class="ys-text">★ Mayıs 2026: ♄ ☌ ♀ H8 TAM 0.11° — değer ve taahhüt enerjisi zirve<br>★ Ağustos 2026: ♃ △ ♀ H8 — aşkta güzel genişleme<br>★ Şubat 2026: Güçlü zihinsel bağlantı</div>
+    </div>
+  </div>
+  <div class="grid3">
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Ocak 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ☿ H7 (2.53°)</span>
+          <span class="tp">♃ ⚹ ☽ H1 ℞ (3.37°)</span>
+        </div></div>
+        <div class="it">Satürn Merkür H7 kavuşumu — ilişki iletişiminde ciddiyet ve derinlik. Ocak 2026 yeni biriyle tanışıyorsanız ilk sohbetler derin ve anlamlı olur. Mevcut ilişkide ise önemli konular açıkça konuşuluyor. Jüpiter Ay sextili duygusal genişlik ve sıcaklık katıyor.</div>
+        <div class="tico"><span class="tic">💬 Derin Sohbet</span><span class="tic">🤝 Ciddi Tanışma</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Şubat 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vn">💜 Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:93%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+28</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ☿ H7 TAM (0.47°) ★★</span>
+          <span class="tp">♄ ☌ ♃ H8 (3.83°)</span>
+        </div></div>
+        <div class="it">Satürn Merkür tam kavuşumu H7'de — ilişki iletişimi olgunluğa ve derinliğe ulaşıyor. Sevgililer Günü (Şubat) için mükemmel enerji. Bu ay yapılan ilişki konuşmaları, teklif veya taahhütler kalıcı iz bırakır. Yeni biriyle tanışıyorsanız, Şubat bu bağlantının geleceğini şekillendiriyor.</div>
+        <div class="tico"><span class="tic">❤️ Sevgililer Günü</span><span class="tic">💒 Teklif/Taahhüt</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Mart 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb ve">🔥 Güçlü!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:97%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+29</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♃ H8 (0.50°) ★</span>
+          <span class="tp">♄ ☌ ☿ H7 (3.80°)</span>
+        </div></div>
+        <div class="it">Satürn H8 Jüpiter'e kavuşum — H8 evi derin bağlar, intimacy ve paylaşılan kaynakları temsil eder. Bu transit ciddi bir ilişkiyi "bir sonraki seviyeye" taşıma enerjisi verir. Birlikte yaşam, nişan veya evlilik gündemde ise Mart 2026 için güçlü bir astrolojik zemin var.</div>
+        <div class="tico"><span class="tic">💍 Sonraki Seviye</span><span class="tic">🏠 Birlikte Yaşam</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Nisan 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb ve">💍 Zirve!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:100%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+30</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (3.49°)</span>
+          <span class="tp tex">♄ ☌ ♃ H8 (3.34°)</span>
+        </div></div>
+        <div class="it">2 YILIN EN YÜKSEK AŞKI SKORU: Satürn H8'de hem Venüs hem Jüpiter'e yakın eş zamanlı. H8'de Venüs = derin duygusal bağ ve değerli ilişki; H8'de Jüpiter = ilişkide genişleme ve bereket. Nisan 2026 bir nişan teklifi, birliktelik kararı veya evlilik girişimi için hayatın en güçlü astrolojik zamanlarından biri.</div>
+        <div class="tico"><span class="tic">💒 Nişan/Evlilik</span><span class="tic">💞 Hayat Değiştirir</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Mayıs 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb ve">⭐ Taahhüt Ayı</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:90%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+27</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 TAM (0.11°) ★★★</span>
+          <span class="tp">♄ ⚹ MC (3.49°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs H8 TAM kavuşum (0.11° — astronomik hassasiyet). Bu "derin duygusal değer tescili" anlamına gelir. Mayıs 2026'da yapılan bir ilişki teklifi veya taahhüdü Satürn'ün gücüyle kalıcı ve sağlam temelli olur. H8 Venüs ciddi, derinden hissedilen, kalıcı bir aşkı sembolize ediyor.</div>
+        <div class="tico"><span class="tic">❤️ Kalıcı Bağ</span><span class="tic">💍 Teklif Zamanı</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Haziran 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC (0.85°) ★</span>
+          <span class="tp">♃ △ ☿ H7 (2.78°)</span>
+        </div></div>
+        <div class="it">Jüpiter Merkür H7 üçgeni — ilişki iletişiminde güzellik ve genişleme. Haziran kariyer başarısı ile aşk hayatını bir arada yönetme dönemi. İş dünyasında tanıştığınız biriyle duygusal bağ gelişebilir — MC çizgisindeki kariyer iletişimi sosyal çevrenizi genişletiyor.</div>
+        <div class="tico"><span class="tic">💼+💕 Kariyer-Aşk</span><span class="tic">🌐 Çevre Genişleme</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Temmuz 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vn">💜 Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:80%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+24</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC TAM (0.45°) ★★</span>
+          <span class="tp">♃ △ ☿ H7 (3.62°)</span>
+        </div></div>
+        <div class="it">Satürn MC tam sextil — kariyer statüsü kişisel çekiciliği artırıyor. Temmuz 2026'da sosyal ortamlarda kişisel güven ve otantiklik en yüksek. H7'deki Güneş ve Merkür'e Jüpiter üçgeni entelektüel ve derin bağlantılar için güçlü zemin. Ortak ilgi alanları veya iş çevresinde önemli bir tanışma olabilir.</div>
+        <div class="tico"><span class="tic">✨ Kişisel Güven</span><span class="tic">🤝 Entelektüel Bağ</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Ağustos 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb ve">💕 Aşk Fırsatı!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:73%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+22</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ △ ♀ H8 (0.66°) ★</span>
+          <span class="tp tex">♄ ⚹ MC ℞ TAM (0.23°) ★★</span>
+        </div></div>
+        <div class="it">Jüpiter natal Venüs H8'e üçgen (0.66°) — bu aşk ve ilişki için özel bir ay. H8'deki Venüs derin duygusal bağları ve gerçek intimacy'yi temsil eder; Jüpiter burada genişleme ve güzellik getiriyor. Ağustos 2026 yeni bir ilişki başlaması veya mevcut ilişkinin derinleşmesi için güçlü. Tatil veya özel bir deneyim paylaşmak bu enerjiyi destekler.</div>
+        <div class="tico"><span class="tic">🌹 Romantik Açılım</span><span class="tic">🏖️ Tatil/Deneyim</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Eylül 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ♀ H8 ℞ (1.93°)</span>
+          <span class="tp">♄ ⚹ MC ℞ (1.44°) ★</span>
+        </div></div>
+        <div class="it">Retrograde dönem ilişki içi derinleşme için uygun. Ağustos'ta başlayan veya derinleşen bağlantı Eylül'de daha samimi ve içsel bir boyut kazanıyor. Geçmiş ilişkilerdeki örüntüleri yeniden değerlendirmek ve duygusal alışkanlıkları gözden geçirmek için güçlü dönem.</div>
+        <div class="tico"><span class="tic">🔍 İç Gözlem</span><span class="tic">💭 Değerlendirme</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Ekim 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:67%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+20</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ TAM (0.37°) ★★</span>
+          <span class="tp">♅ ⚹ ☿ H7 ℞ (5.51°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs retrograde tam kavuşum — Mayıs'taki duygusal taahhüdün yeniden gözden geçirilmesi. Bu "pişmanlık" değil, olgunlaşma ve netleşme sürecidir. Ekim ilişki kararlarında gerçek motivasyonları anlamak için derin bir ay. Dürüst bir ilişki konuşması çok değerli.</div>
+        <div class="tico"><span class="tic">💬 Dürüst Konuşma</span><span class="tic">🌱 Olgunlaşma</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Kasım 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vn">💜 Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:77%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+23</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 ℞ (2.31°)</span>
+          <span class="tp">♄ ☌ ♃ H8 ℞ (4.51°)</span>
+        </div></div>
+        <div class="it">Satürn H8 güç çiftine retrograde kavuşum — derin bağın olgunlaşması. Ekim'in içsel sorgulamasının ardından Kasım'da daha sağlam ve dürüst bir ilişki zeminine oturuyorsunuz. Bu ay verilen kararlar ve taahhütler kalıcı olacak. Yılsonu birlikteliğini güçlendirmek için güzel dönem.</div>
+        <div class="tico"><span class="tic">🔒 Güçlü Zemin</span><span class="tic">❄️ Yılsonu Birlikte</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Aralık 2026</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Güzel Kapanış</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:70%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+21</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ♀ H8 (2.87°)</span>
+          <span class="tp tex">♃ △ ♄ H9 ℞ (3.14°)</span>
+        </div></div>
+        <div class="it">Jüpiter natal Satürn H9'a üçgen — uzun vadeli bağlılık ve büyüme fırsatı. Aralık 2026 bir yılın değerlendirmesi ve 2027 için ortak planlar yapma ayı. Partner ile birlikte hedef koymak, seyahat planlamak veya önemli kararları paylaşmak için güçlü enerji. 2026 ilişki hayatı için derin ve değerli.</div>
+        <div class="tico"><span class="tic">🎄 Yılsonu Beraber</span><span class="tic">🗺️ Ortak Plan</span></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ask-2026 -->
+
+<div id="ask-2027" class="ypanel" style="display:none">
+  <div class="ysum">
+    <div class="ys-card">
+      <div class="ys-title">💕 2027 Aşk Özeti</div>
+      <div class="ys-text">2027 Satürn Return yılı ilişki kimliğini de dönüştürüyor. Eylül 2027 Jüpiter ☌ Ay H1 + ☍ Güneş H7 — ilişkide ve kişisel yaşamda büyük genişleme. Ekim Jüpiter Ay tam kavuşumu — duygusal tatmin zirvesi.</div>
+    </div>
+    <div class="ys-card">
+      <div class="ys-title">❤️ Öne Çıkan Dönemler</div>
+      <div class="ys-text">★ Eylül 2027 (+29): ♃ ☍ ☉ TAM + ♃ ☌ ☽ — büyük duygusal açılım<br>★ Ekim 2027 (+21): ♃ ☌ ☽ TAM — duygusal tatmin zirvesi<br>💫 Ocak-Şubat 2027: ♄ ☌ ♀ son turı</div>
+    </div>
+  </div>
+  <div class="grid3">
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Ocak 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (1.76°)</span>
+          <span class="tp">♄ ☌ ♃ H8 (5.06°)</span>
+        </div></div>
+        <div class="it">2026'nın derin ilişki enerjisi Ocak 2027'ye taşınıyor. Satürn H8 Venüs son kavuşum aşamasında — ilişki içinde "ciddi karar" takvimi tamamlanıyor. Ocak 2027 evlilik, nişan veya önemli bir birliktelik kararı için doğal bir kapanış ve netleşme ayı.</div>
+        <div class="tico"><span class="tic">💍 Karar Kapanış</span><span class="tic">🔑 Netleşme</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Şubat 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:57%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+17</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♀ H8 (0.81°) ★</span>
+          <span class="tp">♅ ⚹ ☿ H7 (2.01°)</span>
+        </div></div>
+        <div class="it">Satürn Venüs son kavuşumu (0.81°) — Şubat 2027 Sevgililer Günü öncesi önemli bir ilişki konuşması veya kararı beklenebilir. Uranüs Merkür H7 sextili beklenmedik ama heyecan verici bir iletişim açılımı. Uzun süredir düşünülen bir ilişki adımı için güzel bir dönem.</div>
+        <div class="tico"><span class="tic">💌 Sevgililer Günü</span><span class="tic">💬 Önemli Konuşma</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Mart 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:67%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+20</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ⚹ MC (0.58°) ★</span>
+          <span class="tp">♃ ⚹ MC ℞ (4.07°)</span>
+        </div></div>
+        <div class="it">Satürn + Jüpiter MC sextilleri kariyer başarısını kişisel çekiciliğe yansıtıyor. Mart 2027 doğum ayınız — kendinize en otantik hissettiğiniz dönem. Kariyer içindeki başarı kişisel hayatınızı da olumlu etkiliyor; sosyal çevre genişliyor ve yeni kaliteli bağlantılar mümkün.</div>
+        <div class="tico"><span class="tic">🎂 Doğum Enerjisi</span><span class="tic">✨ Otantik Çekim</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Nisan 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ⚹ MC (2.81°)</span>
+          <span class="tp">♅ ⚹ ☿ H7 (3.76°)</span>
+        </div></div>
+        <div class="it">Jüpiter MC sextili ve Uranüs Merkür H7 sextili — ilişki iletişiminde genişlik ve beklenmedik ama güzel gelişmeler. Nisan 2027 özellikle fikir ve kültürel ortamlarda tanışmalara uygun. Balık H7 Güneş ve Merkür'e yapılan destekleyici açılar ruhsal ve zihinsel uyumu ön plana çıkarıyor.</div>
+        <div class="tico"><span class="tic">🎭 Kültürel Ortam</span><span class="tic">💡 Fikir Ortaklığı</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Mayıs 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:63%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+19</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ⚹ MC (4.37°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 (5.74°)</span>
+        </div></div>
+        <div class="it">Uranüs Venüs H8 sextili — beklenmedik ama heyecan verici romantik gelişme olasılığı. Mayıs 2027 mevcut ilişkide yenilenme veya yeni bir ilişkinin başlangıcı için uygun. Venüs H8'deki derin bağ enerjisi Uranüs'ün heyecanıyla buluşuyor — sürpriz bir romantik dönüm noktası mümkün.</div>
+        <div class="tico"><span class="tic">⚡ Romantik Sürpriz</span><span class="tic">🌸 Yenilenme</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Haziran 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vy">💛 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:53%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+16</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp">♄ ☌ ♄ H9 (4.77°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (4.74°)</span>
+        </div></div>
+        <div class="it">Satürn Return yaklaşıyor — ilişki kimliğinde de yeniden yapılanma başlıyor. Uranüs Güneş H7 karesi beklenmedik ilişki sürprizleri olabileceğini işaret ediyor. Haziran büyük aşk kararları yerine kendinizi ve ilişki beklentilerinizi anlamak için uygun.</div>
+        <div class="tico"><span class="tic">🔍 İç Gözlem</span><span class="tic">💭 Beklenti Analizi</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Temmuz 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vy">⚡ Saturn Return</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:43%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+13</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♄ H9 (2.82°)</span>
+          <span class="tp tpt">♅ □ ☉ H7 (3.19°)</span>
+        </div></div>
+        <div class="it">Satürn Return ilişki beklentilerini ve değer sistemini de yeniden tanımlıyor. "Hayatımda ne tür bir partner ve birliktelik istiyorum?" sorusunun cevabı bu dönemde kristalleşiyor. Zorlu ama dönüştürücü — ilişkide olmak da olmamak da bu dönem derinden sorgulanabilir.</div>
+        <div class="tico"><span class="tic">🌱 Dönüşüm</span><span class="tic">💎 Netlik Arayışı</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Ağustos 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Olumlu</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:60%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+18</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♄ ☌ ♄ H9 ℞ (2.31°)</span>
+          <span class="tp">♃ △ ♄ H9 (4.11°)</span>
+        </div></div>
+        <div class="it">Satürn Return retrograde — dönüşümün en derin noktası. Jüpiter destek sağlıyor. Ağustos 2027 ilişki hayatınızın geleceği için en dürüst soruları sorduğunuz ay. Bu netlik 2028'de hayatınıza girecek doğru insanın kapısını açıyor. Yapıcı bir içsel çalışma dönemi.</div>
+        <div class="tico"><span class="tic">🔮 Yapıcı Dönüşüm</span><span class="tic">🌅 2028 Hazırlık</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Eylül 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb ve">💍 2yr Aşk Zirvesi!</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:97%;background:#a78bfa"></div></div><span class="snum" style="color:#d8b4fe">+29</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☍ ☉ H7 TAM (0.64°) ★</span>
+          <span class="tp tex">♃ ☌ ☽ H1 (5.06°)</span>
+        </div></div>
+        <div class="it">★ EYLÜL 2027 — 2 YILIN AŞK ZİRVESİ: Jüpiter H7 Güneş'e tam karşıtlık (H1-H7 aksı) + Jüpiter H1 Ay'a kavuşum. Bu kombinasyon özel: H7'deki Güneş "ortaklık kimliği"ni ve Jüpiter buna büyük bir genişleme veriyor. Satürn Return dönüşümünün ardından Eylül'de hayatınıza giren veya derinleşen ilişki uzun ömürlü ve kadersel hissettiriyor.</div>
+        <div class="tico"><span class="tic">💞 Kadersel Bağlantı</span><span class="tic">🌟 Büyük Aşk Açılımı</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Ekim 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vn">💜 Güçlü</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:70%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+21</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☌ ☽ H1 (1.16°) ★</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (2.27°)</span>
+        </div></div>
+        <div class="it">Jüpiter natal Ay H1'e yakın kavuşum (1.16°) — duygusal tatmin ve güvenlik hissi. Ay ve ASC neredeyse aynı noktada olduğundan Jüpiter'in bu geçişi hem duygusal hem kişisel kimlik açısından büyük güzellik getiriyor. Ekim Eylül'deki büyük açılımın pratiğe dökülmesi ve ilişkinin somutlaşması.</div>
+        <div class="tico"><span class="tic">❤️ Duygusal Tatmin</span><span class="tic">🏠 Somutlaşma</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Kasım 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vy">💛 İyi</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:47%;background:#f59e0b"></div></div><span class="snum" style="color:#fde047">+14</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tpt">♅ □ ☉ H7 ℞ (3.07°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (2.27°)</span>
+        </div></div>
+        <div class="it">Biraz yavaşlama. Uranüs Güneş H7 karesi ilişkide beklenmedik değişimler veya sürprizler işareti — hazırlıklı olun. Bununla birlikte Uranüs Venüs H8 sextili değerli ilişki deneyimleri için destek. Kasım dinginlik ve düşünme ayı; büyük ilişki kararları Aralık'a bırakılabilir.</div>
+        <div class="tico"><span class="tic">🧘 Dinginlik</span><span class="tic">💭 Düşün</span></div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="chead hask"><div><div class="mname">Aralık 2027</div><div class="mtag">Evlilik & Aşk</div></div><span class="vb vt">💫 Güzel Kapanış</span></div>
+      <div class="cbody">
+        <div class="sw"><span class="slbl">Skor</span><div class="sbg"><div class="sf" style="width:53%;background:#f43f5e"></div></div><span class="snum" style="color:#fda4af">+16</span></div>
+        <div class="tw"><div class="tlbl">Aktif Geçişler</div><div class="tps">
+          <span class="tp tex">♃ ☍ ☿ H7 (3.39°)</span>
+          <span class="tp">♅ ⚹ ♀ H8 ℞ (3.51°)</span>
+        </div></div>
+        <div class="it">Jüpiter Merkür H7 karşıtlığı — ilişki iletişiminde derinlik ve genişlik. 2027'yi Satürn Return dönüşümü, büyük bir aşk açılımı ve duygusal olgunlukla kapatıyorsunuz. 2028'e daha net değerler, daha derin bağlantılar ve daha sağlam bir ilişki temeli ile giriyorsunuz.</div>
+        <div class="tico"><span class="tic">🌅 Olgun Kapanış</span><span class="tic">💫 2028'e Hazır</span></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ask-2027 -->
+<div class="disc"><strong>⚠️ Uyarı:</strong> Astroloji ilişki kararlarınızı değil, kendi içsel sürecinizi aydınlatmak için kullanılmalıdır.</div>
+</div><!-- /panel-ask -->
+
+
+<!-- ═══════════════════ PANEL 4 — GENEL GÖRÜNÜM ═══════════════════ -->
+<div id="panel-gen" class="panel" style="display:none">
+<div class="phero">
+  <h2>🔮 Genel Görünüm 2026-2027</h2>
+  <p>Başak ASC (Analitik Güç) • ☉+☿ H7 Balık (Ortaklık Odağı) • Satürn Return 2027 (Dönüşüm) • ♀+♃ H8 Koç (Güçlü Kazanım)</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hval">Nisan 2026</span><span class="hlbl">En Yüksek Skor (+30)</span></div>
+    <div class="hstat"><span class="hval">Eylül 2027</span><span class="hlbl">Büyük Tanınma (+29)</span></div>
+    <div class="hstat"><span class="hval">Tem-Ağu 2027</span><span class="hlbl">Saturn Return</span></div>
+    <div class="hstat"><span class="hval">+494</span><span class="hlbl">2yr Toplam Skor</span></div>
+  </div>
+</div>
+
+<div class="info-box" style="border:1px solid rgba(167,139,250,0.2)">
+  <div style="font-size:1rem;font-weight:700;color:var(--violet);margin-bottom:0.6rem">🌟 Alkım'ın 2026-2027 Büyük Temaları</div>
+  <div style="color:#94a3b8;font-size:0.88rem;line-height:1.9">
+    <strong style="color:#c4b5fd">1. FİNANSAL & KARİYER DÖNÜŞÜMÜ (2026 H1):</strong> Satürn H8'deki Venüs + Jüpiter kavuşumları — kariyer kıymetinin tescili ve büyük finansal adımlar için nadir fırsat. Mart-Mayıs 2026 özellikle kritik.<br>
+    <strong style="color:#c4b5fd">2. İLİŞKİ KARARLARI (2026 H1):</strong> Aynı Satürn H8 geçişleri derin, ciddi ve kalıcı aşk taahhütleri için de güçlü zemin oluşturuyor. Nisan 2026 özellikle özel.<br>
+    <strong style="color:#c4b5fd">3. SATÜRN RETURN (Tem-Ağu 2027):</strong> Kariyer, değer sistemi ve ilişki kimliği köklü yeniden tanımlanıyor. 28-29 yaş dönümünde gerçekleşen bu transit hayatın en önemli gelişim anlarından biri.<br>
+    <strong style="color:#c4b5fd">4. BÜYÜK TANINMA VE KAZANIM (Eylül 2027):</strong> Jüpiter H7 Güneş karşıtlığı + H1 Ay kavuşumu — Satürn Return dönüşümünün ardından büyük kariyer ve kişisel büyüme ödülü.<br>
+    <strong style="color:#c4b5fd">5. ☽ = ASC AVANTAJI:</strong> Ay ve ASC neredeyse aynı noktada (16.04° vs 16.30° Başak) — bu kişiyi hem son derece sezgisel hem de son derece otantik yapıyor. Dış davranış ile iç dünya uyumlu.
+  </div>
+</div>
+
+<div style="overflow-x:auto;margin-bottom:2rem;">
+<table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+  <thead>
+    <tr style="background:rgba(56,189,248,0.12);">
+      <th style="padding:0.7rem 0.5rem;text-align:left;border-bottom:1px solid rgba(56,189,248,0.2);color:var(--acc)">Ay</th>
+      <th style="padding:0.7rem 0.5rem;text-align:center;border-bottom:1px solid rgba(56,189,248,0.2);color:var(--acc)">Skor</th>
+      <th style="padding:0.7rem 0.5rem;text-align:left;border-bottom:1px solid rgba(56,189,248,0.2);color:var(--acc)">Kariyer</th>
+      <th style="padding:0.7rem 0.5rem;text-align:left;border-bottom:1px solid rgba(56,189,248,0.2);color:var(--acc)">Finans</th>
+      <th style="padding:0.7rem 0.5rem;text-align:left;border-bottom:1px solid rgba(56,189,248,0.2);color:var(--acc)">Aşk</th>
+      <th style="padding:0.7rem 0.5rem;text-align:left;border-bottom:1px solid rgba(56,189,248,0.2);color:var(--acc)">Öne Çıkan</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Ocak 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+18</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">📋 Planlama</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🔍 Araştırma</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💬 Derin Sohbet</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♄☌☿H7 + ♃⚹☽</td></tr>
+    <tr style="background:rgba(34,197,94,0.06)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>Şubat 2026</strong></td><td style="padding:0.55rem 0.5rem;text-align:center;color:#86efac;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>+28</strong></td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🎙️ Sunum</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🏦 Hesap Aç</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">❤️ Sevgililer</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#86efac">♄☌☿H7 TAM 0.47°★★</td></tr>
+    <tr style="background:rgba(167,139,250,0.08)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>🔥 Mart 2026</strong></td><td style="padding:0.55rem 0.5rem;text-align:center;color:#d8b4fe;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>+29</strong></td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🚀 Terfi/Fırsat</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🚀 En İyi Yatırım</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💍 Birliktelik</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#fbbf24">♄☌♃H8 TAM 0.50°★</td></tr>
+    <tr style="background:rgba(167,139,250,0.12)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>⭐ Nisan 2026</strong></td><td style="padding:0.55rem 0.5rem;text-align:center;color:#d8b4fe;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>+30</strong></td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🏆 ZİRVE</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💎 2yr Zirve</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💒 Nişan/Evlilik</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#fbbf24">♄☌♀+♃ H8 — MAX</td></tr>
+    <tr style="background:rgba(34,197,94,0.07)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>Mayıs 2026</strong></td><td style="padding:0.55rem 0.5rem;text-align:center;color:#86efac;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>+27</strong></td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">👑 Değer Tescili</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🏠 Gayrimenkul</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💍 Teklif Zamanı</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#fbbf24">♄☌♀H8 TAM 0.11°★★★</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Haziran 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+18</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🏗️ Yapılanma</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💼 Kariyer Geliri</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💼+💕 Kariyer-Aşk</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♄⚹MC 0.85°★</td></tr>
+    <tr style="background:rgba(34,197,94,0.07)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Temmuz 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#86efac;border-bottom:1px solid rgba(255,255,255,0.04)">+24</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">📢 Görünürlük</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">⚖️ Rebalancing</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">✨ Kişisel Güven</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#86efac">♄⚹MC TAM 0.45°★★</td></tr>
+    <tr style="background:rgba(56,189,248,0.05)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Ağustos 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+22</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💎 Değerli Bağlantı</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🥇 Değer Varlık</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌹 Romantik Açılım</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#86efac">♃△♀H8 0.66°★</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Eylül 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+19</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🔍 Gözden Geçirme</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">📉 Konservatif</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🔍 İç Gözlem</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♄☌♀℞ + ♄⚹MC</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Ekim 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+20</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💰 Somut Karşılık</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">⚖️ Yapısal Karar</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💬 Dürüst Konuşma</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♄☌♀℞ TAM 0.37°★★</td></tr>
+    <tr style="background:rgba(34,197,94,0.06)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Kasım 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#86efac;border-bottom:1px solid rgba(255,255,255,0.04)">+23</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">📊 Yıl Sonu Strateji</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🛡️ Sigorta/Güvence</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🔒 Güçlü Zemin</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#86efac">♄☌♀+♃℞ H8</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:2px solid rgba(56,189,248,0.2)">Aralık 2026</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:2px solid rgba(56,189,248,0.2)">+21</td><td style="padding:0.55rem 0.5rem;border-bottom:2px solid rgba(56,189,248,0.2)">🎓 Eğitim Başvuru</td><td style="padding:0.55rem 0.5rem;border-bottom:2px solid rgba(56,189,248,0.2)">🗺️ 2027 Strateji</td><td style="padding:0.55rem 0.5rem;border-bottom:2px solid rgba(56,189,248,0.2)">🎄 Ortak Plan</td><td style="padding:0.55rem 0.5rem;border-bottom:2px solid rgba(56,189,248,0.2);color:#7dd3fc">♃△♄H9℞ 3.14°</td></tr>
+    <tr style="background:rgba(80,80,120,0.15)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#a78bfa;font-weight:700" colspan="6">── 2027 ──</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Ocak 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+19</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🎯 Hedef Güncelleme</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">📊 Performans</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💍 Karar Kapanış</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♄☌♀H8 + ♄⚹MC</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Şubat 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+17</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💡 Yenilikçi Fikir</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🔄 Döngü Kapanış</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💌 Sevgililer Günü</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♄☌♀H8 0.81°★</td></tr>
+    <tr style="background:rgba(56,189,248,0.05)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Mart 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+20</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">👤 Liderlik Profili</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌱 Yan Gelir</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🎂 Doğum Enerjisi</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♄⚹MC 0.58°★ + ♃⚹MC</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Nisan 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+19</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌐 Konferans</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">📊 Gelir Artışı</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🎭 Kültürel Ortam</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♃⚹MC 2.81° + ♅⚹☿</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Mayıs 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+19</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌱 Girişim Fikri</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">⚡ Teknoloji Yatırım</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">⚡ Romantik Sürpriz</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♃⚹MC + ♅⚹♀H8</td></tr>
+    <tr style="background:rgba(234,179,8,0.05)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Haziran 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#fde047;border-bottom:1px solid rgba(255,255,255,0.04)">+16</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">👁️ Hazırlık</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💵 Nakit Artır</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🔍 İç Gözlem</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#fde047">♄☌♄H9 yaklaşıyor</td></tr>
+    <tr style="background:rgba(167,139,250,0.08)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>⚡ Temmuz 2027</strong></td><td style="padding:0.55rem 0.5rem;text-align:center;color:#d8b4fe;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>+13</strong></td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">⚡ Saturn Return</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌱 Değer Tanım</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌱 Dönüşüm</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#d8b4fe">♄☌♄H9 2.82°</td></tr>
+    <tr style="background:rgba(167,139,250,0.08)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>⚡ Ağustos 2027</strong></td><td style="padding:0.55rem 0.5rem;text-align:center;color:#d8b4fe;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>+18</strong></td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌱 Yapıcı Dönüşüm</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🏗️ Sistem Kur</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🔮 2028 Hazırlık</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#d8b4fe">♄☌♄H9℞ 2.31°</td></tr>
+    <tr style="background:rgba(167,139,250,0.14)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>🌟 EYLÜL 2027</strong></td><td style="padding:0.55rem 0.5rem;text-align:center;color:#d8b4fe;border-bottom:1px solid rgba(255,255,255,0.04)"><strong>+29</strong></td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🏆 BÜYÜK TANINMA</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💰 Kazanım Zirve</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">💍 Aşk Zirvesi</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#fbbf24">♃☍☉H7 TAM 0.64°★</td></tr>
+    <tr style="background:rgba(56,189,248,0.05)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Ekim 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc;border-bottom:1px solid rgba(255,255,255,0.04)">+21</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🌟 Yeni Sorumluluk</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🏦 Akıllı Dağıtım</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">❤️ Duygusal Tatmin</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#7dd3fc">♃☌☽H1 1.16°★</td></tr>
+    <tr style="background:rgba(234,179,8,0.05)"><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">Kasım 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#fde047;border-bottom:1px solid rgba(255,255,255,0.04)">+14</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🧘 Gözlemle</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🛡️ Korumalı</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)">🧘 Dinginlik</td><td style="padding:0.55rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:#fde047">♅□☉H7℞ 3.07°</td></tr>
+    <tr style="background:rgba(56,189,248,0.04)"><td style="padding:0.55rem 0.5rem">Aralık 2027</td><td style="padding:0.55rem 0.5rem;text-align:center;color:#7dd3fc">+16</td><td style="padding:0.55rem 0.5rem">📢 Güçlü İfade</td><td style="padding:0.55rem 0.5rem">🌅 Güçlü Kapanış</td><td style="padding:0.55rem 0.5rem">🌅 Olgun Kapanış</td><td style="padding:0.55rem 0.5rem;color:#7dd3fc">♃☍☿H7 + ♅⚹♀H8</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="grid3">
+  <div style="background:linear-gradient(135deg,rgba(56,189,248,0.12),rgba(34,197,94,0.08));border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:1.2rem;">
+    <div style="font-size:1rem;font-weight:700;color:var(--acc);margin-bottom:0.7rem">⚙️ KARİYER SONUCU</div>
+    <div style="color:#94a3b8;font-size:0.87rem;line-height:1.7">2026 Mart-Mayıs Satürn H8 geçişleri kariyer kıymetini tescil ediyor. Temmuz-Ağustos MC sextilleri kariyer yapısını pekiştiriyor. 2027 Satürn Return kimliği yeniden tanımlıyor. <strong style="color:#7dd3fc">Eylül 2027 Jüpiter ☍ Güneş H7 büyük kariyer tanınması ve prestijli ortaklık fırsatı.</strong></div>
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(251,191,36,0.06));border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:1.2rem;">
+    <div style="font-size:1rem;font-weight:700;color:var(--gold);margin-bottom:0.7rem">💰 FİNANS SONUCU</div>
+    <div style="color:#94a3b8;font-size:0.87rem;line-height:1.7">Mart 2026 Satürn ☌ Jüpiter H8 = büyük yatırım kapısı. Nisan 2026 (+30) 2 yılın finansal zirvesi. Eylül 2027 büyük kazanım. <strong style="color:#fde047">♀ + ♃ H8 Koç kombinasyonu cesur yatırımcı profili — doğru kanalda çok yüksek getiri potansiyeli.</strong></div>
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(244,63,94,0.12),rgba(167,139,250,0.06));border:1px solid rgba(244,63,94,0.3);border-radius:12px;padding:1.2rem;">
+    <div style="font-size:1rem;font-weight:700;color:var(--rose);margin-bottom:0.7rem">💍 İLİŞKİ SONUCU</div>
+    <div style="color:#94a3b8;font-size:0.87rem;line-height:1.7">Nisan 2026 nişan/evlilik için hayatın en güçlü astrolojik anı. Satürn Return (2027) ilişki kimliğini dönüştürüyor. <strong style="color:#fda4af">Eylül 2027 Jüpiter ☌ Ay — Satürn Return sonrası hayata giren kişi derin ve kadersel hissettiriyor. ☉+☿ H7 için doğru ortak "zihinsel + ruhsal" rezonans arıyor.</strong></div>
+  </div>
+</div>
+
+<div class="disc" style="margin-top:2rem"><strong>⚠️ Uyarı:</strong> Bu analiz yalnızca eğlence ve kişisel keşif amaçlıdır. Kariyer, finans ve ilişki kararlarınızı uzman danışmanlarla alın. Astroloji kesinlik değil olasılık dilidir.</div>
+</div><!-- /panel-gen -->
+
+</div><!-- /wrap -->
+
+<script>
+(function(){
+  const c=document.getElementById('starfield');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  function r(){c.width=window.innerWidth;c.height=window.innerHeight;}
+  r();window.addEventListener('resize',r);
+  const stars=Array.from({length:200},()=>({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.4+0.3,o:Math.random()*0.5+0.2,s:Math.random()*0.3+0.1}));
+  function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.o+=(Math.random()-0.5)*0.025;s.o=Math.max(0.1,Math.min(0.85,s.o));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(180,220,255,${s.o})`;ctx.fill();});requestAnimationFrame(draw);}
+  draw();
+})();
+
+function sw(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const panel=document.getElementById('panel-'+id);
+  if(panel)panel.style.display='block';
+  if(btn)btn.classList.add('active');
+  const ytab=panel?panel.querySelector('.ytab'):null;
+  const yp=panel?panel.querySelector('.ypanel'):null;
+  if(ytab&&yp){panel.querySelectorAll('.ytab').forEach(t=>t.classList.remove('active'));panel.querySelectorAll('.ypanel').forEach(p=>p.style.display='none');ytab.classList.add('active');yp.style.display='block';}
+}
+
+function sy(panelId,year,btn){
+  const panel=document.getElementById('panel-'+panelId);
+  if(!panel)return;
+  panel.querySelectorAll('.ypanel').forEach(p=>p.style.display='none');
+  panel.querySelectorAll('.ytab').forEach(t=>t.classList.remove('active'));
+  const yp=document.getElementById(panelId+'-'+year);
+  if(yp)yp.style.display='block';
+  if(btn)btn.classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  sw('kar',document.querySelector('.tab'));
+});
+</script>
+</body>
+</html>
