@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astroloji Transit Özeti 2026–2027 | Eray · Alkım · Baran</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --card-bg: #161b22;
+  --card-border: #30363d;
+  --surface: #1c2128;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --eray: #06b6d4;
+  --eray-dim: rgba(6,182,212,0.15);
+  --alkim: #a78bfa;
+  --alkim-dim: rgba(167,139,250,0.15);
+  --baran: #f59e0b;
+  --baran-dim: rgba(245,158,11,0.15);
+  --green-dk: #145a32;
+  --green-dk-fg: #4ade80;
+  --green: #1a4731;
+  --green-fg: #86efac;
+  --yellow: #3d3200;
+  --yellow-fg: #fde047;
+  --orange: #3d1a00;
+  --orange-fg: #fb923c;
+  --red: #3d0a0a;
+  --red-fg: #f87171;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.header {
+  background: linear-gradient(135deg, #0d1117 0%, #1a1040 50%, #0d1117 100%);
+  border-bottom: 1px solid var(--card-border);
+  padding: 40px 24px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(167,139,250,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-stars {
+  font-size: 28px;
+  letter-spacing: 12px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+.header h1 {
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--eray), var(--alkim), var(--baran));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.header-sub {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.section {
+  padding: 40px 0 8px;
+}
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, var(--eray), var(--alkim));
+  flex-shrink: 0;
+}
+
+/* ── NATAL CARDS ─────────────────────────────────────────── */
+.natal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.natal-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.natal-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.natal-card.eray::before { background: linear-gradient(90deg, var(--eray), transparent); border-radius: 12px 12px 0 0; }
+.natal-card.alkim::before { background: linear-gradient(90deg, var(--alkim), transparent); border-radius: 12px 12px 0 0; }
+.natal-card.baran::before { background: linear-gradient(90deg, var(--baran), transparent); border-radius: 12px 12px 0 0; }
+.natal-card:hover { border-color: rgba(255,255,255,0.12); }
+.natal-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.natal-card.eray .natal-name { color: var(--eray); }
+.natal-card.alkim .natal-name { color: var(--alkim); }
+.natal-card.baran .natal-name { color: var(--baran); }
+.natal-dob {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+.natal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 12px;
+}
+.natal-row:last-child { border-bottom: none; }
+.natal-label {
+  color: var(--muted);
+  font-weight: 500;
+  min-width: 90px;
+}
+.natal-value {
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+}
+.natal-scale-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.eray .natal-scale-badge { background: var(--eray-dim); color: var(--eray); border: 1px solid rgba(6,182,212,0.3); }
+.alkim .natal-scale-badge { background: var(--alkim-dim); color: var(--alkim); border: 1px solid rgba(167,139,250,0.3); }
+.baran .natal-scale-badge { background: var(--baran-dim); color: var(--baran); border: 1px solid rgba(245,158,11,0.3); }
+
+/* ── SUMMARY TOP CARDS ───────────────────────────────────── */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.summary-card-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+}
+.summary-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+.summary-card-name {
+  font-weight: 600;
+}
+.summary-card.eray .summary-card-name { color: var(--eray); }
+.summary-card.alkim .summary-card-name { color: var(--alkim); }
+.summary-card.baran .summary-card-name { color: var(--baran); }
+.best-month-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green-fg);
+}
+.worst-month-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--red-fg);
+}
+
+/* En İyi/Zor month tiles */
+.peak-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.peak-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.peak-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 12px;
+}
+.eray .peak-card-title { color: var(--eray); }
+.alkim .peak-card-title { color: var(--alkim); }
+.baran .peak-card-title { color: var(--baran); }
+.peak-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.peak-item {
+  flex: 1;
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.peak-item-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.peak-item-month {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.peak-item-score {
+  font-size: 18px;
+  font-weight: 700;
+}
+.peak-best .peak-item-score { color: var(--green-fg); }
+.peak-worst .peak-item-score { color: var(--red-fg); }
+.peak-note {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── TABLE ───────────────────────────────────────────────── */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  margin-bottom: 12px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+thead th {
+  background: var(--surface);
+  padding: 12px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+thead th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: var(--surface);
+  min-width: 110px;
+}
+thead th.th-eray { color: var(--eray); border-bottom: 2px solid var(--eray); }
+thead th.th-alkim { color: var(--alkim); border-bottom: 2px solid var(--alkim); }
+thead th.th-baran { color: var(--baran); border-bottom: 2px solid var(--baran); }
+thead th:first-child { color: var(--muted); border-bottom: 2px solid var(--card-border); text-align: left; }
+
+tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+tbody tr:hover { background: rgba(255,255,255,0.04); }
+tbody tr.year-sep td {
+  background: var(--surface);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  border-top: 2px solid var(--card-border);
+}
+tbody td {
+  padding: 10px 14px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+}
+tbody td:first-child {
+  position: sticky;
+  left: 0;
+  background: inherit;
+  text-align: left;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  z-index: 1;
+}
+tbody tr:nth-child(even) td:first-child { background: rgba(28,33,40,1); }
+tbody tr:nth-child(odd) td:first-child { background: var(--bg); }
+tbody tr.year-sep td:first-child { background: var(--surface); }
+
+.score-cell {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border-radius: 6px;
+  padding: 4px 10px;
+  min-width: 58px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.score-cell .emoji {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Score color classes */
+.s-gdk  { background: var(--green-dk);  color: var(--green-dk-fg); }
+.s-grn  { background: var(--green);     color: var(--green-fg); }
+.s-yel  { background: var(--yellow);    color: var(--yellow-fg); }
+.s-org  { background: var(--orange);    color: var(--orange-fg); }
+.s-red  { background: var(--red);       color: var(--red-fg); }
+
+.shared-highlight td { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
+.shared-marker {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  margin: 0 auto;
+  opacity: 0.4;
+}
+
+/* ── HIGHLIGHTS SECTION ──────────────────────────────────── */
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.highlight-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.highlight-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+.highlight-card.eray::before { background: var(--eray); }
+.highlight-card.alkim::before { background: var(--alkim); }
+.highlight-card.baran::before { background: var(--baran); }
+.highlight-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.highlight-card.eray .highlight-name { color: var(--eray); }
+.highlight-card.alkim .highlight-name { color: var(--alkim); }
+.highlight-card.baran .highlight-name { color: var(--baran); }
+.hl-section {
+  margin-bottom: 12px;
+}
+.hl-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.hl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.hl-tag {
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.hl-tag.best  { background: var(--green-dk); color: var(--green-dk-fg); }
+.hl-tag.worst { background: var(--red); color: var(--red-fg); }
+.hl-note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 10px;
+}
+.hl-note strong { color: var(--text); }
+
+/* ── SHARED WINDOWS ──────────────────────────────────────── */
+.shared-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+.shared-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.shared-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.shared-month {
+  font-size: 15px;
+  font-weight: 700;
+}
+.shared-type-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-green { background: var(--green-dk); color: var(--green-dk-fg); }
+.badge-red   { background: var(--red); color: var(--red-fg); }
+.badge-mixed { background: var(--yellow); color: var(--yellow-fg); }
+.shared-scores {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.shared-score-pill {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.pill-eray  { background: var(--eray-dim); color: var(--eray); border: 1px solid rgba(6,182,212,0.25); }
+.pill-alkim { background: var(--alkim-dim); color: var(--alkim); border: 1px solid rgba(167,139,250,0.25); }
+.pill-baran { background: var(--baran-dim); color: var(--baran); border: 1px solid rgba(245,158,11,0.25); }
+.shared-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.footer {
+  margin-top: 60px;
+  border-top: 1px solid var(--card-border);
+  padding: 28px 24px;
+  text-align: center;
+}
+.footer p {
+  font-size: 11px;
+  color: var(--muted);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+.footer strong { color: rgba(255,255,255,0.4); }
+
+/* ── LEGEND ──────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+.legend-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════════ -->
+<div class="header">
+  <div class="header-stars">♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓</div>
+  <h1>Astroloji Transit Özeti 2026–2027</h1>
+  <p class="header-sub">Eray · Alkım Berk · Baran — 24 Aylık Karşılaştırmalı Analiz</p>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════ NATAL CARDS ══════════════════════ -->
+<div class="section">
+  <div class="section-title">Natal Harita Özetleri</div>
+  <div class="natal-grid">
+
+    <!-- ERAY -->
+    <div class="natal-card eray">
+      <div class="natal-name">Eray</div>
+      <div class="natal-dob">21 Şubat 1999 · Ankara Altındağ · 14:30 · Erkek · Makine Mühendisi</div>
+      <div class="natal-row"><span class="natal-label">ASC</span><span class="natal-value">İkizler (Gemini)</span></div>
+      <div class="natal-row"><span class="natal-label">MC</span><span class="natal-value">Kova (Aquarius)</span></div>
+      <div class="natal-row"><span class="natal-label">Güneş</span><span class="natal-value">Balık H10</span></div>
+      <div class="natal-row"><span class="natal-label">Ay</span><span class="natal-value">Yay H7</span></div>
+      <div class="natal-row"><span class="natal-label">Venüs</span><span class="natal-value">Koç H11</span></div>
+      <div class="natal-row"><span class="natal-label">Mars</span><span class="natal-value">Terazi H5</span></div>
+      <div class="natal-row"><span class="natal-label">Jüpiter</span><span class="natal-value">Koç H11</span></div>
+      <div class="natal-row"><span class="natal-label">Satürn</span><span class="natal-value">Koç H11</span></div>
+      <span class="natal-scale-badge">Ölçek 0 – 30</span>
+    </div>
+
+    <!-- ALKIM -->
+    <div class="natal-card alkim">
+      <div class="natal-name">Alkım Berk</div>
+      <div class="natal-dob">02 Mart 1999 · Ankara Yenimahalle · 18:00 · Erkek · Makine Mühendisi</div>
+      <div class="natal-row"><span class="natal-label">ASC</span><span class="natal-value">Başak 16°30′</span></div>
+      <div class="natal-row"><span class="natal-label">MC</span><span class="natal-value">İkizler 14°19′</span></div>
+      <div class="natal-row"><span class="natal-label">Ay</span><span class="natal-value">Başak H1</span></div>
+      <div class="natal-row"><span class="natal-label">Güneş + Merkür</span><span class="natal-value">Balık H7</span></div>
+      <div class="natal-row"><span class="natal-label">Venüs + Jüpiter</span><span class="natal-value">Koç H8</span></div>
+      <div class="natal-row"><span class="natal-label">Mars</span><span class="natal-value">Akrep H3</span></div>
+      <span class="natal-scale-badge">Ölçek 0 – 30</span>
+    </div>
+
+    <!-- BARAN -->
+    <div class="natal-card baran">
+      <div class="natal-name">Baran</div>
+      <div class="natal-dob">10 Ağustos 1999 · Ankara Yenimahalle · 02:30 · Erkek</div>
+      <div class="natal-row"><span class="natal-label">ASC</span><span class="natal-value">Yengeç 4°22′</span></div>
+      <div class="natal-row"><span class="natal-label">MC</span><span class="natal-value">Balık 11°96′</span></div>
+      <div class="natal-row"><span class="natal-label">Güneş</span><span class="natal-value">Aslan H3</span></div>
+      <div class="natal-row"><span class="natal-label">Ay + Merkür</span><span class="natal-value">Yengeç H2</span></div>
+      <div class="natal-row"><span class="natal-label">Venüs ℞</span><span class="natal-value">Başak H3</span></div>
+      <div class="natal-row"><span class="natal-label">Mars</span><span class="natal-value">Akrep H5</span></div>
+      <div class="natal-row"><span class="natal-label">Jüpiter + Satürn</span><span class="natal-value">Boğa H11</span></div>
+      <span class="natal-scale-badge">Ölçek: Negatif – Pozitif</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════ PEAK SUMMARY CARDS ═══════════════ -->
+<div class="section">
+  <div class="section-title">En İyi & En Zor Ay</div>
+  <div class="peak-cards">
+
+    <!-- Eray peak card -->
+    <div class="peak-card eray">
+      <div class="peak-card-title">Eray — Zirve & Dip</div>
+      <div class="peak-row">
+        <div class="peak-item peak-best">
+          <div class="peak-item-label">En İyi Ay</div>
+          <div class="peak-item-month">Mar 2026</div>
+          <div class="peak-item-score">+30</div>
+        </div>
+        <div class="peak-item peak-worst">
+          <div class="peak-item-label">En Zor Ay</div>
+          <div class="peak-item-month">May 2027</div>
+          <div class="peak-item-score">−1</div>
+        </div>
+      </div>
+      <div class="peak-note">
+        <strong>2026 ilk yarısı:</strong> Jüpiter–Satürn H10 transiti ile kariyer yükselişi güçlü. Mar 2026 maksimum zirve. Tek negatif ay May 2027 — yıl ortasında dikkatli geçiş.
+      </div>
+    </div>
+
+    <!-- Alkım peak card -->
+    <div class="peak-card alkim">
+      <div class="peak-card-title">Alkım — Zirve & Dip</div>
+      <div class="peak-row">
+        <div class="peak-item peak-best">
+          <div class="peak-item-label">En İyi Ay</div>
+          <div class="peak-item-month">Nis 2026</div>
+          <div class="peak-item-score">+30</div>
+        </div>
+        <div class="peak-item peak-worst">
+          <div class="peak-item-label">En Zor Ay</div>
+          <div class="peak-item-month">Tem 2027</div>
+          <div class="peak-item-score">+13</div>
+        </div>
+      </div>
+      <div class="peak-note">
+        <strong>Son derece istikrarlı:</strong> 24 ay boyunca en düşük skor bile +13. Mar–May 2026 üçlüsü olağanüstü. Sep 2027'de +29 ile güçlü geri dönüş.
+      </div>
+    </div>
+
+    <!-- Baran peak card -->
+    <div class="peak-card baran">
+      <div class="peak-card-title">Baran — Zirve & Dip</div>
+      <div class="peak-row">
+        <div class="peak-item peak-best">
+          <div class="peak-item-label">En İyi Ay</div>
+          <div class="peak-item-month">Şub 2027</div>
+          <div class="peak-item-score">+12</div>
+        </div>
+        <div class="peak-item peak-worst">
+          <div class="peak-item-label">En Zor Aylar</div>
+          <div class="peak-item-month">Haz & Eyl 2027</div>
+          <div class="peak-item-score">−9</div>
+        </div>
+      </div>
+      <div class="peak-note">
+        <strong>Volatil yapı:</strong> En geniş salınım aralığı. Jun–Sep 2027'de Satürn □ Ay H2 baskısı: mali ve duygusal sıkışma. Şub 2027 parlak pencere.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════ BIG TABLE ════════════════════════ -->
+<div class="section">
+  <div class="section-title">24 Aylık Karşılaştırma Tablosu</div>
+
+  <div class="legend">
+    <span class="legend-label">Eray &amp; Alkım (0–30):</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--green-dk-fg)"></span> ≥25 Mükemmel</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--green-fg)"></span> 20–24 İyi</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--yellow-fg)"></span> 15–19 Orta</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--orange-fg)"></span> 10–14 Dikkat</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--red-fg)"></span> &lt;10 Zor</span>
+    <span class="legend-label" style="margin-left:12px">Baran:</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--green-dk-fg)"></span> ≥+6</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--green-fg)"></span> +1–+5</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--yellow-fg)"></span> 0</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--orange-fg)"></span> −1–−4</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--red-fg)"></span> ≤−5</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Ay</th>
+          <th class="th-eray">Eray</th>
+          <th class="th-alkim">Alkım</th>
+          <th class="th-baran">Baran</th>
+          <th style="color:var(--muted);border-bottom:2px solid var(--card-border);font-size:10px">Not</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="year-sep"><td colspan="5">── 2026 ──</td></tr>
+        <!-- Jan 2026: shared good period -->
+        <tr>
+          <td>Ocak 2026</td>
+          <td><span class="score-cell s-gdk">+28<span class="emoji">🟢</span></span></td>
+          <td><span class="score-cell s-grn">+18<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-grn">+7<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Üçü de iyi başlangıç</td>
+        </tr>
+        <!-- Feb 2026 -->
+        <tr>
+          <td>Şubat 2026</td>
+          <td><span class="score-cell s-gdk">+26<span class="emoji">🟢</span></span></td>
+          <td><span class="score-cell s-gdk">+28<span class="emoji">🟢</span></span></td>
+          <td><span class="score-cell s-grn">+3<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Eray + Alkım zirveye</td>
+        </tr>
+        <!-- Mar 2026: all good -->
+        <tr>
+          <td>Mart 2026</td>
+          <td><span class="score-cell s-gdk">+30<span class="emoji">⭐</span></span></td>
+          <td><span class="score-cell s-gdk">+29<span class="emoji">⭐</span></span></td>
+          <td><span class="score-cell s-grn">+8<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--green-dk-fg);font-weight:600">Ortak güçlü pencere</td>
+        </tr>
+        <!-- Apr 2026: exceptional all three -->
+        <tr>
+          <td>Nisan 2026</td>
+          <td><span class="score-cell s-gdk">+25<span class="emoji">⭐</span></span></td>
+          <td><span class="score-cell s-gdk">+30<span class="emoji">⭐</span></span></td>
+          <td><span class="score-cell s-grn">+5<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--green-dk-fg);font-weight:600">★ İSTİSNAİ ORTAK PENCERE</td>
+        </tr>
+        <!-- May 2026 -->
+        <tr>
+          <td>Mayıs 2026</td>
+          <td><span class="score-cell s-grn">+20<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-gdk">+27<span class="emoji">🟢</span></span></td>
+          <td><span class="score-cell s-org">−1<span class="emoji">⚠️</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Baran dikkat</td>
+        </tr>
+        <!-- Jun 2026 -->
+        <tr>
+          <td>Haziran 2026</td>
+          <td><span class="score-cell s-grn">+20<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-grn">+18<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-grn">+6<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Dengeli ay</td>
+        </tr>
+        <!-- Jul 2026: Baran struggles -->
+        <tr>
+          <td>Temmuz 2026</td>
+          <td><span class="score-cell s-yel">+18<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-gdk">+24<span class="emoji">🟢</span></span></td>
+          <td><span class="score-cell s-org">−3<span class="emoji">⚠️</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Baran vs diğerleri</td>
+        </tr>
+        <!-- Aug 2026: Baran and Eray low -->
+        <tr>
+          <td>Ağustos 2026</td>
+          <td><span class="score-cell s-red">+9<span class="emoji">🔴</span></span></td>
+          <td><span class="score-cell s-grn">+22<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-org">−1<span class="emoji">⚠️</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Alkım fark açıyor</td>
+        </tr>
+        <!-- Sep 2026 -->
+        <tr>
+          <td>Eylül 2026</td>
+          <td><span class="score-cell s-org">+14<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-yel">+19<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-red">−4<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Baran zor dönem</td>
+        </tr>
+        <!-- Oct 2026 -->
+        <tr>
+          <td>Ekim 2026</td>
+          <td><span class="score-cell s-org">+14<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-grn">+20<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-red">−5<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Baran yıl dibi</td>
+        </tr>
+        <!-- Nov 2026 -->
+        <tr>
+          <td>Kasım 2026</td>
+          <td><span class="score-cell s-grn">+22<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-grn">+23<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-red">−6<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Baran en zor Kas 2026</td>
+        </tr>
+        <!-- Dec 2026 -->
+        <tr>
+          <td>Aralık 2026</td>
+          <td><span class="score-cell s-grn">+23<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-grn">+21<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-grn">+7<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Üçü de iyileşme</td>
+        </tr>
+
+        <tr class="year-sep"><td colspan="5">── 2027 ──</td></tr>
+        <!-- Jan 2027 -->
+        <tr>
+          <td>Ocak 2027</td>
+          <td><span class="score-cell s-gdk">+27<span class="emoji">🟢</span></span></td>
+          <td><span class="score-cell s-yel">+19<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-red">−5<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Eray yükseliyor</td>
+        </tr>
+        <!-- Feb 2027: all decent -->
+        <tr>
+          <td>Şubat 2027</td>
+          <td><span class="score-cell s-yel">+19<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-yel">+17<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-grn">+12<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--green-fg);font-weight:600">Baran'ın en iyi ayı</td>
+        </tr>
+        <!-- Mar 2027 -->
+        <tr>
+          <td>Mart 2027</td>
+          <td><span class="score-cell s-yel">+19<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-grn">+20<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-yel">0<span class="emoji">🟡</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Dengeli geçiş</td>
+        </tr>
+        <!-- Apr 2027 -->
+        <tr>
+          <td>Nisan 2027</td>
+          <td><span class="score-cell s-org">+12<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-yel">+19<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-yel">0<span class="emoji">🟡</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Orta bölge</td>
+        </tr>
+        <!-- May 2027: Eray only negative -->
+        <tr>
+          <td>Mayıs 2027</td>
+          <td><span class="score-cell s-red">−1<span class="emoji">🔴</span></span></td>
+          <td><span class="score-cell s-yel">+19<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-yel">0<span class="emoji">🟡</span></span></td>
+          <td style="font-size:11px;color:var(--red-fg);font-weight:600">Eray tek negatif ayı</td>
+        </tr>
+        <!-- Jun 2027: all lower -->
+        <tr>
+          <td>Haziran 2027</td>
+          <td><span class="score-cell s-red">+6<span class="emoji">🔴</span></span></td>
+          <td><span class="score-cell s-yel">+16<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-red">−9<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--red-fg);font-weight:600">Baran en dip</td>
+        </tr>
+        <!-- Jul 2027: all three low — shared difficult -->
+        <tr>
+          <td>Temmuz 2027</td>
+          <td><span class="score-cell s-red">+9<span class="emoji">🔴</span></span></td>
+          <td><span class="score-cell s-org">+13<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-org">−4<span class="emoji">⚠️</span></span></td>
+          <td style="font-size:11px;color:var(--red-fg);font-weight:600">★ ORTAK ZOR AY</td>
+        </tr>
+        <!-- Aug 2027 -->
+        <tr>
+          <td>Ağustos 2027</td>
+          <td><span class="score-cell s-red">+10<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-grn">+18<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-grn">+2<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Alkım kurtarıyor</td>
+        </tr>
+        <!-- Sep 2027: Alkım high comeback -->
+        <tr>
+          <td>Eylül 2027</td>
+          <td><span class="score-cell s-org">+13<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-gdk">+29<span class="emoji">⭐</span></span></td>
+          <td><span class="score-cell s-red">−9<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--alkim)">Alkım güçlü geri dönüş</td>
+        </tr>
+        <!-- Oct 2027 -->
+        <tr>
+          <td>Ekim 2027</td>
+          <td><span class="score-cell s-yel">+17<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-grn">+21<span class="emoji">✅</span></span></td>
+          <td><span class="score-cell s-red">−5<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Baran hâlâ baskı</td>
+        </tr>
+        <!-- Nov 2027 -->
+        <tr>
+          <td>Kasım 2027</td>
+          <td><span class="score-cell s-red">+10<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-org">+14<span class="emoji">🟠</span></span></td>
+          <td><span class="score-cell s-red">−6<span class="emoji">🔴</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Genel düşük</td>
+        </tr>
+        <!-- Dec 2027 -->
+        <tr>
+          <td>Aralık 2027</td>
+          <td><span class="score-cell s-red">+8<span class="emoji">🔴</span></span></td>
+          <td><span class="score-cell s-yel">+16<span class="emoji">🟡</span></span></td>
+          <td><span class="score-cell s-grn">+5<span class="emoji">✅</span></span></td>
+          <td style="font-size:11px;color:var(--muted)">Baran yılı iyi kapatıyor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════ HIGHLIGHTS ═══════════════════════ -->
+<div class="section">
+  <div class="section-title">Kişisel Öne Çıkanlar</div>
+  <div class="highlight-grid">
+
+    <!-- ERAY -->
+    <div class="highlight-card eray">
+      <div class="highlight-name">Eray</div>
+      <div class="hl-section">
+        <div class="hl-section-title">En İyi Pencereler</div>
+        <div class="hl-tags">
+          <span class="hl-tag best">Oca–Mar 2026 (+28/+26/+30)</span>
+          <span class="hl-tag best">Oca 2027 (+27)</span>
+          <span class="hl-tag best">Ara 2026 (+23)</span>
+          <span class="hl-tag best">Kas 2026 (+22)</span>
+        </div>
+      </div>
+      <div class="hl-section">
+        <div class="hl-section-title">Dikkatli Olunacak Dönemler</div>
+        <div class="hl-tags">
+          <span class="hl-tag worst">Ağu 2026 (+9)</span>
+          <span class="hl-tag worst">May 2027 (−1 tek negatif)</span>
+          <span class="hl-tag worst">Haz–Tem 2027 (+6/+9)</span>
+          <span class="hl-tag worst">Ara 2027 (+8)</span>
+        </div>
+      </div>
+      <div class="hl-note">
+        <strong>Kariyer:</strong> Balık Güneşi H10 — 2026 ilk yarısı kariyer için son derece güçlü. Jüpiter transitleri kariyer fırsatları getiriyor. <strong>May 2027 benzersiz dip nokta</strong>; bu ayda büyük kararlardan kaçın. 2027 ikinci yarısı daha düşük enerjili seyreder, sabırlı ol.
+      </div>
+    </div>
+
+    <!-- ALKIM -->
+    <div class="highlight-card alkim">
+      <div class="highlight-name">Alkım Berk</div>
+      <div class="hl-section">
+        <div class="hl-section-title">En İyi Pencereler</div>
+        <div class="hl-tags">
+          <span class="hl-tag best">Mar–May 2026 (+29/+30/+27)</span>
+          <span class="hl-tag best">Eyl 2027 (+29 geri dönüş)</span>
+          <span class="hl-tag best">Şub 2026 (+28)</span>
+          <span class="hl-tag best">Tem 2026 (+24)</span>
+        </div>
+      </div>
+      <div class="hl-section">
+        <div class="hl-section-title">Dikkatli Olunacak Dönemler</div>
+        <div class="hl-tags">
+          <span class="hl-tag worst">Tem 2027 (+13 en düşük)</span>
+          <span class="hl-tag worst">Haz 2027 (+16)</span>
+          <span class="hl-tag worst">Kas 2027 (+14)</span>
+        </div>
+      </div>
+      <div class="hl-note">
+        <strong>İstikrar şampiyonu:</strong> 24 ay boyunca hiç negatif skor yok, minimum +13. Mar–May 2026 üçlüsü olağanüstü — bu dönem büyük hamleler için ideal. <strong>Eyl 2027'de +29 ile sürpriz zirve.</strong> Tem 2027 en zayıf ay, ama yine de makul düzeyde.
+      </div>
+    </div>
+
+    <!-- BARAN -->
+    <div class="highlight-card baran">
+      <div class="highlight-name">Baran</div>
+      <div class="hl-section">
+        <div class="hl-section-title">En İyi Pencereler</div>
+        <div class="hl-tags">
+          <span class="hl-tag best">Şub 2027 (+12 zirve)</span>
+          <span class="hl-tag best">Mar 2026 (+8)</span>
+          <span class="hl-tag best">Oca 2026 (+7)</span>
+          <span class="hl-tag best">Ara 2026 (+7)</span>
+          <span class="hl-tag best">Haz 2026 (+6)</span>
+          <span class="hl-tag best">Ara 2027 (+5)</span>
+        </div>
+      </div>
+      <div class="hl-section">
+        <div class="hl-section-title">Dikkatli Olunacak Dönemler</div>
+        <div class="hl-tags">
+          <span class="hl-tag worst">Haz 2027 (−9)</span>
+          <span class="hl-tag worst">Eyl 2027 (−9)</span>
+          <span class="hl-tag worst">Kas 2026 (−6)</span>
+          <span class="hl-tag worst">Kas 2027 (−6)</span>
+          <span class="hl-tag worst">Oca 2027 (−5)</span>
+          <span class="hl-tag worst">Eki 2026 (−5)</span>
+        </div>
+      </div>
+      <div class="hl-note">
+        <strong>Volatil harita:</strong> En geniş salınım aralığı — büyük zirveler ve gerçek vadiler. <strong>Haz–Eyl 2027: Satürn □ Ay H2</strong> — mali baskı ve duygusal yorgunluk; bu dönemde büyük finansal kararlar alma. Şub 2027 penceresini maksimum kullan.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════ SHARED WINDOWS ═══════════════════ -->
+<div class="section">
+  <div class="section-title">Ortak Pencereler — Üçü Birlikte</div>
+  <div class="shared-grid">
+
+    <div class="shared-card">
+      <div class="shared-card-header">
+        <div class="shared-month">Oca–Mar 2026</div>
+        <span class="shared-type-badge badge-green">Üçü İyi</span>
+      </div>
+      <div class="shared-scores">
+        <span class="shared-score-pill pill-eray">Eray +28/+26/+30</span>
+        <span class="shared-score-pill pill-alkim">Alkım +18/+28/+29</span>
+        <span class="shared-score-pill pill-baran">Baran +7/+3/+8</span>
+      </div>
+      <div class="shared-desc">
+        Üç kişi de güçlü veya olumlu skorlarla başlıyor. Kolektif girişimler, ortak kararlar ve yeni başlangıçlar için verimli bir üç aylık dönem.
+      </div>
+    </div>
+
+    <div class="shared-card">
+      <div class="shared-card-header">
+        <div class="shared-month">Nisan 2026</div>
+        <span class="shared-type-badge badge-green">★ İstisnai</span>
+      </div>
+      <div class="shared-scores">
+        <span class="shared-score-pill pill-eray">Eray +25</span>
+        <span class="shared-score-pill pill-alkim">Alkım +30</span>
+        <span class="shared-score-pill pill-baran">Baran +5</span>
+      </div>
+      <div class="shared-desc">
+        <strong>24 ay içindeki en güçlü ortak pencere.</strong> Her üç kişi de olumlu tarafta. Büyük kararlar, önemli adımlar veya ortak projeler başlatmak için mükemmel.
+      </div>
+    </div>
+
+    <div class="shared-card">
+      <div class="shared-card-header">
+        <div class="shared-month">Şubat–Mart 2027</div>
+        <span class="shared-type-badge badge-mixed">Makul</span>
+      </div>
+      <div class="shared-scores">
+        <span class="shared-score-pill pill-eray">Eray +19/+19</span>
+        <span class="shared-score-pill pill-alkim">Alkım +17/+20</span>
+        <span class="shared-score-pill pill-baran">Baran +12/0</span>
+      </div>
+      <div class="shared-desc">
+        Üçü de makul düzeyde. Özellikle Şubat, Baran'ın 2027'deki en iyi ayı (+12). Orta ölçekli adımlar için elverişli iki aylık pencere.
+      </div>
+    </div>
+
+    <div class="shared-card">
+      <div class="shared-card-header">
+        <div class="shared-month">Temmuz–Ağustos 2026</div>
+        <span class="shared-type-badge badge-mixed">Baran Dikkat</span>
+      </div>
+      <div class="shared-scores">
+        <span class="shared-score-pill pill-eray">Eray +18/+9</span>
+        <span class="shared-score-pill pill-alkim">Alkım +24/+22</span>
+        <span class="shared-score-pill pill-baran">Baran −3/−1</span>
+      </div>
+      <div class="shared-desc">
+        Alkım güçlü seyrederken Baran negatif bölgede. Eray da Ağustos'ta düşüş yaşıyor. Baran için yavaş ay, Alkım için fırsat.
+      </div>
+    </div>
+
+    <div class="shared-card">
+      <div class="shared-card-header">
+        <div class="shared-month">Temmuz 2027</div>
+        <span class="shared-type-badge badge-red">Ortak Zor</span>
+      </div>
+      <div class="shared-scores">
+        <span class="shared-score-pill pill-eray">Eray +9</span>
+        <span class="shared-score-pill pill-alkim">Alkım +13</span>
+        <span class="shared-score-pill pill-baran">Baran −4</span>
+      </div>
+      <div class="shared-desc">
+        <strong>24 ay içinde üçünün de en düşük olduğu tek ay.</strong> Büyük kararlar, önemli yatırımlar veya riskli adımlardan kaçının. Sabır ve bekleyiş dönemi.
+      </div>
+    </div>
+
+    <div class="shared-card">
+      <div class="shared-card-header">
+        <div class="shared-month">Aralık 2026</div>
+        <span class="shared-type-badge badge-green">Toparlanma</span>
+      </div>
+      <div class="shared-scores">
+        <span class="shared-score-pill pill-eray">Eray +23</span>
+        <span class="shared-score-pill pill-alkim">Alkım +21</span>
+        <span class="shared-score-pill pill-baran">Baran +7</span>
+      </div>
+      <div class="shared-desc">
+        Yıl sonu üçü için de pozitif kapanıyor. Kasım zorluklarından toparlanış. Yeni yıla güzel bir geçiş için plan yapmak için iyi zaman.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════════ -->
+<div class="footer">
+  <div class="container">
+    <p>
+      <strong>Sorumluluk Reddi:</strong> Bu analiz yalnızca astrolojik transit hesaplamalarına dayalı yorumsal bir özettir. Mesleki, finansal, tıbbi veya hukuki tavsiye niteliği taşımaz. Astroloji, karar almanın tek dayanağı olarak kullanılmamalıdır. Tüm önemli kararlar için uzman görüşü alınması tavsiye edilir.<br>
+      <strong>Hazırlanma tarihi:</strong> Haziran 2026 · Eray, Alkım Berk &amp; Baran için 2026–2027 Transit Karşılaştırma Özeti
+    </p>
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
